@@ -1,4 +1,222 @@
-/*
+:root { /* defining root styling */
+    --bg-color: rgba(221, 218, 213, 100);
+    --font-color: rgb(87, 78, 71);
+    --font-family: "Montserrat", sans-serif;
+    --font-size-title: 1.2rem;
+    --font-size-body: 1.1rem;
+    --font-size-detail: 0.9rem;
+    --input-field-bg-color: 
+}
+
+* { /* resetting browser default setting */
+    box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
+    margin: 0; 
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--font-color);
+    font-family: var(--font-family);
+    padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
+}
+
+ul {
+    display: flex; /* displaying ul's direct children (li's) horizontally */
+    flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
+    justify-content: center; /* aligns li's in the center of ul container, which is specifically important in smaller viewports*/
+    align-items: center; /* aligning ul's in the center */
+
+    @media all and (max-width: 480px) { 
+        margin-top: 1rem; /* adding a bit of top margin to get .nav-items further away from logo in smaller viewports */
+    }
+}
+
+li {
+    padding: 10px; /* increases background area without moving other li's when hovering */
+    list-style: none; /* removes bullet from li's */
+    font-size: var(--font-size-title); 
+}
+
+.navbar {
+    display: flex; /* distributes items (.brand and .nav-items) horizontaly */
+    text-align: center; /* aligns text vertically in the center of container */
+    flex-wrap: wrap; /* wraps logo and nav-items on top of each other */
+    justify-content: space-between; /* adds space evenly between flex items */
+    @media all and (max-width: 480px) { 
+        justify-content: center; /* justifying .navbar items in the center of the screen when viewport gets to a max width of 480px */
+    }
+}
+
+.top-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* aligning items to the center of the screen. it won't make a difference in the desktop viewport, but keeps it centered in smaller viewports */
+    text-align: center; /* distributes text horizontally to the center of the screen */      
+    padding: 1rem;
+}
+
+.top-section > .title {
+    margin: 1rem;
+}
+
+.top-section > .sub-title {
+    font-size: var(--font-size-title);
+    margin: 1.5rem;
+}
+
+.home-search {
+    background-color: rgba(176, 174, 170, 0.9);
+    width: 70%; /* keeps the .home-serach width up to 70% of the screen, no matter the viewport's size */
+    height: 2.5rem;
+    border: solid;
+    border-color: rgb(130, 117, 106);
+    border-radius: 50px;
+    margin: 2rem auto; /* centers the .home-search horizontally in the screen*/
+}
+
+.card-deck {
+    display: flex; /* distributes items horizontaly */
+    justify-content: center; /* distributes flex items to the center of the main axis (in this case, horizontally) */
+    gap: 2rem; /* adds gap between .card-deck children */ 
+    padding-right: 20%; /* adding padding to the deck to make cards fatter */
+    padding-left: 20%; /* adding padding to the deck to make cards fatter */
+    flex-wrap: wrap; /* wraps .cards on top of each other */
+    margin-bottom: 3rem;
+}
+
+.card {
+    background-color: var(--bg-color);
+    border: solid var(--bg-color);
+    border-color: var(--font-color);
+    flex: 1; /* grow continar to fill available space from the parent (.card-deck) and distributes children evenly, while allowing shrinking and setting same basis (=width) for all of them */
+    border-radius: 10px; /* makes border a bit rounded */
+    text-align: center;
+    display: flex; 
+    flex-direction: column; /* displays .card direct children as columns */
+}
+
+.card > * {
+    /* since parent element (.card) was set to flex column, flex:1 will grow direct children (.title, .body and .detail) to fill out all the available space vertically, while allowing shrinking and setting same basis */
+    flex: 1;
+}
+
+.card > .title {
+    font-size: var(--font-size-title);
+    padding-top: 1rem;
+}
+
+.card > .body {
+    font-size: var(--font-size-body);
+    padding: 1rem 0.5rem 0 0.5rem;
+    
+}
+
+.card > .detail {
+    font-size: var(--font-size-detail);
+    padding: 1rem 0.5rem 1rem 0.5rem;
+}
+
+.mid-section { 
+    display: grid; /* applies the grid layout to .mid-section */
+    grid-template-columns: repeat(5, 1fr); /* sets the grid with 5 columns, with each element spanning to the column whole width */
+    border: solid;
+}
+
+.mid-section > .text {
+    grid-column-start: 1; /* sets the beginning of the .text <div> at the first column */
+    grid-column-end: span 3; /* sets the end of the .text <div> to the 3rd column */
+}
+
+.mid-section > .text > .title {
+    /* font-size: var(--font-size-title); */
+    font-weight: 600;
+    padding: 1rem 1rem 0 1rem;
+}
+
+.mid-section > .text > .highlight-body {
+    font-weight: 400;
+    padding: 1rem;
+}
+
+.mid-section > .text > .body {
+    font-weight: 400;
+    padding: 0 1rem 1rem 1rem;
+}
+
+.mid-section > .image {
+    grid-column-end: span 2;
+    text-align: center;
+}
+
+li:hover {
+    background-color: rgba(176, 174, 170, 0.9); /* changes the li background color whenever the mouse is hovered on it */
+    color: rgb(130, 117, 106);
+    border-radius: 50px;
+    border: none;
+    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
+    padding: 10px;
+}
+
+.card:hover {
+    transform: rotate(10deg) scale(1.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+}
+
+.modal {
+    background-color: var(--bg-color);
+    position: fixed; /* defining modal's position on the screen */
+    top: 50%; /* defining modal's position on the screen */
+    left: 50%; /* defining modal's position on the screen */
+    transform: translate(-50%, -50%); /* defining modal's position on the screen */
+    border: solid;
+    border-color: rgba(176, 174, 170, 0.9);
+    border-radius: 15px;
+    padding: 1rem;
+    height: 70vh; /* defining modal's dimensios according to viewport size */
+    width: 70vh; /* defining modal's dimensios according to viewport size */
+}
+
+.modal > .title {
+    display: block; /* spans the .title to the whole modal width (according to it's padding) */
+    text-align: center;
+}
+
+.close-modal-btn {
+    position: absolute; /* positions .close-modal-btn in an absolute position independently of it's parent container */
+    top: 10px; /* positions .close-modal-btn 10px from the top (it goes downwards) */
+    right: 10px; /* positions .close-modal-btn 10px from the right (it goes to the left) */
+}
+
+.login-logo {
+    text-align: center; /* aligns .login-logo at the modal's center */
+    width: 80%; /* spans .login-logo 80% of the whole modal's widht (according to it's padding)  */
+    margin: 1rem auto;
+}
+
+.login-input { /* input fields from the login modal */
+    background-color: rgba(176, 174, 170, 0.9);
+    border-color: rgb(130, 117, 106);
+    border-radius: 5px;
+    display: block;
+    margin: 1rem auto;
+    width: 80%;
+    height: 2rem;
+}
+
+.login-signup-prompt { 
+    text-align: center;
+    width: 80%;
+    margin: auto;
+}
+
+.login-signup-prompt > p,
+.login-signup-prompt > .login-signup-prompt-link {
+    display: inline; /* displays p and .login-signup-prompt-link nex to each other */
+    text-align: center;
+}/*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
  *
