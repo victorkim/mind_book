@@ -1,6 +1,6 @@
-:root { /* defining root styling */
-    --bg-color: rgba(221, 218, 213, 100);
-    --font-color: rgb(87, 78, 71);
+:root { /* defining root styling */   
+    --bg-color: rgba(4, 23, 84, 0.739);
+    --font-color: rgb(255, 255, 255);
     --font-family: "Montserrat", sans-serif;
     --font-size-title: 1.2rem;
     --font-size-body: 1.1rem;
@@ -12,16 +12,23 @@
     box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
     margin: 0; 
     padding: 0;
+    text-decoration: none; /* removes the underline of all the hyperlinks */
+}
+
+a {
+    color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
 body {
-    background-color: var(--bg-color);
+    background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed;
+    /* background-color: var(--bg-color); */
     color: var(--font-color);
     font-family: var(--font-family);
     padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
 }
 
 ul {
+    border: solid;
     display: flex; /* displaying ul's direct children (li's) horizontally */
     flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
     justify-content: center; /* aligns li's in the center of ul container, which is specifically important in smaller viewports*/
@@ -39,6 +46,7 @@ li {
 }
 
 .navbar {
+    border: solid;
     display: flex; /* distributes items (.brand and .nav-items) horizontaly */
     text-align: center; /* aligns text vertically in the center of container */
     flex-wrap: wrap; /* wraps logo and nav-items on top of each other */
@@ -53,16 +61,18 @@ li {
     flex-direction: column;
     align-items: center; /* aligning items to the center of the screen. it won't make a difference in the desktop viewport, but keeps it centered in smaller viewports */
     text-align: center; /* distributes text horizontally to the center of the screen */      
-    padding: 1rem;
+    padding: 4rem 1rem;
 }
 
 .top-section > .title {
-    margin: 1rem;
+    margin: 2rem 0;
+    font-size: 3rem;
 }
 
 .top-section > .sub-title {
     font-size: var(--font-size-title);
-    margin: 1.5rem;
+    margin: 1rem 0 0.5rem 0;
+    font-size: 1.5rem;
 }
 
 .home-search {
@@ -150,8 +160,7 @@ li {
 }
 
 li:hover {
-    background-color: rgba(176, 174, 170, 0.9); /* changes the li background color whenever the mouse is hovered on it */
-    color: rgb(130, 117, 106);
+    background-color: #040b8a; /* changes the li background color whenever the mouse is hovered on it */
     border-radius: 50px;
     border: none;
     cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */

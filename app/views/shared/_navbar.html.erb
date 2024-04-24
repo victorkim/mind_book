@@ -1,10 +1,12 @@
 <header>
 <nav class="navbar">
     <div class="nav-logo"><img src="Logo original.png" width="80" height="80"></div>
-        <ul>
-            <li>Manifesto</li>
-            <li>Registrar Cadenas</li>
-            <li id="login">Entrar / Cadastrar</li>
-        </ul>
+    <ul>
+        <li><%= link_to "About", about_path %></li>
+        <li><%= link_to "Blog", blog_path %></li>
+        <li><%= link_to "Features", features_path %></li>
+        <li><%= link_to "Pricing", pricing_path %></li>
+        <li id="login">Login / Sign Up</li>
+    </ul>
 </nav>
 </header>
