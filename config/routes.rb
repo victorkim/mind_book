@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   get 'blog', to: 'pages#blog'
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
+
+  get 'sign_up', to: 'registrations#new'
+  post 'sign_up', to: 'registrations#create'
+
   resources :projects
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
