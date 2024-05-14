@@ -1,6 +1,6 @@
 <h1>Sign Up</h1>
 
-<%= form_with model: @user, url: sign_up_path do |form| %>
+<%= form_with model: @user, url: sign_up_path, data: {turbo: false}, local: true do |form| %>
     <%= form.label :email %>
     <%= form.text_field :email, placeholder: "victor.eun@gmail.com" %>
     <%= form.label :password %>
@@ -10,3 +10,4 @@
     <%= form.submit "Sign Up" %>
 <% end %>
 
+        
