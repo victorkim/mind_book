@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users #generates sign up, logins, profile editing links in one single command
   root 'pages#home'
   get 'about', to: 'pages#about'
   get 'blog', to: 'pages#blog'

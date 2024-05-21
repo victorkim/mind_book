@@ -7,3 +7,10 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+#creates a new user
+user = User.where(email: "victor.eun@gmail.com").first_or_initialize
+user.update!(
+        password: "password",
+        password_confirmation: "password"
+)
