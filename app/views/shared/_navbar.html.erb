@@ -5,8 +5,15 @@
         <li><%= link_to "About", about_path %></li>
         <li><%= link_to "Blog", blog_path %></li>
         <li><%= link_to "Features", features_path %></li>
-        <li><%= link_to "Pricing", pricing_path %></li>
-        <li id="login">Login / Sign Up</li>
+        <li><%= link_to "Pricing", pricing_path %></li>       
+        <% if user_signed_in? %>
+            <%= link_to "New Project", new_project_path %>
+            <%= link_to "Profile", edit_user_registration_path %>
+            <%= button_to "Log out", destroy_user_session_path, method: :delete %>
+        <% else %>
+            <li><%= link_to "Login", new_user_session_path %></li>
+            <li><%= link_to "Sign Up", new_user_registration_path %><li>
+        <% end %>
     </ul>
 </nav>
 </header>

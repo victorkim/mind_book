@@ -106,25 +106,15 @@ li {
     flex-direction: column; /* displays .card direct children as columns */
 }
 
-.card > * {
-    /* since parent element (.card) was set to flex column, flex:1 will grow direct children (.title, .body and .detail) to fill out all the available space vertically, while allowing shrinking and setting same basis */
-    flex: 1;
-}
-
 .card > .title {
     font-size: var(--font-size-title);
-    padding-top: 1rem;
+    padding: 1rem 1rem;
 }
 
 .card > .body {
     font-size: var(--font-size-body);
-    padding: 1rem 0.5rem 0 0.5rem;
-    
-}
-
-.card > .detail {
-    font-size: var(--font-size-detail);
     padding: 1rem 0.5rem 1rem 0.5rem;
+    
 }
 
 .mid-section { 
@@ -141,11 +131,6 @@ li {
 .mid-section > .text > .title {
     /* font-size: var(--font-size-title); */
     font-weight: 600;
-    padding: 1rem 1rem 0 1rem;
-}
-
-.mid-section > .text > .highlight-body {
-    font-weight: 400;
     padding: 1rem;
 }
 
