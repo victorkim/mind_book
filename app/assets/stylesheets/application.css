@@ -1,3 +1,5 @@
+@import "./actiontext.css";
+
 :root { /* defining root styling */   
     --bg-color: rgba(4, 23, 84, 0.739);
     --font-color: rgb(255, 255, 255);
@@ -7,6 +9,18 @@
     --font-size-detail: 0.9rem;
     --input-field-bg-color: 
 }
+
+/* app/assets/stylesheets/application.css */
+
+trix-editor {
+    background-color: #f0f0f058; /* Change this to your desired background color */
+    padding: 10px; /* Optional: add some padding for better appearance */
+    border-radius: 5px; /* Optional: add rounded corners */
+  }
+
+  trix-toolbar .trix-button-group button { 
+    background-color: white; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
+  }
 
 * { /* resetting browser default setting */
     box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
@@ -20,8 +34,7 @@ a {
 }
 
 body {
-    background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed;
-    /* background-color: var(--bg-color); */
+    background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed; /* background-color: var(--bg-color); */
     color: var(--font-color);
     font-family: var(--font-family);
     padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
