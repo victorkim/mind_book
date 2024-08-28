@@ -17,6 +17,16 @@
   </div>
 
   <div>
+    <%= form.label :start_date, style: "display: block" %>
+    <%= form.date_field :start_date %>
+  </div>
+
+  <div>
+    <%= form.label :end_date, style: "display: block" %>
+    <%= form.date_field :end_date %>
+  </div>
+
+  <div>
     <%= form.label :description, style: "display: block" %>
     <%= form.rich_text_area :description %>
   </div>
