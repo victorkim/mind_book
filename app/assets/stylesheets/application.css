@@ -37,6 +37,10 @@ a {
     border: solid; /* Creating a border for each individual project */
 }
 
+#projects p {
+    padding: 1%;
+}
+
 body {
     background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed; /* background-color: var(--bg-color); */
     color: var(--font-color);
