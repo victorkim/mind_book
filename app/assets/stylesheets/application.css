@@ -33,6 +33,10 @@ a {
     color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
+.project {
+    border: solid; /* Creating a border for each individual project */
+}
+
 body {
     background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed; /* background-color: var(--bg-color); */
     color: var(--font-color);
@@ -40,7 +44,7 @@ body {
     padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
 }
 
-ul {
+.navbar ul { /* targetting only ul's inside the navbar so that rich text formatting works */
     border: solid;
     display: flex; /* displaying ul's direct children (li's) horizontally */
     flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
@@ -52,10 +56,19 @@ ul {
     }
 }
 
-li {
+.navbar li { /* targetting only li's inside the navbar so that rich text formatting works */
     padding: 10px; /* increases background area without moving other li's when hovering */
     list-style: none; /* removes bullet from li's */
     font-size: var(--font-size-title); 
+}
+
+.navbar li:hover { /* targetting only the hover on li's inside the navbar so that hovering does not affect li's from projects */
+    background-color: #040b8a; /* changes the li background color whenever the mouse is hovered on it */
+    border-radius: 50px;
+    border: none;
+    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
+    padding: 10px;
 }
 
 .navbar {
@@ -88,16 +101,6 @@ li {
     font-size: 1.5rem;
 }
 
-.home-search {
-    background-color: rgba(176, 174, 170, 0.9);
-    width: 70%; /* keeps the .home-serach width up to 70% of the screen, no matter the viewport's size */
-    height: 2.5rem;
-    border: solid;
-    border-color: rgb(130, 117, 106);
-    border-radius: 50px;
-    margin: 2rem auto; /* centers the .home-search horizontally in the screen*/
-}
-
 .card-deck {
     display: flex; /* distributes items horizontaly */
     justify-content: center; /* distributes flex items to the center of the main axis (in this case, horizontally) */
@@ -117,6 +120,12 @@ li {
     text-align: center;
     display: flex; 
     flex-direction: column; /* displays .card direct children as columns */
+}
+
+.card:hover {
+    transform: rotate(10deg) scale(1.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
 }
 
 .card > .title {
@@ -156,74 +165,7 @@ li {
     grid-column-end: span 2;
     text-align: center;
 }
-
-li:hover {
-    background-color: #040b8a; /* changes the li background color whenever the mouse is hovered on it */
-    border-radius: 50px;
-    border: none;
-    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
-    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
-    padding: 10px;
-}
-
-.card:hover {
-    transform: rotate(10deg) scale(1.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
-}
-
-.modal {
-    background-color: var(--bg-color);
-    position: fixed; /* defining modal's position on the screen */
-    top: 50%; /* defining modal's position on the screen */
-    left: 50%; /* defining modal's position on the screen */
-    transform: translate(-50%, -50%); /* defining modal's position on the screen */
-    border: solid;
-    border-color: rgba(176, 174, 170, 0.9);
-    border-radius: 15px;
-    padding: 1rem;
-    height: 70vh; /* defining modal's dimensios according to viewport size */
-    width: 70vh; /* defining modal's dimensios according to viewport size */
-}
-
-.modal > .title {
-    display: block; /* spans the .title to the whole modal width (according to it's padding) */
-    text-align: center;
-}
-
-.close-modal-btn {
-    position: absolute; /* positions .close-modal-btn in an absolute position independently of it's parent container */
-    top: 10px; /* positions .close-modal-btn 10px from the top (it goes downwards) */
-    right: 10px; /* positions .close-modal-btn 10px from the right (it goes to the left) */
-}
-
-.login-logo {
-    text-align: center; /* aligns .login-logo at the modal's center */
-    width: 80%; /* spans .login-logo 80% of the whole modal's widht (according to it's padding)  */
-    margin: 1rem auto;
-}
-
-.login-input { /* input fields from the login modal */
-    background-color: rgba(176, 174, 170, 0.9);
-    border-color: rgb(130, 117, 106);
-    border-radius: 5px;
-    display: block;
-    margin: 1rem auto;
-    width: 80%;
-    height: 2rem;
-}
-
-.login-signup-prompt { 
-    text-align: center;
-    width: 80%;
-    margin: auto;
-}
-
-.login-signup-prompt > p,
-.login-signup-prompt > .login-signup-prompt-link {
-    display: inline; /* displays p and .login-signup-prompt-link nex to each other */
-    text-align: center;
-}/*
+/*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
  *

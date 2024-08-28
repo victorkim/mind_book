@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   get 'blog', to: 'pages#blog'
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
+  
   resources :projects
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
