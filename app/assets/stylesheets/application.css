@@ -33,6 +33,21 @@ a {
     color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
+.projects-groups-grid {
+    display: grid; /* Defining the display as grid */
+    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
+    gap: 1.5rem;
+    border: solid red;
+    margin: 1.5rem;
+}
+
+.projects-grid {
+    display: grid; /* Defining the display as grid */
+    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
+    gap: 1.5rem;
+    margin: 1.5rem;
+}
+
 .project-card {
     border: solid; /* Creating a border for each individual project */
     height: 200px; /* Defining a height for each project card */
@@ -40,12 +55,6 @@ a {
 
 .project-card-name {
     text-align: center;
-}
-
-.projects-grid {
-    display: grid; /* Defining the display as grid */
-    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
-    gap: 1.5rem;
 }
 
 body {

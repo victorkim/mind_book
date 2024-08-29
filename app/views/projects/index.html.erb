@@ -6,6 +6,12 @@
   <%= link_to "New project", new_project_path %>
 </p>
 
+<div class="projects-groups-grid">
+  <% @projects_groups.each do |project| %>
+    <%= render 'project_card', project: project%>
+  <% end %>
+</div>
+
 <div class="projects-grid">
   <% @projects.each do |project| %>
     <%= render 'project_card', project: project%>
