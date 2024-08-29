@@ -2,13 +2,12 @@
 
 <h1>Projects</h1>
 
-<div id="projects">
+<p>
+  <%= link_to "New project", new_project_path %>
+</p>
+
+<div class="projects-grid">
   <% @projects.each do |project| %>
-    <%= render 'project_general', project: project%>
-    <p>
-      <%= link_to "Show this project", project %>
-    </p>
+    <%= render 'project_card', project: project%>
   <% end %>
 </div>
-
-<%= link_to "New project", new_project_path %>

@@ -33,12 +33,19 @@ a {
     color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
-.project {
+.project-card {
     border: solid; /* Creating a border for each individual project */
+    height: 200px; /* Defining a height for each project card */
 }
 
-#projects p {
-    padding: 1%;
+.project-card-name {
+    text-align: center;
+}
+
+.projects-grid {
+    display: grid; /* Defining the display as grid */
+    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
+    gap: 1.5rem;
 }
 
 body {

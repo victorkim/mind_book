@@ -1,0 +1,17 @@
+<div class="project-card"> 
+  <div id="<%= dom_id project %>">
+    <div class="project-card-name">
+      <strong><%= link_to project.name, project_path(project) %></strong>
+    </div>
+    <div class="project-card-dates">
+      <p>
+        Start Date:
+        <%= project.start_date %>
+      </p>
+      <p>
+        End Date:
+      <%= project.end_date %>
+      </p>
+    </div>
+  </div>
+</div>
