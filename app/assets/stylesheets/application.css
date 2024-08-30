@@ -33,24 +33,51 @@ a {
     color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
-.projects-groups-grid {
-    display: grid; /* Defining the display as grid */
-    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
-    gap: 1.5rem;
-    border: solid red;
-    margin: 1.5rem;
-}
-
+.highlighted-projects-grid,
 .projects-grid {
     display: grid; /* Defining the display as grid */
-    grid-template-columns: repeat(4, 1fr);/* Declaring how many columns I need and making sure they're equal size */ 
+    grid-template-columns: repeat(4, 1fr); /* Declaring how many columns I need and making sure they're equal size */ 
+    gap: 1.5rem; /* Adding gap between grid cells */ 
+    margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */ 
+    border: solid red;
+}
+
+.recent-projects-grid,
+.due-soon-projects-grid {
+    display: grid; /* Defining the display as grid */
+    grid-template-columns: 1fr; /* Declaring that the grid will have only 1 column */
+    grid-template-rows: 1fr; /* Declaring that the grid will have only 1 row */
     gap: 1.5rem;
-    margin: 1.5rem;
+    margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */
+}
+
+.highlighted-projects-grid .project-card {
+    display: grid;
+    grid-area: 1 / 1; /* Defines the area where project-cards will be placed within the grid. In this case, starts in the 1st row and column */
+    gap: 1.5rem;
+    margin: 1.5rem; /* Adding margin (spacing on the outside of the project-card) */
+}
+
+.highlighted-projects-grid .project-card:nth-child(1) {
+    transform: rotate(-2deg); /* Rotate the 1st card slightly counter-clockwise */
+}
+
+.highlighted-projects-grid .project-card:nth-child(2) {
+    transform: rotate(2deg); /* Rotate the 2nd card slightly clockwise */
+}
+
+.highlighted-projects-grid .project-card:nth-child(3) {
+    transform: rotate(-4deg); /* Rotate the 3rd card slightly counter-clockwise */ 
+}
+
+.highlighted-projects-grid .project-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */ 
 }
 
 .project-card {
-    border: solid; /* Creating a border for each individual project */
+    border: solid; /* Creating a border for each individual project card */
     height: 200px; /* Defining a height for each project card */
+    background-color: black;
 }
 
 .project-card-name {

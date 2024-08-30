@@ -5,7 +5,8 @@ class ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     @projects = Project.all
-    @projects_groups = Project.where('created_at >= ?', 1.day.ago)
+    @recent_projects = Project.recent #self.recent is defined in the Model
+    @due_soon_projects = Project.due_soon #self.due_soon is defined in the Model
   end
 
   # GET /projects/1 or /projects/1.json
