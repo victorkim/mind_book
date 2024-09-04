@@ -43,7 +43,8 @@ a {
 }
 
 .recent-projects-grid,
-.due-soon-projects-grid {
+.due-soon-projects-grid,
+.past-due-projects-grid {
     display: grid; /* Defining the display as grid */
     grid-template-columns: 1fr; /* Declaring that the grid will have only 1 column */
     grid-template-rows: 1fr; /* Declaring that the grid will have only 1 row */

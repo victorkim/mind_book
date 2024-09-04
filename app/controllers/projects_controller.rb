@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
     @projects = Project.all
     @recent_projects = Project.recent #self.recent is defined in the Model
     @due_soon_projects = Project.due_soon #self.due_soon is defined in the Model
+    @past_due_projects = Project.past_due #self.past_due is defined in the Model
   end
 
   # GET /projects/1 or /projects/1.json

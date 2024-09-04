@@ -8,11 +8,21 @@
         Start Date:
         <%= project.start_date %>
       </p>
+
       <p>
         End Date:
       <%= project.end_date %>
       </p>
-      <%= project.created_at %>
+
+      <p>
+        Created at:
+        <%= project.created_at %>
+      </p>
     </div>
+  
+      <p>
+        <strong><%= link_to 'Edit', edit_project_path(project) %></strong>
+      </p>
+
   </div>
 </div>
