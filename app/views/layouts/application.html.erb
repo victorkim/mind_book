@@ -12,9 +12,9 @@
 
   <body>
     <%= render partial: "shared/navbar" %>
+    <%= turbo_frame_tag "modal" %>
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-
     <%= yield %>
   </body>
 </html>
