@@ -27,9 +27,11 @@ class ProjectsController < ApplicationController
   # POST /projects or /projects.json
   def create
     @project = Project.new(project_params)
-
     respond_to do |format|
       if @project.save
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.prepend("all-projects", partial: "projects/project_card", locals: {project: @project} )
+        end  
         format.html { redirect_to project_url(@project), notice: "Project was successfully created." }
         format.json { render :show, status: :created, location: @project }
       else

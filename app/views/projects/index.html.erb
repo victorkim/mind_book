@@ -3,7 +3,7 @@
   <h1>Projects</h1>
 
   <p>
-    <%= link_to "New project", new_project_path, data: { turbo_frame: "modal" } %>
+    <%= link_to "New project", new_project_path, data: { turbo_frame: "new_project_modal" } %>
   </p>
 
   <div class="highlighted-projects-grid">
@@ -28,7 +28,8 @@
 
   </div>
 
-  <div class="projects-grid">
+  
+  <div id="all-projects" class="projects-grid">
     <% @projects.each do |project| %>
       <%= render 'project_card', project: project%>
     <% end %>
