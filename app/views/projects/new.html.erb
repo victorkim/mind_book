@@ -1,5 +1,5 @@
 <%= turbo_frame_tag "new_project_modal" do %>
-  <div class="modal">
+  <div class="modal" data-controller="modal" data-modal-target="modal">
     <h1>New project</h1>
 
     <%= form_with(model: @project) do |form| %>
@@ -9,7 +9,8 @@
     <br>
 
     <div>
-          <%= link_to "Cancel", "#", class: "cancel-button", data: { turbo_frame: "new_project_modal", turbo_action: "remove" } %>
+      <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
+    </div>
     </div>
   </div>
 <% end %>

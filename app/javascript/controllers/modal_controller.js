@@ -4,14 +4,16 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   connect() {}
 
-  close(e) { //close action (or event)
-    e.preventDefault(); //prevent default action of the link (ie. navigation)
-    const modal = document.getElementById("modal");
-    modal.innerHTML = ""; //cleans the html inside of the element #modal
-    modal.removeAttribute("src"); // Remove the src attribute from the modal to ensure that the modal does not attempt to reload its content from the previous source
-    modal.removeAttribute("complete"); // Marking the modal as no longer "complete", which may reset its state or allow new content to be loaded without conflicts
+  static targets = ["modal"] // Define the modal as a target
 
-    if (window.location.pathname === "/projects/new") { // Checks if the current URL is /projects/new and if it is, redirects to /projects. If not, does not redirect
+  close(e) {
+    e.preventDefault(); // Prevent default behavior of the link
+
+    // Safely remove the modal from the DOM using the modal target
+    this.modalTarget.remove();
+
+    // Optional: Redirect to /projects if needed
+    if (window.location.pathname === "/projects/new") {
       window.location.href = "/projects";
     }
    }
