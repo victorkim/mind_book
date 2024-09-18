@@ -1,6 +1,8 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render 'project_detail', project: @project %>
+<%= render 'project_detail', project: @project %> 
+
+<%= render 'comments/form', project: @project, comment: @project.comments.build %>
 
 <div>
   <%= link_to "Edit this project", edit_project_path(@project) %> |
