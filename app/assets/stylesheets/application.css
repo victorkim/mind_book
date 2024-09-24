@@ -250,6 +250,50 @@ body {
     grid-column-end: span 2;
     text-align: center;
 }
+
+.project-description {
+    border: solid;
+    padding: 1rem;
+}
+
+.timeline-container {
+    display: flex; /* Align items horizontally */
+    flex-direction: row; /* Row-wise layout for horizontal timeline */
+    overflow-x: auto; /* Allows horizontal scrolling if needed */
+    padding: 20px 0;
+    position: relative;
+  }
+  
+  .timeline-item {
+    position: relative;
+    flex: 0 0 auto; /* Ensure each item takes up only as much space as it needs */
+    width: 250px; /* Set width for each timeline item */
+    margin-right: 20px; /* Space between items */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #d08ef6;
+  }
+  
+  .timeline-content {
+    text-align: center;
+  }
+  
+  .timeline-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -10px;
+    width: 20px;
+    height: 2px;
+    background-color: #d271ed;
+  }
+  
+  .timeline-item:last-child::after {
+    display: none; /* Remove the line after the last comment */
+  }
+  
+
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
