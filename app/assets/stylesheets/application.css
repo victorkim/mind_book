@@ -112,9 +112,15 @@ a {
     float: right;
     text-decoration: none;
 }
+
 .cancel-button:hover {
     background-color: #2640fe;
 }
+
+.comment-body div {
+    display: inline;
+}
+
 
 body {
     background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed; /* background-color: var(--bg-color); */

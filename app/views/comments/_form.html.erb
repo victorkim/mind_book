@@ -9,11 +9,9 @@
         </ul>
       </div>
     <% end %>
-  
-    <div>
+    
       <%= form.label :body, "Your Comment", style: "display: block" %>
       <%= form.rich_text_area :body, rows: 3 %>
-    </div>
   
     <div>
       <%= form.submit "Add Comment", class: "btn btn-primary" %>
