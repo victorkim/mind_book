@@ -7,8 +7,8 @@
     
       <strong><%= comment.user.name %></strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
       <div>
-        <strong><%= link_to 'Edit', edit_project_comment_path(project, comment) %> |</strong>
-        <strong><%= link_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>
+        <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> |</strong>
+        <strong><%= button_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>
       </div>    
   <% end %>
 </ul>

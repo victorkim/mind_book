@@ -10,7 +10,9 @@
   <%= link_to "Login to add a comment", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
-<%= render 'comments/comments', project: @project %>
+<div id="comments-list">
+  <%= render 'comments/comments_list', project: @project %>
+</div>
 
 <div>
   <%= link_to "Edit this project", edit_project_path(@project) %> |
