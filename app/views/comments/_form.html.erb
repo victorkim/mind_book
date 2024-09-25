@@ -1,3 +1,5 @@
+<% comment ||= Comment.new(project_id: project.id) %>
+
 <%= form_with(model: [project, comment], local: true) do |form| %>
     <% if comment.errors.any? %>
       <div style="color: red">

@@ -4,9 +4,13 @@
 
 <%= render 'comments/comments_timeline', project: @project, comments: @project.comments %> <%# @project.comments means: "pass the collection of comments from @project.comments as the local variable comments to the partial." This makes comments (with an "s") available within the partial. %>
 
+<% if user_signed_in? %>
+  <%= render 'comments/form', project: @project %>
+<% else %>
+  <%= link_to "Login to add a comment", new_user_session_path, class: "btn btn-primary" %>
+<% end %>
 
-
-<%= render 'comments/comments', project: @project, comments: @project.comments %>
+<%= render 'comments/comments', project: @project %>
 
 <div>
   <%= link_to "Edit this project", edit_project_path(@project) %> |
