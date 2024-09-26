@@ -22,9 +22,17 @@ class CommentsController < ApplicationController
   
   def update #PATCH/PUT action to update an existing comment with new information. The comment is retrieved using the set_comment method
     if @comment.update(comment_params) #The comment is updated with the parameters submitted by the user (comment_params)
-      redirect_to @project, notice: 'Comment was successfully updated.' #If the update is successful, it redirects to the index view of the project's comments.
+      respond_to do |format| #ensures that your controller can respond to different formats (in this case, HTML and Turbo Stream). Without this, the format.turbo_stream call would raise an error.
+        format.turbo_stream do 
+              render turbo_stream: [
+                turbo_stream.replace("comments-list", partial: "comments/comments_list", locals: { project: @project } ),
+                turbo_stream.remove("edit_comment_modal")
+          ] 
+        end      
+        format.html { redirect_to @project, notice: 'Comment was successfully updated.' }
+      end
     else
-      render :edit #If the update fails (e.g., validation errors), it re-renders the edit form with error messages.
+        render :edit #If the update fails (e.g., validation errors), it re-renders the edit form with error messages.
     end
   end
 
