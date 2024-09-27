@@ -1,7 +1,5 @@
-<%= turbo_frame_tag "edit_comment_modal" do %>
-    <div class="modal" data-controller="modal" data-modal-target="modal">
         <h1>Editing comment</h1>
-
+                
         <%= render "form", project: @project, comment: @comment %>
 
         <br>
@@ -14,5 +12,4 @@
         <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
         </div>
 
-    </div>
-<% end %>
+

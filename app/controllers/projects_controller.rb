@@ -26,7 +26,7 @@ class ProjectsController < ApplicationController
 
   # POST /projects or /projects.json
   def create
-    @project = Project.new(project_params)
+    @project = current_user.projects.build(project_params)
     respond_to do |format|
       if @project.save
         format.turbo_stream do

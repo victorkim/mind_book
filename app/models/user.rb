@@ -4,6 +4,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   
-  has_many :projects
-  has_many :comments
+  has_many :projects, dependent: :nullify #makes sure that projects won't be deleted if/when the associated user is. the associated user_id will be set to NULL instead
+  has_many :comments, dependent: :nullify #makes sure that comments won't be deleted if/when the associated user is. the associated user_id will be set to NULL instead
 end
