@@ -1,29 +1,30 @@
 class CommentsController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show] #checks if user is authenticated whenever they try to run any operation besides index and show
+  before_action :authenticate_user!, except: [:index] #checks if user is authenticated whenever they try to run any operation besides index
   before_action :set_project #This method is called before each action. It finds the project that the comment belongs to, using the project_id from the URL.
   before_action :set_comment, only: [:edit, :update, :destroy] #This method is called before the edit, update, and destroy actions. It finds the specific comment within the project by its id.
   
-  def index
-      @comments = @project.comments #GET request that displays all comments for a specific project (which is specified using set_project)
-  end
+def index
+    @comments = @project.comments #GET request that displays all comments for a specific project (which is specified using set_project)
+end
     
-  def create # POST request that creates a new comment and associate it with a project and user
-    @comment = @project.comments.build(comment_params) #Ensure the association between comment and project
-    @comment.user = current_user #It sets the user of the comment to the current_user
-      if @comment.save #It tries to save the comment. If successful, it redirects to the project page; if not, it re-renders the project page with validation errors.
-        redirect_to @project, notice: 'Comment was successfully added.'
-      else
-        redirect_to @project, alert: 'Failed to add comment.'
-      end
+def create # POST request that creates a new comment and associate it with a project and user
+  @comment = @project.comments.build(comment_params) #Ensure the association between comment and project
+  @comment.user = current_user #It sets the user of the comment to the current_user
+    if @comment.save #It tries to save the comment. If successful, it redirects to the project page; if not, it re-renders the project page with validation errors.
+      redirect_to @project, notice: 'Comment was successfully added.'
+    else
+      redirect_to @project, alert: 'Failed to add comment.'
     end
+end
 
 def edit
+  @project = Project.find(params[:project_id])
+  @comment = @project.comments.find(params[:id])
   respond_to do |format|
-    format.turbo_stream { render partial: 'comments/form', locals: { project: @project, comment: @comment } }
+    format.turbo_stream
     format.html # This will render the full page if accessed normally
   end
 end
-
   
 def update #PATCH/PUT action to update an existing comment with new information. The comment is retrieved using the set_comment method
   if @comment.update(comment_params) #The comment is updated with the parameters submitted by the user (comment_params)
@@ -31,7 +32,7 @@ def update #PATCH/PUT action to update an existing comment with new information.
       format.turbo_stream do 
             render turbo_stream: [
               turbo_stream.replace("comments-list", partial: "comments/comments_list", locals: { project: @project } ),
-              turbo_stream.remove("edit_comment_modal")
+              turbo_stream.remove("edit_comment_modal")              
         ] 
       end      
       format.html { redirect_to @project, notice: 'Comment was successfully updated.' }

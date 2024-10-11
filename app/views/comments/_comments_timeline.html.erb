@@ -6,7 +6,7 @@
   <% comments.each do |comment| %>
     <div class="timeline-item">
       <div class="timeline-content">
-        <strong><%= comment.user.name %></strong>: 
+        <strong><%= comment.user&.name || "Anonymous" %></strong>: 
         <span class="comment-body"><%= raw comment.body.to_s %></span>
         <div>
           <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> |</strong>

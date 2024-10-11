@@ -1,15 +1,27 @@
-        <h1>Editing comment</h1>
-                
-        <%= render "form", project: @project, comment: @comment %>
-
-        <br>
-
-        <div>
-            <%= link_to "Show this project", @project %> |
-            <%= link_to "Back to projects", projects_path %>
+<%= turbo_frame_tag "edit_comment_modal" do %>
+  <div class="modal" data-controller="modal" data-modal-target="modal">
+    <h1>Editing comment</h1> 
+    <%= form_with(model: [@project, @comment], local: true) do |form| %>
+      <% if @comment.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+          <ul>
+            <% @comment.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
         </div>
-        <div>
-        <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
-        </div>
-
+      <% end %>
+      <%= form.label :body, "Your Comment", style: "display: block" %>
+      <%= form.rich_text_area :body, rows: 3 %>
+      <div>
+        <%= form.submit "Submit", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+    <br>
+    <div>
+      <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
+    </div>
+  </div>
+<% end %>
 

@@ -13,12 +13,14 @@ class ProjectsController < ApplicationController
   # GET /projects/1 or /projects/1.json
   def show
       @project = Project.find(params[:id])
+      @comments = @project.comments
+      @comment = @project.comments.build 
   end
 
   # GET /projects/new
   def new
     @project = Project.new
-  end
+  end  
 
   # GET /projects/1/edit
   def edit

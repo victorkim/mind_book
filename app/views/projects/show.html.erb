@@ -2,20 +2,18 @@
 
 <%= render 'project_detail', project: @project %> 
 
-<%= render 'comments/comments_timeline', project: @project, comments: @project.comments %> <%# @project.comments means: "pass the collection of comments from @project.comments as the local variable comments to the partial." This makes comments (with an "s") available within the partial. %>
-
 <% if user_signed_in? %>
-  <%= render 'comments/form', project: @project %>
+  <%= render 'comments/comments_new_form', project: @project, comment: @comment %>
 <% else %>
   <%= link_to "Login to add a comment", new_user_session_path, class: "btn btn-primary" %>
 <% end %>
 
 <div id="comments-list">
-  <%= render 'comments/comments_list', project: @project %>
+  <%= render 'comments/comments_list', project: @project, comments: @comments %> <%# @project.comments means: "pass the collection of comments from @project.comments as the local variable comments to the partial." This makes comments (with an "s") available within the partial. %>
 </div>
 
 <div>
-  <%= link_to "Edit this project", edit_project_path(@project) %> |
+  <%= link_to "Edit this project", edit_project_path(@project) %>
   <%= link_to "Back to projects", projects_path %>
 
   <%= button_to "Destroy this project", @project, method: :delete %>
