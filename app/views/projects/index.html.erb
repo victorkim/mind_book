@@ -2,6 +2,14 @@
 
   <h1>Projects</h1>
 
+<% if user_signed_in? %>
+  <p>
+    <li><%= link_to "New Project", new_project_path, data: { turbo_frame: "new_project_modal" } %></li>
+  </p>
+  <% else %>
+    <%= link_to "Login to create a Project", new_user_session_path, class: "btn btn-primary" %>
+  <% end %>
+
   <div class="highlighted-projects-grid">
 
     <div class="recent-projects-grid">

@@ -7,7 +7,6 @@
         <li><%= link_to "Pricing", pricing_path %></li>       
         <li><%= link_to "Projects", projects_path %></li>       
         <% if user_signed_in? %>
-            <li><%= link_to "New Project", new_project_path, data: { turbo_frame: "new_project_modal" } %></li>
             <li><%= link_to "Profile", edit_user_registration_path %></li>
             <li><%= button_to "Log out", destroy_user_session_path, method: :delete %></li>
         <% else %>
