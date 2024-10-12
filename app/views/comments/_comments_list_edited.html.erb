@@ -1,9 +1,8 @@
-<div id="comment_<%= comment.id %>">
+<div id="comment_<%= comment.id %>_list">
   <% if comment.user %>
     <strong><%= comment.user.name %></strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
   <% else %>
-    <strong>Anonymous</strong>: 
-    <span class="comment-body"><%= raw comment.body.to_s %></span>
+    <strong>Anonymous</strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
   <% end %>
 
   <div>

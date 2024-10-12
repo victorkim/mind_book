@@ -1,14 +1,19 @@
-<h2>Comments for <%= project.name %></h2>
+  <h2>Comments for <%= project.name %></h2>
 
-<%= link_to 'Back to Project', project %>
-
-<div class="timeline-container">
-  <% comments.each do |comment| %>
-      <div class="timeline-item">
-        <div class="timeline-content">
-          <strong><%= comment.user&.name || "Anonymous" %></strong>: 
-          <span class="comment-body"><%= raw comment.body.to_s %></span>
+  <div class="timeline-container">
+    <% comments.each do |comment| %>
+          <div id="comment_<%= comment.id %>_timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <% if comment.persisted? %>
+                <%= link_to edit_project_comment_path(comment.project, comment), data: { turbo_frame: "edit_comment_modal" } do %>
+                  <strong><%= comment.user&.name || "Anonymous" %></strong>: 
+                  <span class="comment-body"><%= raw comment.body.to_s %></span>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         </div>
-      </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

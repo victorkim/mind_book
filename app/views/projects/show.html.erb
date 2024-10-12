@@ -2,7 +2,7 @@
 
 <%= render 'project_detail', project: @project %> 
 
-<%= render 'comments/comments_timeline', project: @project, comments: @comments %>
+<%= render 'comments/comments_timeline', project: @project, comments: @project.comments %>
 
 <% if user_signed_in? %>
   <%= render 'comments/comments_new_form', project: @project, comment: @comment %>

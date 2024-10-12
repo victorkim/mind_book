@@ -1,25 +1,26 @@
-<h2>Comments for <%= project.name %></h2>
+  <h2>Comments for <%= project.name %></h2>
 
-<ul>
-  <% project.comments.each do |comment| %> <%# iterating over this comments variable (which is equal to @project.comments in this case). That's why the loop in your partial is using comments.each: %>
-    <div id="comment_<%= comment.id %>"> <!-- Unique ID for each comment -->
-      <% if comment.user %>
-        <strong><%= comment.user.name %></strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
-      <% else %>
-        <strong>Anonymous</strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
-      <% end %>
-    
-      <div>
-        <% if comment.persisted? %>  <!-- Only show the edit link for saved comments -->
-          <% if user_signed_in? %>
-            <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> | </strong>
-            <strong><%= button_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>
-          <% else %>
-            <strong><%= link_to "Edit", new_user_session_path, class: "btn btn-primary" %> |</strong>
-            <strong><%= button_to 'Delete', new_user_session_path, class: "btn btn-primary" %></strong>
-          <% end %>
+  <ul>
+    <% project.comments.each do |comment| %> <%# iterating over this comments variable (which is equal to @project.comments in this case). That's why the loop in your partial is using comments.each: %>
+      <div id="comment_<%= comment.id %>_list"> <!-- Unique ID for each comment -->
+        <% if comment.user %>
+          <strong><%= comment.user.name %></strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
+        <% else %>
+          <strong>Anonymous</strong>: <span class="comment-body"><%= raw comment.body.to_s %></span>
         <% end %>
-      </div>    
-    </div>  
-  <% end %>
-</ul>
+      
+        <div>
+          <% if comment.persisted? %>  <!-- Only show the edit link for saved comments -->
+            <% if user_signed_in? %>
+              <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> | </strong>
+              <strong><%= button_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>
+            <% else %>
+              <strong><%= link_to "Edit", new_user_session_path, class: "btn btn-primary" %> |</strong>
+              <strong><%= button_to 'Delete', new_user_session_path, class: "btn btn-primary" %></strong>
+            <% end %>
+          <% end %>
+        </div>    
+      </div>  
+    <% end %>
+  </ul>
+</div>

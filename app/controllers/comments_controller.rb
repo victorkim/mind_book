@@ -30,8 +30,9 @@ class CommentsController < ApplicationController
     if @comment.update(comment_params) #The comment is updated with the parameters submitted by the user (comment_params)
       respond_to do |format| #ensures that your controller can respond to different formats (in this case, HTML and Turbo Stream). Without this, the format.turbo_stream call would raise an error.
         format.turbo_stream do 
-              render turbo_stream: [
-                turbo_stream.replace("comment_#{@comment.id}", partial: "comments/comments_edited", locals: { comment: @comment }), # Update only the specific comment
+          render turbo_stream: [
+                turbo_stream.replace("comment_#{@comment.id}_timeline", partial: "comments/comments_timeline_edited", locals: { comment: @comment }), # Update only the specific comment
+                turbo_stream.replace("comment_#{@comment.id}_list", partial: "comments/comments_list_edited", locals: { comment: @comment }), # Update only the specific comment
                 turbo_stream.replace("edit_comment_modal", partial: "comments/empty_modal") # Replace with an empty modal frame after update
           ] 
         end      
