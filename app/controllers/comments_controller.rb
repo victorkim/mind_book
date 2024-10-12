@@ -21,7 +21,7 @@ def edit
   @project = Project.find(params[:project_id])
   @comment = @project.comments.find(params[:id])
   respond_to do |format|
-    format.turbo_stream
+    format.turbo_stream { render "edit" }
     format.html # This will render the full page if accessed normally
   end
 end
@@ -31,8 +31,8 @@ def update #PATCH/PUT action to update an existing comment with new information.
     respond_to do |format| #ensures that your controller can respond to different formats (in this case, HTML and Turbo Stream). Without this, the format.turbo_stream call would raise an error.
       format.turbo_stream do 
             render turbo_stream: [
-              turbo_stream.replace("comments-list", partial: "comments/comments_list", locals: { project: @project } ),
-              turbo_stream.remove("edit_comment_modal")              
+              turbo_stream.replace("comment_#{@comment.id}", partial: "comments/comments_edited", locals: { comment: @comment }), # Update only the specific comment
+              turbo_stream.replace("edit_comment_modal", partial: "comments/empty_modal") # Replace with an empty modal frame after update
         ] 
       end      
       format.html { redirect_to @project, notice: 'Comment was successfully updated.' }
