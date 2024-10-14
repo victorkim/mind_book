@@ -13,8 +13,17 @@ class ProjectsController < ApplicationController
   # GET /projects/1 or /projects/1.json
   def show
       @project = Project.find(params[:id])
+      @comment = @project.comments.build
       @comments = @project.comments
-      @comment = @project.comments.build 
+      
+      comments = @project.comments.order(:created_at) #Retrieves all comments for the project, ordered by their creation date (oldest to newest).
+
+      @comment_data = comments.map.with_index do |comment, index| #Maps over the comments with their index to calculate the time gap between consecutive comments.
+        previous_date = index.zero? ? nil : comments[index - 1].created_at.to_date #On the first iteration (index 0), there is no previous comment, so `previous_date` is nil. For subsequent iterations, `previous_date` is set to the created_at date of the previous comment.The "?" is basically a "if" statement. Also, "to_date" is a method that converts timestamps or any other date information into date-only
+        days_gap = previous_date ? (comment.created_at.to_date - previous_date).to_i : 0  #Calculates the difference (days_gap) between the current comment’s date and the previous comment’s date. If there is no previous date (on the first comment), the gap is 0. The "to_i" method converts an object into an integer, so that math operations only have integer numbers
+    
+        { comment: comment, days_gap: days_gap } #Returns a hash containing the comment and its calculated days gap.
+      end
   end
 
   # GET /projects/new

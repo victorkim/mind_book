@@ -258,41 +258,36 @@ body {
 
 .timeline-container {
     display: flex; /* Align items horizontally */
-    flex-direction: row; /* Row-wise layout for horizontal timeline */
     overflow-x: auto; /* Allows horizontal scrolling if needed */
+    position: relative; /* Positions .timeline-container relative to it's natural position. The only reason to have it is for the "position: absolute" in the .timeline-date to have a nearest positioned */
     padding: 20px 0;
-    position: relative;
-  }
+    border: solid;
+}
   
-  .timeline-item {
-    position: relative;
-    flex: 0 0 auto; /* Ensure each item takes up only as much space as it needs */
-    width: 250px; /* Set width for each timeline item */
-    margin-right: 20px; /* Space between items */
+.timeline-item {
+    display: flex; /* Using flexbox just to justfigy-content: center */
+    justify-content: center; /* Align content in center, according to flexbox main axis (in this case, horizontally) */
+    align-items: center; /* Align content in center, according to flexbox cross axis (in this case, vertically) */
+    width: 2rem; /* Set width for each timeline item */
+    height: 2rem; /* Set height for each timeline item */
     padding: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 50%;
     background-color: #d08ef6;
-  }
+}
   
-  .timeline-content {
+.timeline-date {
+    position: absolute; /* Positions .timeline-date relative to it's nearest positioned ancestor (in this case, .timeline-container). However; if an absolute positioned element has no positioned ancestors, it uses the document body, and moves along with page scrolling */
+    bottom: 0; /* Align the dates at the bottom of the timeline */
     text-align: center;
+    font-size: 0.9em;
+    color: gray;
+    transform: translateX(-50%); /* Center-align the date with the circle */
   }
-  
-  .timeline-item::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    width: 20px;
-    height: 2px;
-    background-color: #d271ed;
-  }
-  
-  .timeline-item:last-child::after {
-    display: none; /* Remove the line after the last comment */
-  }
-  
+
+.timeline-item:hover {
+   display: block; /* Show content on hover */
+ }
 
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

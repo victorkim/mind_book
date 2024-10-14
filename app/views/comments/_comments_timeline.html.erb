@@ -1,19 +1,23 @@
-  <h2>Comments for <%= project.name %></h2>
+<h2>Comments for <%= project.name %></h2>
 
-  <div class="timeline-container">
-    <% comments.each do |comment| %>
-          <div id="comment_<%= comment.id %>_timeline">
-          <div class="timeline-item">
-            <div class="timeline-content">
-              <% if comment.persisted? %>
-                <%= link_to edit_project_comment_path(comment.project, comment), data: { turbo_frame: "edit_comment_modal" } do %>
-                  <strong><%= comment.user&.name || "Anonymous" %></strong>: 
-                  <span class="comment-body"><%= raw comment.body.to_s %></span>
-                <% end %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-    <% end %>
-  </div>
+<div class="timeline-container">
+  <% @comment_data.each do |data| %> <%# instance variable from the controller containing an array of hashes. Each hash contains a comment object with a days_gap integer %>
+    <% comment = data[:comment] %> 
+    <% days_gap = data[:days_gap] %>
+
+    <div id="comment_<%= comment.id %>_timeline">
+      <div class="timeline-item" style="margin-left: <%= days_gap * 10 %>px;"> <%# Adding left margin for each comment, which is the number of days_gap times 10 px %>
+        <% if comment.persisted? %>
+          <%= link_to edit_project_comment_path(comment.project, comment), data: { turbo_frame: "edit_comment_modal" } do %>
+            <strong>QQ</strong>
+          <% end %>
+        <% end %>            
+      </div>
+    </div>
+
+    <div class="timeline-date" style="margin-left: <%= days_gap * 10 %>px;">
+      <%= comment.created_at.strftime("%B %d, %Y") %>
+    </div>
+
+  <% end %>
 </div>

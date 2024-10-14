@@ -11,6 +11,9 @@
       
         <div>
           <% if comment.persisted? %>  <!-- Only show the edit link for saved comments -->
+            <div class="created-date">
+              <%= comment.created_at.strftime("%B %d, %Y") %>
+            </div>
             <% if user_signed_in? %>
               <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> | </strong>
               <strong><%= button_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>

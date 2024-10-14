@@ -13,7 +13,7 @@
       </p>
       <p>
         Created at:
-        <%= project.created_at %>
+        <%= project.created_at.strftime("%B %d, %Y") %>
       </p>
       <p>
         <strong><%= link_to 'Edit', edit_project_path(project) %></strong>
