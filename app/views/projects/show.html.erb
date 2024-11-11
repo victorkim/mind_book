@@ -1,8 +1,12 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render 'project_detail', project: @project %> 
+<%= render 'projects/project_detail', project: @project %>
+
+<hr class="separator">
 
 <%= render 'comments/comments_timeline', project: @project %>
+
+<hr class="separator">
 
 <% if user_signed_in? %>
   <%= render 'comments/comments_new_form', project: @project, comment: @comment %>
@@ -12,11 +16,4 @@
 
 <div id="comments-list">
   <%= render 'comments/comments_list', project: @project, comments: @comments %> <%# @project.comments means: "pass the collection of comments from @project.comments as the local variable comments to the partial." This makes comments (with an "s") available within the partial. %>
-</div>
-
-<div>
-  <%= link_to "Edit this project", edit_project_path(@project) %>
-  <%= link_to "Back to projects", projects_path %>
-
-  <%= button_to "Destroy this project", @project, method: :delete %>
 </div>

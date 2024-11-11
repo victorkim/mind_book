@@ -1,40 +1,48 @@
-  <p style="color: green"><%= notice %></p>
+<p style="color: green"><%= notice %></p>
 
-  <h1>Projects</h1>
+<h1 class="page-title">All Projects</h1>
 
-<% if user_signed_in? %>
-  <p>
-    <li><%= link_to "New Project", new_project_path, data: { turbo_frame: "new_project_modal" } %></li>
-  </p>
-  <% else %>
-    <%= link_to "Login to create a Project", new_user_session_path, class: "btn btn-primary" %>
-  <% end %>
+<div class="new-project-prompt">
+	<% if user_signed_in? %>
+		<p>
+			<div class="button">
+        <%= link_to "Create Project", new_project_path, data: { turbo_frame: "new_project_modal" } %>
+      </div>
+		</p>
+		<% else %>
+			<%= link_to "Login to create a Project", new_user_session_path, class: "btn btn-primary" %>
+	<% end %>
+</div>
 
-  <div class="highlighted-projects-grid">
+<hr class="separator">
 
-    <div class="recent-projects-grid">
-      <% @recent_projects.each do |project| %>
-        <%= render 'project_card', project: project%>
-      <% end %>
-    </div>
+<div class="highlighted-projects-grid">
 
-    <div class="due-soon-projects-grid">
-      <% @due_soon_projects.each do |project| %>
-        <%= render 'project_card', project: project%>
-      <% end %>
-    </div>
-
-    <div class="past-due-projects-grid">
-      <% @past_due_projects.each do |project| %>
-        <%= render 'project_card', project: project%>
-      <% end %>
-    </div>
-
-  </div>
-  
-  <div id="all-projects" class="projects-grid">
-    <% @projects.each do |project| %>
+  <div class="recent-projects-grid">
+	  <% @recent_projects.each do |project| %>
       <%= render 'project_card', project: project%>
     <% end %>
   </div>
+
+  <div class="due-soon-projects-grid">
+    <% @due_soon_projects.each do |project| %>
+      <%= render 'project_card', project: project%>
+     <% end %>
+  </div>
+
+  <div class="past-due-projects-grid">
+    <% @past_due_projects.each do |project| %>
+      <%= render 'project_card', project: project%>
+    <% end %>
+  </div>
+
+</div>
+  
+<hr class="separator">
+
+<div id="all-projects" class="projects-grid">
+  <% @projects.each do |project| %>
+    <%= render 'project_card', project: project%>
+  <% end %>
+</div>
   

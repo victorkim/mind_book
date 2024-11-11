@@ -1,23 +1,17 @@
-<div class="project-detail"> 
-<div id="<%= dom_id project %>">
-    <p>
-      <strong>Name:</strong>
-      <%= project.name %>
-    </p>
-    <p>
-      <strong>Start Date:</strong>
-      <%= project.start_date %>
-    </p>
-    <p>
-      <strong>End Date:</strong>
-      <%= project.end_date %>
-    
-    <div class="project-description">
-      </p>
-      <p>
-        <strong>Description:</strong>
-        <%= project.description %>
-      </p>
-    </div>
-  </div>
+<h1 class="page-title">
+  <%= project.name %>
+</h1>
+
+<div class="project-show-dates">
+  <%= project.start_date.present? ? project.start_date.strftime("%m/%d/%Y") : "" %> - <%= project.end_date.present? ? project.end_date.strftime("%m/%d/%Y") : "" %>
+</div>
+
+<div class="project-description">
+  <i><%= project.description %></i>
+</div>
+
+<div class="project-actions">
+  <%= link_to "Edit this project | ", edit_project_path(@project) %>
+  <%= link_to "Back to projects |", projects_path %>
+  <%= button_to "Destroy this project", @project, method: :delete %>
 </div>

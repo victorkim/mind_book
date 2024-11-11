@@ -1,26 +1,40 @@
 @import "./actiontext.css";
 
 :root { /* defining root styling */   
-    --bg-color: rgba(4, 23, 84, 0.739);
-    --font-color: rgb(255, 255, 255);
-    --font-family: "Montserrat", sans-serif;
+    --bg-color:linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed; /* 1st color starts at the very beginning of the gradient. The 2nd goes from 80% to the rest of the page. The degrees define the direction of the gradient */
+    --font-color: rgb(0, 0, 0);
+    --font-family: "Inter", sans-serif;
     --font-size-title: 1.2rem;
     --font-size-body: 1.1rem;
     --font-size-detail: 0.9rem;
-    --input-field-bg-color: 
+    --input-field-bg-color: #f0f0f0;
 }
 
 /* app/assets/stylesheets/application.css */
 
 trix-editor {
-    background-color: #f0f0f058; /* Change this to your desired background color */
+    background-color: #e5ebee; /* Change this to your desired background color */
     padding: 10px; /* Optional: add some padding for better appearance */
     border-radius: 5px; /* Optional: add rounded corners */
   }
 
-  trix-toolbar .trix-button-group button { 
-    background-color: white; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
+trix-toolbar .trix-button-group button { 
+    background-color: #e5ebee; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
+    border: none;
   }
+
+.button input[type="submit"] {
+    background-color: #c7ccce;
+    border-radius: 10%;
+    border: none;
+    padding: 0.5rem;
+    margin: 0.5rem 0rem;
+    font-weight: bold;
+}
+
+.button input[type="submit"]:hover {
+    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+}
 
 * { /* resetting browser default setting */
     box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
@@ -33,13 +47,58 @@ a {
     color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
+.separator {
+    border: none; /* Remove the default border */
+    border-top: 1px solid #ccc; /* A thin, solid line */
+    width: 100%; /* Make it span the width of the container */
+}
+
+.page-title {
+    text-align: center;
+    margin: 2rem 2rem 0.5rem 2rem;
+}
+
+.project-show-dates,
+.project-actions {
+    text-align: center;
+    padding: 0 1rem 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+.project-description {
+    list-style: none;
+    text-align: center;
+    margin: 1.5rem auto;
+    font-size: 0.9rem;
+    width: 60%; 
+}
+
+.project-show-comments {
+    padding: 2rem 0;
+}
+
+.new-project-prompt {
+    list-style: none;
+    text-align: center;
+    margin: 1rem 2rem 2rem 2rem;
+}
+
+.new-project-prompt a:hover {
+    text-align: center;
+    background-color: #e5ebee;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
+    padding: 1rem;
+}
+
 .highlighted-projects-grid,
 .projects-grid {
     display: grid; /* Defining the display as grid */
-    grid-template-columns: repeat(4, 1fr); /* Declaring how many columns I need and making sure they're equal size */ 
+    grid-template-columns: repeat(5, 1fr); /* Declaring how many columns I need and making sure they're equal size */ 
     gap: 1.5rem; /* Adding gap between grid cells */ 
     margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */ 
-    border: solid red;
 }
 
 .recent-projects-grid,
@@ -76,13 +135,23 @@ a {
 }
 
 .project-card {
-    border: solid; /* Creating a border for each individual project card */
+    background-color: #e5ebee;
+    border: solid #ffffff; /* Creating a border for each individual project card */
     height: 200px; /* Defining a height for each project card */
-    background-color: black;
+    border-radius: 5%;
+    padding: 1em;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05); /* Basic shadow */
 }
 
 .project-card-name {
     text-align: center;
+    padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.project-card-dates {
+    text-align: center;
+    padding: 0 1rem 2rem 1rem;
+    font-size: 0.8rem;
 }
 
 .modal {
@@ -123,14 +192,13 @@ a {
 
 
 body {
-    background: linear-gradient(180deg, #01032d 0%, #232433 100%) fixed; /* background-color: var(--bg-color); */
+    background: var(--bg-color); /* background-color: var(--bg-color); */
     color: var(--font-color);
     font-family: var(--font-family);
     padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
 }
 
 .navbar ul { /* targetting only ul's inside the navbar so that rich text formatting works */
-    border: solid;
     display: flex; /* displaying ul's direct children (li's) horizontally */
     flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
     justify-content: center; /* aligns li's in the center of ul container, which is specifically important in smaller viewports*/
@@ -148,16 +216,15 @@ body {
 }
 
 .navbar li:hover { /* targetting only the hover on li's inside the navbar so that hovering does not affect li's from projects */
-    background-color: #040b8a; /* changes the li background color whenever the mouse is hovered on it */
+    background-color: #e5ebee; /* changes the li background color whenever the mouse is hovered on it */
     border-radius: 50px;
     border: none;
     cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
     transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
-    padding: 10px;
+    padding: 1rem;
 }
 
 .navbar {
-    border: solid;
     display: flex; /* distributes items (.brand and .nav-items) horizontaly */
     text-align: center; /* aligns text vertically in the center of container */
     flex-wrap: wrap; /* wraps logo and nav-items on top of each other */
@@ -220,8 +287,7 @@ body {
 
 .card > .body {
     font-size: var(--font-size-body);
-    padding: 1rem 0.5rem 1rem 0.5rem;
-    
+    padding: 1rem 0.5rem 1rem 0.5rem;    
 }
 
 .mid-section { 
@@ -249,11 +315,6 @@ body {
 .mid-section > .image {
     grid-column-end: span 2;
     text-align: center;
-}
-
-.project-description {
-    border: solid;
-    padding: 1rem;
 }
 
 .timeline-container {
