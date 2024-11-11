@@ -18,8 +18,8 @@
               <strong><%= link_to 'Edit', edit_project_comment_path(project, comment), data: { turbo_frame: "edit_comment_modal" } %> | </strong>
               <strong><%= button_to 'Delete', [project, comment], method: :delete, data: { confirm: 'Are you sure?' } %></strong>
             <% else %>
-              <strong><%= link_to "Edit", new_user_session_path, class: "btn btn-primary" %> |</strong>
-              <strong><%= button_to 'Delete', new_user_session_path, class: "btn btn-primary" %></strong>
+              <strong><%= link_to "Edit", new_user_session_path, class: "btn btn-primary" %> |</strong> <%# redirects user to login page %>
+              <strong><%= button_to 'Delete', new_user_session_path, class: "btn btn-primary" %></strong> <%# redirects user to login page %>
             <% end %>
           <% end %>
         </div>    

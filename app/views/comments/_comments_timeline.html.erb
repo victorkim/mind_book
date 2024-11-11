@@ -1,23 +1,16 @@
 <h2>Comments for <%= project.name %></h2>
 
 <div class="timeline-container">
-  <% @comment_data.each do |data| %> <%# instance variable from the controller containing an array of hashes. Each hash contains a comment object with a days_gap integer %>
-    <% comment = data[:comment] %> 
-    <% days_gap = data[:days_gap] %>
-
-    <div id="comment_<%= comment.id %>_timeline">
-      <div class="timeline-item" style="margin-left: <%= days_gap * 10 %>px;"> <%# Adding left margin for each comment, which is the number of days_gap times 10 px %>
-        <% if comment.persisted? %>
-          <%= link_to edit_project_comment_path(comment.project, comment), data: { turbo_frame: "edit_comment_modal" } do %>
-            <strong>QQ</strong>
-          <% end %>
-        <% end %>            
+  <% @weeks_data.each do |week| %>
+    <div class="timeline-entry">
+      <div class="timeline-item">
+        <%= link_to weekly_project_comments_path(project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
+          <strong><%= week[:count] %></strong>
+        <% end %>
+      </div>
+      <div class="timeline-date">
+        <%= week[:week_start].strftime("%d/%m/%y") %>
       </div>
     </div>
-
-    <div class="timeline-date" style="margin-left: <%= days_gap * 10 %>px;">
-      <%= comment.created_at.strftime("%B %d, %Y") %>
-    </div>
-
   <% end %>
 </div>

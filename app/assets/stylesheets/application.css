@@ -257,37 +257,33 @@ body {
 }
 
 .timeline-container {
-    display: flex; /* Align items horizontally */
-    overflow-x: auto; /* Allows horizontal scrolling if needed */
-    position: relative; /* Positions .timeline-container relative to it's natural position. The only reason to have it is for the "position: absolute" in the .timeline-date to have a nearest positioned */
-    padding: 20px 0;
-    border: solid;
-}
+    display: flex;
+    justify-content: space-between;
+    padding: 3rem 10rem;
+  }
   
-.timeline-item {
-    display: flex; /* Using flexbox just to justfigy-content: center */
-    justify-content: center; /* Align content in center, according to flexbox main axis (in this case, horizontally) */
-    align-items: center; /* Align content in center, according to flexbox cross axis (in this case, vertically) */
-    width: 2rem; /* Set width for each timeline item */
-    height: 2rem; /* Set height for each timeline item */
-    padding: 10px;
+  .timeline-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .timeline-item {
+    width: 2rem;
+    height: 2rem;
     border: 1px solid #ddd;
     border-radius: 50%;
     background-color: #d08ef6;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
-.timeline-date {
-    position: absolute; /* Positions .timeline-date relative to it's nearest positioned ancestor (in this case, .timeline-container). However; if an absolute positioned element has no positioned ancestors, it uses the document body, and moves along with page scrolling */
-    bottom: 0; /* Align the dates at the bottom of the timeline */
-    text-align: center;
+  .timeline-date {
     font-size: 0.9em;
     color: gray;
-    transform: translateX(-50%); /* Center-align the date with the circle */
+    margin-top: 10px;
   }
-
-.timeline-item:hover {
-   display: block; /* Show content on hover */
- }
 
 /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files

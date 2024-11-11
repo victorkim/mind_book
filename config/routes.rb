@@ -8,8 +8,12 @@ Rails.application.routes.draw do
   get 'features', to: 'pages#features'
   get 'pricing', to: 'pages#pricing'
   
-  resources :projects do #You are nesting the comments routes under projects, which means that all comment routes will be scoped to a specific project (e.g ,/projects/:project_id/comments).
-      resources :comments, only: [:index, :create, :edit, :update, :destroy] #You're specifying the actions for comments.
+  resources :projects do
+    resources :comments, only: [:index, :create, :edit, :update, :destroy] do
+      collection do
+        get 'weekly'
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
