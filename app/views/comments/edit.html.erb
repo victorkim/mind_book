@@ -1,6 +1,8 @@
 <%= turbo_frame_tag "edit_comment_modal" do %>
   <div class="modal" data-controller="modal" data-modal-target="modal">
-    <h1>Editing comment</h1> 
+    <h1 class="comment-modal-title">
+      Edit this comment
+    </h1> 
     <%= form_with(model: [@project, @comment], local: true) do |form| %>
       <% if @comment.errors.any? %>
         <div style="color: red">
@@ -12,15 +14,11 @@
           </ul>
         </div>
       <% end %>
-      <%= form.label :body, "Your Comment", style: "display: block" %>
-      <%= form.rich_text_area :body, rows: 3 %>
-      <div>
-        <%= form.submit "Submit", class: "btn btn-primary" %>
+      <%= form.rich_text_area :body, rows: 3 %>  
+      <div class="edit-comment-actions">
+        <%= form.submit "Submit", form_class: "inline-form", class: "button" %>
+        <%= link_to "Cancel", "#", data: { action: "modal#close" }, form_class: "inline-form", class: "button" %>      
       </div>
     <% end %>
-    <br>
-    <div>
-      <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
-    </div>
   </div>
 <% end %>

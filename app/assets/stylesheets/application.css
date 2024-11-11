@@ -23,6 +23,25 @@ trix-toolbar .trix-button-group button {
     border: none;
   }
 
+.inline-form {
+    display: inline;
+    margin: 0;
+    padding: 0;
+  }
+
+.button-link {
+    display: inline;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+}
+
+.button-link:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .button input[type="submit"] {
     background-color: #c7ccce;
     border-radius: 10%;
@@ -51,6 +70,7 @@ a {
     border: none; /* Remove the default border */
     border-top: 1px solid #ccc; /* A thin, solid line */
     width: 100%; /* Make it span the width of the container */
+    margin: 1rem;
 }
 
 .page-title {
@@ -58,8 +78,7 @@ a {
     margin: 2rem 2rem 0.5rem 2rem;
 }
 
-.project-show-dates,
-.project-actions {
+.project-show-dates {
     text-align: center;
     padding: 0 1rem 0.5rem 1rem;
     font-size: 1rem;
@@ -71,6 +90,16 @@ a {
     margin: 1.5rem auto;
     font-size: 0.9rem;
     width: 60%; 
+}
+
+.project-actions {
+    text-align: center;
+    padding: 0 1rem 1.5rem 1rem;
+    font-size: 1rem;
+}
+
+.project-actions a:hover {
+    text-decoration: underline;
 }
 
 .project-show-comments {
@@ -91,6 +120,10 @@ a {
     cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
     transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
     padding: 1rem;
+}
+
+.project-comment {
+    margin: 1rem 0 0;
 }
 
 .highlighted-projects-grid,
@@ -158,16 +191,25 @@ a {
     position: fixed;
     z-index: 1;
     padding: 2em;
-    
+    background: var(--bg-color);
     /* Centering */
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
     overflow: auto;
-    background-color: rgb(0,0,0);
+    background-color: --bg-color;
     border-radius: 5px;
     /* Add the drop shadow */
     box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+.edit-comment-actions {
+    margin-top: 0.5rem;
+}
+
+.comment-modal-title {
+    text-align: center;
+    margin: 0rem 2rem 2rem 2rem;
 }
 
 .cancel-button {
@@ -186,10 +228,12 @@ a {
     background-color: #2640fe;
 }
 
-.comment-body div {
-    display: inline;
+.comment-body {
+    background-color: #d9dfe1; /* Change this to your desired background color */
+    padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
+    margin: 0.5rem 0;
+    border-radius: 5px; /* Optional: add rounded corners */
 }
-
 
 body {
     background: var(--bg-color); /* background-color: var(--bg-color); */
@@ -321,15 +365,15 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 3rem 10rem;
-  }
+}
   
-  .timeline-entry {
+.timeline-entry {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
   
-  .timeline-item {
+.timeline-item {
     width: 2rem;
     height: 2rem;
     border: 1px solid #ddd;
@@ -338,15 +382,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
+}
   
-  .timeline-date {
+.timeline-date {
     font-size: 0.9em;
     color: gray;
     margin-top: 10px;
-  }
+}
 
-/*
+  /*
  * This is a manifest file that'll be compiled into application.css, which will include all the files
  * listed below.
  *

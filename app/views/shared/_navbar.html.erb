@@ -8,7 +8,7 @@
         <li><%= link_to "Projects", projects_path %></li>       
         <% if user_signed_in? %>
             <li><%= link_to "Profile", edit_user_registration_path %></li>
-            <li><%= button_to "Log out", destroy_user_session_path, method: :delete %></li>
+            <li><%= button_to "Log out", destroy_user_session_path, method: :delete, form_class: "inline-form", class: "button-link" %></li>
         <% else %>
             <li><%= link_to "Login", new_user_session_path %></li>
             <li><%= link_to "Sign Up", new_user_registration_path %><li>
