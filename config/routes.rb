@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :projects do
     resources :comments, only: [:index, :create, :edit, :update, :destroy] do
       collection do
-        get 'weekly'
+        get 'weekly', to: 'comments#weekly', as: 'weekly' #Creates a route for weekly_project_comments_path to map to the weekly action in CommentsController
       end
     end
   end

@@ -50,17 +50,21 @@ class CommentsController < ApplicationController
 
   def weekly
     @project = Project.find(params[:project_id])
-    week_start = Date.parse(params[:week_start])
+    week_start = DateTime.parse(params[:week_start])
     week_end = week_start + 1.week
   
     @comments = @project.comments.where(created_at: week_start...week_end)
   
     respond_to do |format|
-      format.html { render partial: 'comments/comments_weekly', locals: { comments: @comments, project: @project, week_start: week_start } }
+      format.turbo_stream {
+        render partial: 'comments/comments_weekly', locals: { project: @project, comments: @comments, week_start: week_start }
+      }
+      format.html {
+        render partial: 'comments/comments_weekly', locals: { project: @project, comments: @comments, week_start: week_start }
+      }
     end
-  rescue ArgumentError, ActiveRecord::RecordNotFound
-    render plain: "Invalid date or project not found", status: :bad_request
-  end  
+  end
+    
 
     
   private #This section defines helper methods that are used internally within the controller. These methods aren't accessible from outside the controller (that's why they're marked as private), but they are crucial for managing the flow of data. The set_projects and set_comment methods used before actions (lines 2 and 3) are defined below

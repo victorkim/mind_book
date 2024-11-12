@@ -2,7 +2,7 @@
 
 :root { /* defining root styling */   
     --bg-color:linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed; /* 1st color starts at the very beginning of the gradient. The 2nd goes from 80% to the rest of the page. The degrees define the direction of the gradient */
-    --font-color: rgb(0, 0, 0);
+    --font-color: #574e47;
     --font-family: "Inter", sans-serif;
     --font-size-title: 1.2rem;
     --font-size-body: 1.1rem;
@@ -13,28 +13,32 @@
 /* app/assets/stylesheets/application.css */
 
 trix-editor {
-    background-color: #e5ebee; /* Change this to your desired background color */
-    padding: 10px; /* Optional: add some padding for better appearance */
+    background-color: #e7eaed; /* Change this to your desired background color */
+    border: solid #e2dede; /* Creating a border for each individual comment boddy */
     border-radius: 5px; /* Optional: add rounded corners */
-  }
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+    padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
+    margin: 0.5rem 0;
+}
 
 trix-toolbar .trix-button-group button { 
     background-color: #e5ebee; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
     border: none;
-  }
+}
 
 .inline-form {
     display: inline;
     margin: 0;
     padding: 0;
-  }
+}
 
 .button-link {
-    display: inline;
+    display: inline-block;
     background: none;
     border: none;
     padding: 0;
     font: inherit;
+    color: inherit;
 }
 
 .button-link:hover {
@@ -42,13 +46,14 @@ trix-toolbar .trix-button-group button {
     cursor: pointer;
 }
 
-.button input[type="submit"] {
+.button input[type="submit"],
+.close-button {
     background-color: #c7ccce;
     border-radius: 10%;
     border: none;
     padding: 0.5rem;
-    margin: 0.5rem 0rem;
-    font-weight: bold;
+    margin: 0.5rem 0rem;    
+    font-size: inherit;
 }
 
 .button input[type="submit"]:hover {
@@ -70,12 +75,43 @@ a {
     border: none; /* Remove the default border */
     border-top: 1px solid #ccc; /* A thin, solid line */
     width: 100%; /* Make it span the width of the container */
-    margin: 1rem;
 }
+
+.comments-separator {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 1rem 0; /* Adjust vertical spacing as needed */
+  }
+  
+  .comments-separator::before,
+  .comments-separator::after {
+    content: ''; /* required for pseudo-elements to display */
+    flex: 1; /* allows the lines to stretch and fill the available space */
+    border-bottom: 1px solid #ccc; /* Line color and thickness */
+  }
+  
+  .comments-separator::before {
+    margin-right: 1rem; /* Space between line and date */
+  }
+  
+  .comments-separator::after {
+    margin-left: 1rem; /* Space between date and line */
+  }
+  
+  .comments-separator span {
+    white-space: nowrap; /* Prevent the date from wrapping */
+    color: #666; /* Text color */
+  }
 
 .page-title {
     text-align: center;
     margin: 2rem 2rem 0.5rem 2rem;
+}
+
+.comments-modal-title {
+    text-align: center;
+    margin: 0.5rem 2rem 1rem 2rem;
 }
 
 .project-show-dates {
@@ -169,7 +205,7 @@ a {
 
 .project-card {
     background-color: #e5ebee;
-    border: solid #ffffff; /* Creating a border for each individual project card */
+    border: solid #e2dede; /* Creating a border for each individual project card */
     height: 200px; /* Defining a height for each project card */
     border-radius: 5%;
     padding: 1em;
@@ -204,6 +240,9 @@ a {
 }
 
 .edit-comment-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     margin-top: 0.5rem;
 }
 
@@ -212,27 +251,22 @@ a {
     margin: 0rem 2rem 2rem 2rem;
 }
 
-.cancel-button {
-    background-color: #1530ff;
-    font-size: 12px;
-    color: white;
-    padding: 4px 8px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    float: right;
-    text-decoration: none;
-}
-
-.cancel-button:hover {
-    background-color: #2640fe;
-}
-
 .comment-body {
-    background-color: #d9dfe1; /* Change this to your desired background color */
+    background-color: #e7eaed; /* Change this to your desired background color */
+    border: solid #e2dede; /* Creating a border for each individual comment boddy */
+    border-radius: 5px; /* Optional: add rounded corners */
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
     padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
     margin: 0.5rem 0;
-    border-radius: 5px; /* Optional: add rounded corners */
+}
+
+.comment-body ul, /* making sure that bullet points are indented properly inside the comment-body when used in comments*/
+.comment-body ol {
+    margin-left: 0.5rem; /* Adjust as needed */
+}
+
+.comment-body li { /* making sure that bullet points are indented properly inside the comment-body when used in comments*/
+    list-style-position: inside; /* Ensure bullets are inside the .comment-body */
 }
 
 body {
@@ -378,7 +412,7 @@ body {
     height: 2rem;
     border: 1px solid #ddd;
     border-radius: 50%;
-    background-color: #d08ef6;
+    background-color: #e7eaed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -387,7 +421,7 @@ body {
 .timeline-date {
     font-size: 0.9em;
     color: gray;
-    margin-top: 10px;
+    margin-top: 5rem;
 }
 
   /*

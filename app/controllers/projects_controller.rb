@@ -12,21 +12,26 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1 or /projects/1.json
   def show
-      @project = Project.find(params[:id]) #show specific Project by ID
-      @comment = @project.comments.build #Prepares a new comment object for the form. Using .build creates a new, unsaved comment associated with the project, ready to be filled by the user. This is needed because the form for adding a new comment expects an empty @comment to render correctly.
-      @comments = @project.comments #show all comments associated with the project
+    @project = Project.find(params[:id]) #show specific Project by ID
+    @comment = @project.comments.build #Prepares a new comment object for the form. Using .build creates a new, unsaved comment associated with the project, ready to be filled by the user. This is needed because the form for adding a new comment expects an empty @comment to render correctly.
+    @comments = @project.comments.order(created_at: :desc) #show all comments associated with the project from newest to oldest
+    @comments_by_date = @comments.group_by { |comment| comment.created_at.to_date } #group comments by created date
       
-      starting_date = 8.weeks.ago.beginning_of_week
-      @weeks_data = (0..7).map do |i|
-        week_start = starting_date + i.weeks
-        week_end = week_start + 1.week
-        comments_in_week = @project.comments.where(created_at: week_start...week_end)
-        {
-          week_start: week_start,
-          count: comments_in_week.count
-        }
-      end
+  # Calculate weeks from project start date to current date
+    starting_date = @project.start_date.beginning_of_week #get the week's start date when the project began
+    ending_date = Date.today.end_of_week #get the end of the current week.
+    total_weeks = ((ending_date - starting_date) / 7).to_i #Calculate the number of weeks between the starting and ending dates.
+
+    @weeks_data = (0..total_weeks).map do |i| #Generate an array of hashes containing the week start date and the count of comments for each week.
+    week_start = starting_date + i.weeks
+    week_end = week_start + 1.week
+    comments_in_week = @project.comments.where(created_at: week_start...week_end)
+    {
+      week_start: week_start,
+      count: comments_in_week.count
+    }
     end
+  end
 
   # GET /projects/new
   def new
