@@ -5,6 +5,7 @@ class Project < ApplicationRecord
     validates :name, presence: true
     validates :start_date, presence: true
     validates :end_date, presence: true
+    validates :department, presence: true
     has_rich_text :description
 
     def self.recent #defining a method that encapsulates projects created in the last 5 days

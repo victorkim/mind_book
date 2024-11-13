@@ -27,6 +27,11 @@
   </div>
 
   <div>
+    <%= form.label :department, style: "display: block" %>
+    <%= form.select :department, ['Marketing', 'Sales', 'Customer Success', 'Delivery'], include_blank: 'Select Department' %>
+  </div>
+
+  <div>
     <%= form.label :description, style: "display: block" %>
     <%= form.text_area :description %>
   </div>

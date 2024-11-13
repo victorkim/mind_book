@@ -6,6 +6,10 @@
   <%= project.start_date.present? ? project.start_date.strftime("%m/%d/%Y") : "" %> - <%= project.end_date.present? ? project.end_date.strftime("%m/%d/%Y") : "" %>
 </div>
 
+<div class="project-department">
+  <%= project.department %>
+</div>
+
 <div class="project-description">
   <i><%= project.description %></i>
 </div>

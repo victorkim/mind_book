@@ -8,6 +8,20 @@ class ProjectsController < ApplicationController
     @recent_projects = Project.recent #self.recent is defined in the Model
     @due_soon_projects = Project.due_soon #self.due_soon is defined in the Model
     @past_due_projects = Project.past_due #self.past_due is defined in the Model
+
+    # Apply Category Filter
+    if params[:department].present? && params[:department] != 'All Departments'
+      @projects = @projects.where(department: params[:department])
+    end
+
+    # Apply Date Range Filter
+    if params[:start_date].present? && params[:end_date].present?
+      @projects = @projects.where(start_date: params[:start_date]..params[:end_date])
+    elsif params[:start_date].present?
+      @projects = @projects.where('start_date >= ?', params[:start_date])
+    elsif params[:end_date].present?
+      @projects = @projects.where('start_date <= ?', params[:end_date])
+    end
   end
 
   # GET /projects/1 or /projects/1.json
@@ -93,7 +107,6 @@ class ProjectsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def project_params
-      params.require(:project).permit(:name, :description, :start_date, :end_date)
+      params.require(:project).permit(:name, :description, :start_date, :end_date, :department)
     end
-    
 end

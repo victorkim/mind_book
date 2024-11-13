@@ -14,6 +14,33 @@
 	<% end %>
 </div>
 
+<!-- Filter Form -->
+<%= form_with url: projects_path, method: :get, local: true do %>
+  <div class="projects-filters">
+    <!-- Date Range Filter -->
+    <div class="start-date-filter">
+      <label for="start_date">Start Date:</label>
+      <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %>
+    </div>
+
+    <div class="end-date-filter"> 
+      <label for="end_date">End Date:</label>
+      <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
+    </div>
+
+    <!-- Dropdown Filter -->
+    <div class="department-filter">
+      <label for="departments">Departments:</label>
+      <%= select_tag :department, options_for_select(['All Departments', 'Marketing', 'Sales', 'Customer Success', 'Delivery'], params[:category]) %>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="button">
+      <%= submit_tag "Filter", name: nil %>
+    </div>
+  </div>
+<% end %>
+
 <hr class="separator">
 
 <div class="highlighted-projects-grid">

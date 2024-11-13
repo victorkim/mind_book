@@ -123,10 +123,12 @@ a {
     margin: 0.5rem 2rem 1rem 2rem;
 }
 
-.project-show-dates {
+.project-show-dates,
+.project-department,
+.comments-timeline-description  {
     text-align: center;
     padding: 0 1rem 0.5rem 1rem;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .project-description {
@@ -445,6 +447,11 @@ body {
     font-size: 0.9em;
     color: gray;
     margin-top: 5rem;
+}
+
+.end-date-filter,
+.department-filter {
+    margin-top: 0.5rem;
 }
 
   /*
