@@ -56,6 +56,15 @@ trix-toolbar .trix-button-group button {
     font-size: inherit;
 }
 
+.close-modal-button {
+    background-color: #c7ccce;
+    border-radius: 10%;
+    border: none;
+    padding: 0.5rem;
+    margin-top: 2rem;    
+    font-size: inherit;
+}
+
 .button input[type="submit"]:hover {
     cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
 }
@@ -273,7 +282,7 @@ body {
     background: var(--bg-color); /* background-color: var(--bg-color); */
     color: var(--font-color);
     font-family: var(--font-family);
-    padding: 1%; /* adding padding so that .navbar items don't get too close to the edges */
+    margin: 2rem;
 }
 
 .navbar ul { /* targetting only ul's inside the navbar so that rich text formatting works */
@@ -405,9 +414,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 }
   
 .timeline-item {
+    position: relative;
     width: 2rem;
     height: 2rem;
     border: 1px solid #ddd;
@@ -416,6 +427,18 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    top: calc(100% + 10px); /* Adds space between the item and the line */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%);
+    width: 0; /* Line thickness */
+    height: 4rem; /* Line length; adjust as needed */
+    border-left: 1px dashed #ccc; /* Creates a dotted vertical line */
+    background-color: #dad9d9; /* Line color */
 }
   
 .timeline-date {
