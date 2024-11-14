@@ -453,9 +453,10 @@ body {
 
 .projects-timeline-container {
   display: grid;
-  grid-template-columns: auto repeat(/* number of weeks */, 1fr);
-  margin-top: 20px;
+  grid-template-columns: auto repeat(1fr);
+  margin: 2rem 0;
   overflow-x: auto;
+  row-gap: 1rem; /* Adjust this value to increase or decrease vertical spacing */
 }
 
 .projects-timeline-item {
@@ -474,11 +475,13 @@ body {
   padding: 12px;
   border: none;
   text-align: center;
+  margin-top: 2rem;
 }
 
 .entity-name,
 .timeline-entry {
     padding: 0;
+    
 }
 
 .entity-name {
