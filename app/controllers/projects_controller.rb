@@ -5,24 +5,51 @@ class ProjectsController < ApplicationController
   # GET /projects or /projects.json
   def index
     @projects = Project.all
-    @recent_projects = Project.recent #self.recent is defined in the Model
-    @due_soon_projects = Project.due_soon #self.due_soon is defined in the Model
-    @past_due_projects = Project.past_due #self.past_due is defined in the Model
-
-    # Apply Category Filter
+  
+    # Apply Department Filter
     if params[:department].present? && params[:department] != 'All Departments'
       @projects = @projects.where(department: params[:department])
     end
-
-    # Apply Date Range Filter
-    if params[:start_date].present? && params[:end_date].present?
-      @projects = @projects.where(start_date: params[:start_date]..params[:end_date])
-    elsif params[:start_date].present?
-      @projects = @projects.where('start_date >= ?', params[:start_date])
-    elsif params[:end_date].present?
-      @projects = @projects.where('start_date <= ?', params[:end_date])
+  
+    # Initialize start_date and end_date
+    if params[:start_date].present?
+      begin
+        start_date = Date.parse(params[:start_date]).beginning_of_week
+      rescue ArgumentError
+        start_date = 8.weeks.ago.beginning_of_week.to_date
+      end
+    else
+      start_date = 8.weeks.ago.beginning_of_week.to_date
     end
+  
+    if params[:end_date].present?
+      begin
+        end_date = Date.parse(params[:end_date]).end_of_week
+      rescue ArgumentError
+        end_date = Date.today.end_of_week
+      end
+    else
+      end_date = Date.today.end_of_week
+    end
+  
+    # Ensure start_date and end_date are Date objects
+    start_date = start_date.to_date
+    end_date = end_date.to_date
+  
+    # Filter projects based on start_date (if needed)
+    @projects = @projects.where(start_date: start_date..end_date)
+  
+    # Collect comments data for the timeline
+    @weeks_data = collect_weeks_data(start_date, end_date, @projects, params[:department])
+  
+    @timeline_data = collect_weeks_data(start_date, end_date, @projects, params[:department])
+
+    timeline_result = collect_weeks_data(start_date, end_date, @projects, params[:department])
+    @week_starts = timeline_result[:week_starts]
+    @timeline_data = timeline_result[:timeline_data]
+
   end
+  
 
   # GET /projects/1 or /projects/1.json
   def show
@@ -99,6 +126,13 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def weekly_comments
+        # Logic to handle weekly comments
+        week_start = params[:week_start]
+        # Fetch comments based on the week_start parameter
+        # Render the modal or page as needed
+      end    
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
@@ -109,4 +143,53 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).permit(:name, :description, :start_date, :end_date, :department)
     end
+
+    def collect_weeks_data(start_date, end_date, projects, department)
+  total_weeks = ((end_date - start_date).to_i / 7).ceil
+  week_starts = (0..total_weeks).map { |i| start_date + i.weeks }
+
+  timeline_data = []
+
+  if department.present? && department != 'All Departments'
+    # For a specific department, list projects
+    projects_in_department = projects.where(department: department)
+    projects_in_department.each do |project|
+      project_data = {
+        name: project.name,
+        weeks: []
+      }
+      week_starts.each do |week_start|
+        week_end = week_start + 1.week
+        count = project.comments.where(created_at: week_start...week_end).count
+        project_data[:weeks] << { week_start: week_start, count: count }
+      end
+      timeline_data << project_data
+    end
+  else
+    # For all departments
+    departments = projects.pluck(:department).uniq
+    departments.each do |dept|
+      dept_projects = projects.where(department: dept)
+      dept_data = {
+        name: dept,
+        weeks: []
+      }
+      week_starts.each do |week_start|
+        week_end = week_start + 1.week
+        count = Comment.joins(:project)
+                       .where(projects: { id: dept_projects.pluck(:id) })
+                       .where(created_at: week_start...week_end)
+                       .count
+        dept_data[:weeks] << { week_start: week_start, count: count }
+      end
+      timeline_data << dept_data
+    end
+  end
+
+  { week_starts: week_starts, timeline_data: timeline_data }
+end
+
+    
+    
+    
 end

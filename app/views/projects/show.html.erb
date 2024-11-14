@@ -8,11 +8,13 @@
 
 <hr class="separator">
 
-<% if user_signed_in? %>
-  <%= render 'comments/comments_new_form', project: @project, comment: @comment %>
-<% else %>
-  <%= link_to "Login to add, edit or delete a comment", new_user_session_path, class: "btn btn-primary" %>
-<% end %>
+<div>
+  <% if user_signed_in? %>
+    <%= render 'comments/comments_new_form', project: @project, comment: @comment %>
+  <% else %>
+    <%= link_to "Login to add, edit or delete a comment", new_user_session_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
 
 <div id="comments-list">
   <%= render 'comments/comments_list', project: @project, comments: @comments %> <%# @project.comments means: "pass the collection of comments from @project.comments as the local variable comments to the partial." This makes comments (with an "s") available within the partial. %>

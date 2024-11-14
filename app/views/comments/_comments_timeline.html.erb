@@ -6,10 +6,10 @@
   <i>Shows the number of comments on each week since the Project's start date</i>
 </div>
 
-<div class="timeline-container">
+<div class="comments-timeline-container">
   <% @weeks_data.each do |week| %>
-    <div class="timeline-entry">
-      <div class="timeline-item">
+    <div class="comments-timeline-entry">
+      <div class="comments-timeline-item">
         <%= link_to weekly_project_comments_path(@project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
           <% if week[:count] != 0 %>
             <strong><%= week[:count] %></strong>
@@ -19,7 +19,7 @@
         <% end %>
       </div>
 
-      <div class="timeline-date">
+      <div class="comments-timeline-date">
         <%= week[:week_start].strftime("%d/%m/%y") %>
       </div>
     </div>

@@ -43,27 +43,7 @@
 
 <hr class="separator">
 
-<div class="highlighted-projects-grid">
-
-  <div class="recent-projects-grid">
-	  <% @recent_projects.each do |project| %>
-      <%= render 'project_card', project: project%>
-    <% end %>
-  </div>
-
-  <div class="due-soon-projects-grid">
-    <% @due_soon_projects.each do |project| %>
-      <%= render 'project_card', project: project%>
-     <% end %>
-  </div>
-
-  <div class="past-due-projects-grid">
-    <% @past_due_projects.each do |project| %>
-      <%= render 'project_card', project: project%>
-    <% end %>
-  </div>
-
-</div>
+<%= render 'projects_timeline' %>
   
 <hr class="separator">
 

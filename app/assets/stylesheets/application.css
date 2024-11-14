@@ -125,7 +125,8 @@ a {
 
 .project-show-dates,
 .project-department,
-.comments-timeline-description  {
+.comments-timeline-description,
+.projects-timeline-description  {
     text-align: center;
     padding: 0 1rem 0.5rem 1rem;
     font-size: 0.9rem;
@@ -197,6 +198,7 @@ a {
     gap: 1.5rem;
     margin: 1.5rem; /* Adding margin (spacing on the outside of the project-card) */
 }
+
 
 .highlighted-projects-grid .project-card:nth-child(1) {
     transform: rotate(-2deg); /* Rotate the 1st card slightly counter-clockwise */
@@ -406,20 +408,20 @@ body {
     text-align: center;
 }
 
-.timeline-container {
+.comments-timeline-container {
     display: flex;
     justify-content: space-between;
     padding: 3rem 10rem;
 }
   
-.timeline-entry {
+.comments-timeline-entry {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
 }
   
-.timeline-item {
+.comments-timeline-item {
     position: relative;
     width: 2rem;
     height: 2rem;
@@ -431,7 +433,7 @@ body {
     align-items: center;
 }
 
-.timeline-item::after {
+.comments-timeline-item::after {
     content: '';
     position: absolute;
     top: calc(100% + 10px); /* Adds space between the item and the line */
@@ -443,11 +445,60 @@ body {
     background-color: #dad9d9; /* Line color */
 }
   
-.timeline-date {
+.comments-timeline-date {
     font-size: 0.9em;
     color: gray;
     margin-top: 5rem;
 }
+
+.projects-timeline-container {
+  display: grid;
+  grid-template-columns: auto repeat(/* number of weeks */, 1fr);
+  margin-top: 20px;
+  overflow-x: auto;
+}
+
+.projects-timeline-item {
+    
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    background-color: #e7eaed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timeline-header-cell {
+  padding: 12px;
+  border: none;
+  text-align: center;
+}
+
+.entity-name,
+.timeline-entry {
+    padding: 0;
+}
+
+.entity-name {
+  font-weight: bold;
+  text-align: left;
+}
+
+.timeline-header-cell {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+
+  
+
+  
 
 .end-date-filter,
 .department-filter {
