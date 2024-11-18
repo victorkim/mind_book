@@ -65,8 +65,6 @@ class CommentsController < ApplicationController
     end
   end
     
-
-    
   private #This section defines helper methods that are used internally within the controller. These methods aren't accessible from outside the controller (that's why they're marked as private), but they are crucial for managing the flow of data. The set_projects and set_comment methods used before actions (lines 2 and 3) are defined below
   
     #none of the @project syntax above the private line would make sense or mean anything if it wasn't for this line below
