@@ -4,80 +4,28 @@ class ProjectsController < ApplicationController
 
   # GET /projects or /projects.json
   def index
-    @projects = Project.all
-    
-    # Initialize start_date and end_date with existing date parsing logic
     start_date = parse_start_date(params[:start_date])
     end_date = parse_end_date(params[:end_date])
-
-    # Use scopes to filter projects
+  
     @projects = Project.by_department(params[:department]).by_date_range(start_date, end_date)
-
-    # Proceed with timeline data collection
+  
     total_weeks = ((end_date - start_date).to_i / 7).ceil
     week_starts = (0..total_weeks).map { |i| start_date + i.weeks }
-
-    timeline_data = []
-
-    if params[:department].present? && params[:department] != 'All Departments'
-      @projects.each do |project|
-        project_data = {
-          name: project.name,
-          weeks: []
-        }
-        week_starts.each do |week_start|
-          week_end = week_start + 1.week
-          count = project.comments.where(created_at: week_start...week_end).count
-          project_data[:weeks] << { week_start: week_start, count: count }
-        end
-        timeline_data << project_data
-      end
-    else
-      departments = @projects.pluck(:department).uniq
-      departments.each do |dept|
-        dept_projects = @projects.where(department: dept)
-        dept_data = {
-          name: dept,
-          weeks: []
-        }
-        week_starts.each do |week_start|
-          week_end = week_start + 1.week
-          count = Comment.joins(:project)
-                        .where(projects: { id: dept_projects.pluck(:id) })
-                        .where(created_at: week_start...week_end)
-                        .count
-          dept_data[:weeks] << { week_start: week_start, count: count }
-        end
-        timeline_data << dept_data
-      end
-    end
-
+  
+    @timeline_data = ProjectsTimelineDataService.new(@projects, week_starts, params[:department]).call
     @week_starts = week_starts
-    @timeline_data = timeline_data
-
   end
   
   # GET /projects/1 or /projects/1.json
   def show
-    @comment = @project.comments.build #Prepares a new comment object for the form. Using .build creates a new, unsaved comment associated with the project, ready to be filled by the user. This is needed because the form for adding a new comment expects an empty @comment to render correctly.
-    @comments = @project.comments.order(created_at: :desc) #show all comments associated with the project from newest to oldest
-    @comments_by_date = @comments.group_by { |comment| comment.created_at.to_date } #group comments by created date
-      
-    #Calculate weeks from project start date to current date
-    starting_date = @project.start_date.beginning_of_week #Retrieves the start_date of the current project (@project) and adjusts it to the beginning of that week
-    ending_date = Date.today.end_of_week #get the end of the current week.
-    total_weeks = ((ending_date - starting_date) / 7).to_i #Subtracts the starting_date from the ending_date, giving the total number of days between them, divide it by 7 to calculate number of weeks and converts the result to integer (.to_i), rounding down if needed
-    
-    #Generate an array of hashes containing the week start date and the count of comments for each week.
-    @weeks_data = (0..total_weeks).map do |i| #"do" is a chunk of code that you pass to a method to be executed for each element that the method operates on.".map" is a method that iterates over each element in the range (0..total_weeks) and executes the code inside the block for each element.
-      week_start = starting_date + i.weeks
-      week_end = week_start + 1.week
-      comments_in_week = @project.comments.where(created_at: week_start...week_end)
-      {
-        week_start: week_start,
-        count: comments_in_week.count
-      }
-    end
+    @comment = @project.comments.build
+    @comments = @project.comments.order(created_at: :desc)
+    @comments_by_date = @comments.group_by { |comment| comment.created_at.to_date }
+
+    starting_date = @project.start_date.beginning_of_week
+    ending_date = Date.today.end_of_week
+
+    @weeks_data = CommentsTimelineDataService.new(@project, starting_date, ending_date).call
   end
 
   # GET /projects/new
