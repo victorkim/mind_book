@@ -7,8 +7,8 @@ class ProjectsController < ApplicationController
     timeline_result = service.call #Execute the service and store the returned hash in timeline_result
     
     @projects = timeline_result[:projects] #Assign the filtered projects from the service result to @projects for use in the view
-    @timeline_data = timeline_result[:timeline_data] #Assign the generated timeline data from the service result to @timeline_data for use in the view
     @week_starts = timeline_result[:week_starts] #Assign the array of week start dates from the service result to @week_starts for use in the view
+    @timeline_data = timeline_result[:timeline_data] #Assign the generated timeline data from the service result to @timeline_data for use in the view
   end
   
   def show
@@ -16,10 +16,7 @@ class ProjectsController < ApplicationController
     @comments = @project.comments.order(created_at: :desc) #Retrieve all comments for the project, ordered by creation date descending
     @comments_by_date = @comments.group_by { |comment| comment.created_at.to_date } #Group comments by their creation date
 
-    starting_date = @project.start_date.beginning_of_week #Determine the starting and ending dates for the comments timeline
-    ending_date = Date.today.end_of_week
-
-    @weeks_data = CommentsTimelineDataService.new(@project, starting_date, ending_date).call #Initialize the comments timeline data service and retrieve timeline data
+    @weeks_data = CommentsTimelineDataService.new(@project).call #Initialize the comments timeline data service and retrieve timeline data
   end
 
   def new

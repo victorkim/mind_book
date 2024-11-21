@@ -13,10 +13,10 @@ class ProjectsTimelineDataService
     @week_starts = (0..total_weeks).map { |i| @start_date + i.weeks } #Generates an array of week start dates based on the total number of weeks
 
     timeline_data = department_present? ? projects_timeline : departments_timeline #Determines which timeline data to generate based on department presence
-      {
-        projects: @projects, #Returns a hash containing :projects, :timeline_data, and :week_starts for the controller to use.
-        timeline_data: timeline_data, 
-        week_starts: @week_starts
+      {#Returns a hash containing :projects, :timeline_data, and :week_starts for the controller to use.
+        projects: @projects, #Returns filtered projects as instance variable (@projects), because it's being defined above
+        week_starts: @week_starts, #Generated as an array of week start dates from the start date as instance variable (@week_starts), because it's being defined above
+        timeline_data: timeline_data #Local variable holding the generated timeline information
       }
   end
 
