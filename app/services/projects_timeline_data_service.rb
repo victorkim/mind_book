@@ -46,6 +46,8 @@ class ProjectsTimelineDataService
     projects.map do |project|
       {
         name: project.name,
+        start_date: project.start_date,
+        end_date: project.end_date,
         weeks: week_starts.map { |ws| { week_start: ws, count: count_comments(project.comments, ws) } }
       }
     end

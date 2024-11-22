@@ -47,13 +47,15 @@ trix-toolbar .trix-button-group button {
 }
 
 .button input[type="submit"],
-.close-button {
+.close-button,
+.cancel-button {
     background-color: #c7ccce;
     border-radius: 10%;
     border: none;
     padding: 0.5rem;
-    margin: 0.5rem 0rem;    
+    margin: 0.5rem 0.5rem 0.5rem 0;    
     font-size: inherit;
+    color: var(--font-color);
 }
 
 .close-modal-button {
@@ -61,7 +63,7 @@ trix-toolbar .trix-button-group button {
     border-radius: 10%;
     border: none;
     padding: 0.5rem;
-    margin-top: 2rem;    
+    margin-top: 2rem !important;    
     font-size: inherit;
 }
 
@@ -91,27 +93,27 @@ a {
     align-items: center;
     width: 100%;
     margin: 1rem 0; /* Adjust vertical spacing as needed */
-  }
+}
   
-  .comments-separator::before,
-  .comments-separator::after {
-    content: ''; /* required for pseudo-elements to display */
-    flex: 1; /* allows the lines to stretch and fill the available space */
-    border-bottom: 1px solid #ccc; /* Line color and thickness */
-  }
-  
-  .comments-separator::before {
-    margin-right: 1rem; /* Space between line and date */
-  }
-  
-  .comments-separator::after {
-    margin-left: 1rem; /* Space between date and line */
-  }
-  
-  .comments-separator span {
-    white-space: nowrap; /* Prevent the date from wrapping */
-    color: #666; /* Text color */
-  }
+.comments-separator::before,
+.comments-separator::after {
+content: ''; /* required for pseudo-elements to display */
+flex: 1; /* allows the lines to stretch and fill the available space */
+border-bottom: 2px solid #ccc; /* Line color and thickness */
+}
+
+.comments-separator::before {
+margin-right: 1rem; /* Space between line and date */
+}
+
+.comments-separator::after {
+margin-left: 1rem; /* Space between date and line */
+}
+
+.comments-separator span {
+white-space: nowrap; /* Prevent the date from wrapping */
+color: #666; /* Text color */
+}
 
 .page-title {
     text-align: center;
@@ -120,7 +122,7 @@ a {
 
 .comments-modal-title {
     text-align: center;
-    margin: 0.5rem 2rem 1rem 2rem;
+    margin: 1rem 2rem 2rem 2rem;
 }
 
 .project-show-dates,
@@ -130,6 +132,14 @@ a {
     text-align: center;
     padding: 0 1rem 0.5rem 1rem;
     font-size: 0.9rem;
+}
+
+.project-timeline-dates,
+.start-date-filter-detail,
+.department-filter-detail {
+    font-size: 0.8rem;
+    margin: 0.3rem 0 1rem 0;
+    font-weight: normal;
 }
 
 .project-description {
@@ -152,6 +162,10 @@ a {
 
 .project-show-comments {
     padding: 2rem 0;
+}
+
+.projects-filters{
+    margin-top: 2rem;
 }
 
 .new-project-prompt {
@@ -255,8 +269,11 @@ a {
 .edit-comment-actions {
     display: flex;
     align-items: center;
-    gap: 1rem;
     margin-top: 0.5rem;
+}
+
+.comment-actions {
+    font-size: smaller;
 }
 
 .comment-modal-title {
@@ -268,7 +285,7 @@ a {
     background-color: #e7eaed; /* Change this to your desired background color */
     border: solid #e2dede; /* Creating a border for each individual comment boddy */
     border-radius: 5px; /* Optional: add rounded corners */
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05);
     padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
     margin: 0.5rem 0;
 }
@@ -480,8 +497,7 @@ body {
 
 .entity-name,
 .timeline-entry {
-    padding: 0;
-    
+    margin: 0.5rem;
 }
 
 .entity-name {
@@ -496,16 +512,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-  
-
-  
-
-  
+}
 
 .end-date-filter,
 .department-filter {
     margin-top: 0.5rem;
+    font: inherit;
 }
 
   /*

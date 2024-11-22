@@ -13,7 +13,7 @@
 			</div>
 
 			<% comments_on_date.each do |comment| %>
-				<div id="comment_<%= comment.id %>_list">
+				<div id="comment_<%= comment.id %>_list" class="project-comment">
 					<% if comment.user %>
 						<strong><%= comment.user.name %></strong>:
 						<div class="comment-body">

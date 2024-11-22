@@ -4,43 +4,69 @@
 
 <div class="projects-timeline-description">
   <i>
-    Shows the number of comments per
-    <%= params[:department].present? && params[:department] != 'All Departments' ? 'project' : 'department' %> per week
+    <% if params[:department].present? && params[:department] != 'All Departments' %>
+      Showing all <%= h(params[:department]) %> projects and their weekly updates
+    <% else %>
+      Showing all projects and their weekly updates from all departments
+    <% end %>
   </i>
 </div>
 
 <div class="projects-timeline-container">
-  <!-- Data rows -->
   <% @timeline_data.each_with_index do |entity, entity_index| %>
-    <!-- Entity name -->
     <div class="entity-name" style="grid-row: <%= entity_index + 1 %>; grid-column: 1;">
       <% if params[:department].present? && params[:department] != 'All Departments' %>
+        <!-- Entity is a project -->
         <%= link_to entity[:name], project_path(Project.find_by(name: entity[:name])) %>
+        <div class="project-timeline-dates">
+          <%= entity[:start_date].strftime("%m/%d/%Y") %> - <%= entity[:end_date].strftime("%m/%d/%Y") %>
+        </div>
       <% else %>
+        <!-- Entity is a department -->
         <%= entity[:name] %>
       <% end %>
     </div>
 
-    <!-- Timeline entries -->
     <% entity[:weeks].each_with_index do |week, week_index| %>
-      <div class="timeline-entry" style="grid-row: <%= entity_index + 1 %>; grid-column: <%= week_index + 2 %>;">
-				<div class="projects-timeline-item">
-					<% if week[:count] != 0 %>
-						<strong><%= week[:count] %></strong>
-					<% else %>
-						-
-					<% end %>
-				</div>
-      </div>
+      <% if params[:department].present? && params[:department] != 'All Departments' %>
+        <!-- When a specific department is selected -->
+        <% if entity[:start_date].present? && entity[:end_date].present? && week[:week_start] >= entity[:start_date] && week[:week_start] <= entity[:end_date] %>
+          <!-- Render the timeline entry within the project's date range -->
+          <div class="timeline-entry" style="grid-row: <%= entity_index + 1 %>; grid-column: <%= week_index + 2 %>;">
+            <div class="projects-timeline-item">
+              <% if week[:count] != 0 %>
+                <strong><%= week[:count] %></strong>
+              <% else %>
+                -
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <!-- Render an inactive cell outside the project's date range -->
+          <div class="timeline-entry inactive" style="grid-row: <%= entity_index + 1 %>; grid-column: <%= week_index + 2 %>;">
+            <!-- Optionally leave empty or add a placeholder -->
+          </div>
+        <% end %>
+      <% else %>
+        <!-- When no department is selected -->
+        <!-- Always render the timeline entry -->
+        <div class="timeline-entry" style="grid-row: <%= entity_index + 1 %>; grid-column: <%= week_index + 2 %>;">
+          <div class="projects-timeline-item">
+            <% if week[:count] != 0 %>
+              <strong><%= week[:count] %></strong>
+            <% else %>
+              -
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     <% end %>
   <% end %>
 
-  <!-- Weeks row at the bottom -->
-  <!-- Empty cell for alignment -->
   <div class="entity-name header-cell" style="grid-row: <%= @timeline_data.size + 1 %>; grid-column: 1;"></div>
   <% @week_starts.each_with_index do |week_start, index| %>
     <div class="timeline-header-cell" style="grid-row: <%= @timeline_data.size + 1 %>; grid-column: <%= index + 2 %>;">
-      <%= week_start.strftime("%d/%m/%y") %>
+      <%= week_start.strftime("%m/%d/%y") %>
     </div>
   <% end %>
 </div>

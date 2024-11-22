@@ -19,22 +19,23 @@
   <div class="projects-filters">
     <!-- Date Range Filter -->
     <div class="start-date-filter">
-      <label for="start_date">Start Date:</label>
-      <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %>
+      <label for="start_date">Date Range:</label>
+      <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %> - <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
     </div>
 
-    <div class="end-date-filter"> 
-      <label for="end_date">End Date:</label>
-      <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
+    <div class="start-date-filter-detail">
+      <i>Select a date range to see every project in progress within those dates </i>
     </div>
 
-    <!-- Dropdown Filter -->
     <div class="department-filter">
       <label for="departments">Departments:</label>
       <%= select_tag :department, options_for_select(['All Departments', 'Marketing', 'Sales', 'Customer Success', 'Delivery'], params[:category]) %>
     </div>
 
-    <!-- Submit Button -->
+    <div class="department-filter-detail">
+      <i>Select a Department to see every project related to it</i>
+    </div>
+
     <div class="button">
       <%= submit_tag "Filter", name: nil %>
     </div>
