@@ -470,14 +470,14 @@ body {
 
 .projects-timeline-container {
   display: grid;
-  grid-template-columns: auto repeat(1fr);
+  grid-template-columns: auto repeat(15, 1fr); /* 15 week columns */
   margin: 2rem 0;
   overflow-x: auto;
   row-gap: 1rem; /* Adjust this value to increase or decrease vertical spacing */
 }
 
 .projects-timeline-item {
-    
+    margin-left: 3rem;
     width: 2rem;
     height: 2rem;
     border: 1px solid #ddd;
@@ -489,10 +489,12 @@ body {
 }
 
 .timeline-header-cell {
-  padding: 12px;
-  border: none;
-  text-align: center;
-  margin-top: 2rem;
+	transform: rotate(-15deg);
+	margin-left: 3rem;
+	padding: 12px;
+	border: none;
+	text-align: center;
+	margin-top: 2rem;
 }
 
 .entity-name,
