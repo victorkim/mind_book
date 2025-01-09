@@ -130,7 +130,7 @@ color: #666; /* Text color */
 .comments-timeline-description,
 .projects-timeline-description  {
     text-align: center;
-    padding: 0 1rem 0.5rem 1rem;
+    padding: 0 1rem 0.5em 1rem; 
     font-size: 0.9rem;
 }
 
@@ -251,19 +251,19 @@ color: #666; /* Text color */
 }
 
 .modal {
-    position: fixed;
-    z-index: 1;
-    padding: 2em;
-    background: var(--bg-color);
-    /* Centering */
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    overflow: auto;
-    background-color: --bg-color;
-    border-radius: 5px;
-    /* Add the drop shadow */
-    box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
+	position: fixed;
+  z-index: 1;
+  padding: 2em;
+  background: var(--bg-color);
+  /* Centering */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  overflow: auto;
+  border-radius: 5px;
+  /* Add the drop shadow */
+  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
+  
 }
 
 .edit-comment-actions {

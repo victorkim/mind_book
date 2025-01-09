@@ -1,6 +1,10 @@
 <p style="color: green"><%= notice %></p>
 
-<h1 class="page-title">All Projects</h1>
+<% if @projects.empty? %>
+  <h1 class="page-title">No Projects yet</h1>
+<% else %>
+  <h1 class="page-title">All Projects</h1>
+<% end %>
 
 <div class="new-project-prompt">
 	<% if user_signed_in? %>
@@ -14,38 +18,45 @@
 	<% end %>
 </div>
 
-<!-- Filter Form -->
-<%= form_with url: projects_path, method: :get, local: true do %>
-  <div class="projects-filters">
-    <!-- Date Range Filter -->
-    <div class="start-date-filter">
-      <label for="start_date">Date Range:</label>
-      <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %> - <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
-    </div>
+<% if @projects.empty? %>
+  
+<% else %>
 
-    <div class="start-date-filter-detail">
-      <i>Select a date range to see every project in progress within those dates </i>
-    </div>
+  <!-- Filter Form -->
+  <%= form_with url: projects_path, method: :get, local: true do %>
+    <div class="projects-filters">
+      <!-- Date Range Filter -->
+      <div class="start-date-filter">
+        <label for="start_date">Date Range:</label>
+        <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %> - <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
+      </div>
 
-    <div class="department-filter">
-      <label for="departments">Departments:</label>
-      <%= select_tag :department, options_for_select(['All Departments', 'Marketing', 'Sales', 'Customer Success', 'Delivery'], params[:category]) %>
-    </div>
+      <div class="start-date-filter-detail">
+        <i>Select a date range to see every project in progress within those dates </i>
+      </div>
 
-    <div class="department-filter-detail">
-      <i>Select a Department to see every project related to it</i>
-    </div>
+      <div class="department-filter">
+        <label for="departments">Project Categories:</label>
+        <%= select_tag :department, options_for_select(['Select Project Category', 'Marketing <> Sales Handover', 'Sales <> Customer Success Handover'], params[:category]) %>
+      </div>
 
-    <div class="button">
-      <%= submit_tag "Filter", name: nil %>
+      <div class="department-filter-detail">
+        <i>Select the Project Category to see every project related to it</i>
+      </div>
+
+      <div class="button">
+        <%= submit_tag "Filter", name: nil %>
+      </div>
     </div>
-  </div>
+  <% end %>
 <% end %>
 
 <hr class="separator">
 
-<%= render 'projects_timeline' %>
-  
+<div id="projects_timeline">
+  <%= render 'projects_timeline' %>
+</div>
+    
 <hr class="separator">
 
 <div id="all-projects" class="projects-grid">
@@ -53,4 +64,5 @@
     <%= render 'project_card', project: project%>
   <% end %>
 </div>
+
   
