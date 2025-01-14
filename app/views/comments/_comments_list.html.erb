@@ -8,7 +8,7 @@
   <% comments.each do |comment| %> <%# iterating over this comments variable (which is equal to @project.comments in this case). That's why the loop in your partial is using comments.each: %>
     <% if comment.persisted? %>
       <div id="comment_<%= comment.id %>_list" class="project-comment"> <%# Unique ID for each comment %>
-        <% if comment.user %>
+        <% if comment.user %> <%# codition in case the user of the comment is nil (if it was deleted) %>
           <strong><%= comment.user.name %>:</strong>
           <div class="comment-body">
             <%= raw comment.body.to_s %>

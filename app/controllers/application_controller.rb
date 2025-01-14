@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   before_action :store_user_location!, if: :storable_location?
+  before_action :configure_permitted_parameters, if: :devise_controller?
 
   private
 
@@ -15,7 +16,12 @@ class ApplicationController < ActionController::Base
     projects_path
   end
 
-  def storable_location?   #Helper to determine if we should store the location
+  def storable_location? #Helper to determine if we should store the location
     request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+  end
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:name]) #This line allows the name field to be saved when a user signs up.
+    devise_parameter_sanitizer.permit(:account_update, keys: [:name]) #This line allows the name field to be updated when a user edits their profile.
   end
 end
