@@ -8,20 +8,7 @@ class Project < ApplicationRecord
 	validates :department, presence: true
 	has_rich_text :description
 
-	scope :by_department, ->(department) { 
-		if department.present? && department != 'All Departments'
-			where(department: department)
-		else
-			all
-		end
-	}
-
-	scope :by_date_range, ->(start_date, end_date) {
-		if start_date.present? && end_date.present?
-			where(start_date: start_date..end_date)
-		else
-			all
-		end
-	}
+	scope :by_department, ->(department) { where(department: department) if department.present? }
+  scope :by_date_range, ->(start_date, end_date) { where(start_date: start_date..end_date) }
 
 end
