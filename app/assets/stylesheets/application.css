@@ -14,498 +14,483 @@
  *= require_self
  */
 
-
 @import "./actiontext.css";
 
 :root { /* defining root styling */   
-    --bg-color:linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed; /* 1st color starts at the very beginning of the gradient. The 2nd goes from 80% to the rest of the page. The degrees define the direction of the gradient */
-    --font-color: #574e47;
-    --font-family: "Inter", sans-serif;
-    --font-size-title: 1.2rem;
-    --font-size-body: 1.1rem;
-    --font-size-detail: 0.9rem;
-    --input-field-bg-color: #f0f0f0;
+	--bg-color:linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed; /* 1st color starts at the very beginning of the gradient. The 2nd goes from 80% to the rest of the page. The degrees define the direction of the gradient */
+	--font-color: #574e47;
+	--font-family: "Inter", sans-serif;
+	--font-size-title: 1.2rem;
+	--font-size-body: 1.1rem;
+	--font-size-detail: 0.9rem;
+	--input-field-bg-color: #f0f0f0;
 }
 
 /* app/assets/stylesheets/application.css */
 
 trix-editor {
-    background-color: #e7eaed; /* Change this to your desired background color */
-    border: solid #e2dede; /* Creating a border for each individual comment boddy */
-    border-radius: 5px; /* Optional: add rounded corners */
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
-    padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
-    margin: 0.5rem 0;
+	background-color: #e7eaed; /* Change this to your desired background color */
+	border: solid #e2dede; /* Creating a border for each individual comment boddy */
+	border-radius: 5px; /* Optional: add rounded corners */
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+	padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
+	margin: 0.5rem 0;
 }
 
 trix-toolbar .trix-button-group button { 
-    background-color: #e5ebee; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
-    border: none;
+	background-color: #e5ebee; /* changes the trix editor button colors (default is black and so with current background color they "disappear"*/
+	border: none;
 }
 
 .inline-form {
-    display: inline;
-    margin: 0;
-    padding: 0;
+	display: inline;
+	margin: 0;
+	padding: 0;
 }
 
 .button-link {
-    display: inline-block;
-    background: none;
-    border: none;
-    padding: 0;
-    font: inherit;
-    color: inherit;
+	display: inline-block;
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: inherit;
 }
 
 .button-link:hover {
-    text-decoration: underline;
-    cursor: pointer;
+	text-decoration: underline;
+	cursor: pointer;
 }
 
 .button input[type="submit"],
 .close-button,
 .cancel-button {
-    background-color: #c7ccce;
-    border-radius: 10%;
-    border: none;
-    padding: 0.5rem;
-    margin: 0.5rem 0.5rem 0.5rem 0;    
-    font-size: inherit;
-    color: var(--font-color);
+	background-color: #c7ccce;
+	border-radius: 10%;
+	border: none;
+	padding: 0.5rem;
+	margin: 0.5rem 0.5rem 0.5rem 0;    
+	font-size: inherit;
+	color: var(--font-color);
 }
 
 .close-modal-button {
-    background-color: #c7ccce;
-    border-radius: 10%;
-    border: none;
-    padding: 0.5rem;
-    margin-top: 2rem !important;    
-    font-size: inherit;
+	background-color: #c7ccce;
+	border-radius: 10%;
+	border: none;
+	padding: 0.5rem;
+	margin-top: 2rem !important;    
+	font-size: inherit;
 }
 
 .button input[type="submit"]:hover {
-    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+	cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
 }
 
 * { /* resetting browser default setting */
-    box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
-    margin: 0; 
-    padding: 0;
-    text-decoration: none; /* removes the underline of all the hyperlinks */
+	box-sizing: border-box; /* keeps the original width and height when adding padding and margin */
+	margin: 0; 
+	padding: 0;
+	text-decoration: none; /* removes the underline of all the hyperlinks */
 }
 
 a {
-    color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
+	color: var(--font-color); /* makes sure that any link that is clicked on does not change color afterwards */
 }
 
 .separator {
-    border: none; /* Remove the default border */
-    border-top: 1px solid #ccc; /* A thin, solid line */
-    width: 100%; /* Make it span the width of the container */
+	border: none; /* Remove the default border */
+	border-top: 1px solid #ccc; /* A thin, solid line */
+	width: 100%; /* Make it span the width of the container */
 }
 
 .comments-separator {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin: 1rem 0; /* Adjust vertical spacing as needed */
+	display: flex;
+	align-items: center;
+	width: 100%;
+	margin: 1rem 0; /* Adjust vertical spacing as needed */
 }
-  
+
 .comments-separator::before,
 .comments-separator::after {
-content: ''; /* required for pseudo-elements to display */
-flex: 1; /* allows the lines to stretch and fill the available space */
-border-bottom: 2px solid #ccc; /* Line color and thickness */
+	content: ''; /* required for pseudo-elements to display */
+	flex: 1; /* allows the lines to stretch and fill the available space */
+	border-bottom: 2px solid #ccc; /* Line color and thickness */
 }
 
 .comments-separator::before {
-margin-right: 1rem; /* Space between line and date */
+	margin-right: 1rem; /* Space between line and date */
 }
 
 .comments-separator::after {
-margin-left: 1rem; /* Space between date and line */
+	margin-left: 1rem; /* Space between date and line */
 }
 
 .comments-separator span {
-white-space: nowrap; /* Prevent the date from wrapping */
-color: #666; /* Text color */
+	white-space: nowrap; /* Prevent the date from wrapping */
+	color: #666; /* Text color */
 }
 
 .page-title {
-    text-align: center;
-    margin: 2rem 2rem 0.5rem 2rem;
+	text-align: center;
+	margin: 2rem 2rem 0.5rem 2rem;
 }
 
 .comments-modal-title {
-    text-align: center;
-    margin: 1rem 2rem 2rem 2rem;
+	text-align: center;
+	margin: 1rem 2rem 2rem 2rem;
 }
 
 .project-show-dates,
 .project-department,
 .comments-timeline-description,
 .projects-timeline-description  {
-    text-align: center;
-    padding: 0 1rem 0.5em 1rem; 
-    font-size: 0.9rem;
+	text-align: center;
+	padding: 0 1rem 0.5em 1rem; 
+	font-size: 0.9rem;
 }
 
 .project-timeline-dates,
 .start-date-filter-detail,
 .department-filter-detail {
-    font-size: 0.8rem;
-    margin: 0.3rem 0 1rem 0;
-    font-weight: normal;
+	font-size: 0.8rem;
+	margin: 0.3rem 0 1rem 0;
+	font-weight: normal;
 }
 
 .project-description {
-    list-style: none;
-    text-align: center;
-    margin: 1.5rem auto;
-    font-size: 0.9rem;
-    width: 60%; 
+	list-style: none;
+	text-align: center;
+	margin: 1.5rem auto;
+	font-size: 0.9rem;
+	width: 60%; 
 }
 
 .project-actions {
-    text-align: center;
-    padding: 0 1rem 1.5rem 1rem;
-    font-size: 1rem;
+	text-align: center;
+	padding: 0 1rem 1.5rem 1rem;
+	font-size: 1rem;
 }
 
 .project-actions a:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .project-show-comments {
-    padding: 2rem 0;
+	padding: 2rem 0;
 }
 
 .projects-filters{
-    margin-top: 2rem;
+	margin-top: 2rem;
 }
 
 .new-project-prompt {
-    list-style: none;
-    text-align: center;
-    margin: 1rem 2rem 2rem 2rem;
+	list-style: none;
+	text-align: center;
+	margin: 1rem 2rem 2rem 2rem;
 }
 
 .new-project-prompt a:hover {
-    text-align: center;
-    background-color: #e5ebee;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
-    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
-    padding: 1rem;
+	text-align: center;
+	background-color: #e5ebee;
+	border-radius: 50px;
+	border: none;
+	cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+	transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
+	padding: 1rem;
 }
 
 .project-comment {
-    margin: 1rem 0 0;
+	margin: 1rem 0 0;
 }
 
 .highlighted-projects-grid,
 .projects-grid {
-    display: grid; /* Defining the display as grid */
-    grid-template-columns: repeat(5, 1fr); /* Declaring how many columns I need and making sure they're equal size */ 
-    gap: 1.5rem; /* Adding gap between grid cells */ 
-    margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */ 
+	display: grid; /* Defining the display as grid */
+	grid-template-columns: repeat(5, 1fr); /* Declaring how many columns I need and making sure they're equal size */ 
+	gap: 1.5rem; /* Adding gap between grid cells */ 
+	margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */ 
 }
 
 .recent-projects-grid,
 .due-soon-projects-grid,
 .past-due-projects-grid {
-    display: grid; /* Defining the display as grid */
-    grid-template-columns: 1fr; /* Declaring that the grid will have only 1 column */
-    grid-template-rows: 1fr; /* Declaring that the grid will have only 1 row */
-    gap: 1.5rem;
-    margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */
+	display: grid; /* Defining the display as grid */
+	grid-template-columns: 1fr; /* Declaring that the grid will have only 1 column */
+	grid-template-rows: 1fr; /* Declaring that the grid will have only 1 row */
+	gap: 1.5rem;
+	margin: 1.5rem; /* Adding margin (spacing on the outside of the whole grid) */
 }
 
 .highlighted-projects-grid .project-card {
-    display: grid;
-    grid-area: 1 / 1; /* Defines the area where project-cards will be placed within the grid. In this case, starts in the 1st row and column */
-    gap: 1.5rem;
-    margin: 1.5rem; /* Adding margin (spacing on the outside of the project-card) */
+	display: grid;
+	grid-area: 1 / 1; /* Defines the area where project-cards will be placed within the grid. In this case, starts in the 1st row and column */
+	gap: 1.5rem;
+	margin: 1.5rem; /* Adding margin (spacing on the outside of the project-card) */
 }
 
 
 .highlighted-projects-grid .project-card:nth-child(1) {
-    transform: rotate(-2deg); /* Rotate the 1st card slightly counter-clockwise */
+	transform: rotate(-2deg); /* Rotate the 1st card slightly counter-clockwise */
 }
 
 .highlighted-projects-grid .project-card:nth-child(2) {
-    transform: rotate(2deg); /* Rotate the 2nd card slightly clockwise */
+	transform: rotate(2deg); /* Rotate the 2nd card slightly clockwise */
 }
 
 .highlighted-projects-grid .project-card:nth-child(3) {
-    transform: rotate(-4deg); /* Rotate the 3rd card slightly counter-clockwise */ 
+	transform: rotate(-4deg); /* Rotate the 3rd card slightly counter-clockwise */ 
 }
 
 .highlighted-projects-grid .project-card:hover {
-    transform: scale(1.05); /* Slight zoom on hover */ 
+	transform: scale(1.05); /* Slight zoom on hover */ 
 }
 
 .project-card {
-    background-color: #e5ebee;
-    border: solid #e2dede; /* Creating a border for each individual project card */
-    height: 200px; /* Defining a height for each project card */
-    border-radius: 5%;
-    padding: 1em;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05); /* Basic shadow */
+	background-color: #e5ebee;
+	border: solid #e2dede; /* Creating a border for each individual project card */
+	height: 200px; /* Defining a height for each project card */
+	border-radius: 5%;
+	padding: 1em;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05); /* Basic shadow */
 }
 
 .project-card-name {
-    text-align: center;
-    padding: 1rem 1rem 0.5rem 1rem;
+	text-align: center;
+	padding: 1rem 1rem 0.5rem 1rem;
 }
 
 .project-card-dates {
-    text-align: center;
-    padding: 0 1rem 2rem 1rem;
-    font-size: 0.8rem;
+	text-align: center;
+	padding: 0 1rem 2rem 1rem;
+	font-size: 0.8rem;
 }
 
 .modal {
 	position: fixed;
-  z-index: 1;
-  padding: 2em;
-  background: var(--bg-color);
-  /* Centering */
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  overflow: auto;
-  border-radius: 5px;
-  /* Add the drop shadow */
-  box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
-  
+	z-index: 1;
+	padding: 2em;
+	background: var(--bg-color);
+	/* Centering */
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+	border-radius: 5px;
+	/* Add the drop shadow */
+	box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
 }
 
 .edit-comment-actions {
-    display: flex;
-    align-items: center;
-    margin-top: 0.5rem;
+	display: flex;
+	align-items: center;
+	margin-top: 0.5rem;
 }
 
 .comment-actions {
-    font-size: smaller;
+	font-size: smaller;
 }
 
 .comment-modal-title {
-    text-align: center;
-    margin: 0rem 2rem 2rem 2rem;
+	text-align: center;
+	margin: 0rem 2rem 2rem 2rem;
 }
 
 .comment-body {
-    background-color: #e7eaed; /* Change this to your desired background color */
-    border: solid #e2dede; /* Creating a border for each individual comment boddy */
-    border-radius: 5px; /* Optional: add rounded corners */
-    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05);
-    padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
-    margin: 0.5rem 0;
+	background-color: #e7eaed; /* Change this to your desired background color */
+	border: solid #e2dede; /* Creating a border for each individual comment boddy */
+	border-radius: 5px; /* Optional: add rounded corners */
+	box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05);
+	padding: 1rem 0.5rem; /* Optional: add some padding for better appearance */
+	margin: 0.5rem 0;
 }
 
 .comment-body ul, /* making sure that bullet points are indented properly inside the comment-body when used in comments*/
 .comment-body ol {
-    margin-left: 0.5rem; /* Adjust as needed */
+	margin-left: 0.5rem; /* Adjust as needed */
 }
 
 .comment-body li { /* making sure that bullet points are indented properly inside the comment-body when used in comments*/
-    list-style-position: inside; /* Ensure bullets are inside the .comment-body */
+	list-style-position: inside; /* Ensure bullets are inside the .comment-body */
 }
 
 body {
-    background: var(--bg-color); /* background-color: var(--bg-color); */
-    color: var(--font-color);
-    font-family: var(--font-family);
-    margin: 2rem;
+	background: var(--bg-color); /* background-color: var(--bg-color); */
+	color: var(--font-color);
+	font-family: var(--font-family);
+	margin: 2rem;
 }
 
 .navbar ul { /* targetting only ul's inside the navbar so that rich text formatting works */
-    display: flex; /* displaying ul's direct children (li's) horizontally */
-    flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
-    justify-content: center; /* aligns li's in the center of ul container, which is specifically important in smaller viewports*/
-    align-items: center; /* aligning ul's in the center */
+	display: flex; /* displaying ul's direct children (li's) horizontally */
+	flex-wrap: wrap; /* allows li's to wrap on top of each other when there isn't enough space */
+	justify-content: center; /* aligns li's in the center of ul container, which is specifically important in smaller viewports*/
+	align-items: center; /* aligning ul's in the center */
 
-    @media all and (max-width: 480px) { 
-        margin-top: 1rem; /* adding a bit of top margin to get .nav-items further away from logo in smaller viewports */
-    }
+	@media all and (max-width: 480px) { 
+			margin-top: 1rem; /* adding a bit of top margin to get .nav-items further away from logo in smaller viewports */
+	}
 }
 
 .navbar li { /* targetting only li's inside the navbar so that rich text formatting works */
-    padding: 10px; /* increases background area without moving other li's when hovering */
-    list-style: none; /* removes bullet from li's */
-    font-size: var(--font-size-title); 
+	padding: 10px; /* increases background area without moving other li's when hovering */
+	list-style: none; /* removes bullet from li's */
+	font-size: var(--font-size-title); 
 }
 
 .navbar li:hover { /* targetting only the hover on li's inside the navbar so that hovering does not affect li's from projects */
-    background-color: #e5ebee; /* changes the li background color whenever the mouse is hovered on it */
-    border-radius: 50px;
-    border: none;
-    cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
-    transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
-    padding: 1rem;
+	background-color: #e5ebee; /* changes the li background color whenever the mouse is hovered on it */
+	border-radius: 50px;
+	border: none;
+	cursor: pointer; /* turns the cursor to a pointer whenever it hovers over the button */
+	transition: all 0.3s ease 0s; /* how long it takes to transition the pointer type */
+	padding: 1rem;
 }
 
 .navbar {
-    display: flex; /* distributes items (.brand and .nav-items) horizontaly */
-    text-align: center; /* aligns text vertically in the center of container */
-    flex-wrap: wrap; /* wraps logo and nav-items on top of each other */
-    justify-content: space-between; /* adds space evenly between flex items */
-    @media all and (max-width: 480px) { 
-        justify-content: center; /* justifying .navbar items in the center of the screen when viewport gets to a max width of 480px */
-    }
+	display: flex; /* distributes items (.brand and .nav-items) horizontaly */
+	text-align: center; /* aligns text vertically in the center of container */
+	flex-wrap: wrap; /* wraps logo and nav-items on top of each other */
+	justify-content: space-between; /* adds space evenly between flex items */
+	@media all and (max-width: 480px) { 
+			justify-content: center; /* justifying .navbar items in the center of the screen when viewport gets to a max width of 480px */
+	}
 }
 
 .top-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* aligning items to the center of the screen. it won't make a difference in the desktop viewport, but keeps it centered in smaller viewports */
-    text-align: center; /* distributes text horizontally to the center of the screen */      
-    padding: 4rem 1rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* aligning items to the center of the screen. it won't make a difference in the desktop viewport, but keeps it centered in smaller viewports */
+	text-align: center; /* distributes text horizontally to the center of the screen */      
+	padding: 4rem 1rem;
 }
 
 .top-section > .title {
-    margin: 2rem 0;
-    font-size: 3rem;
+	margin: 2rem 0;
+	font-size: 3rem;
 }
 
 .top-section > .sub-title {
-    font-size: var(--font-size-title);
-    margin: 1rem 0 0.5rem 0;
-    font-size: 1.5rem;
+	font-size: var(--font-size-title);
+	margin: 1rem 0 0.5rem 0;
+	font-size: 1.5rem;
 }
 
 .card-deck {
-    display: flex; /* distributes items horizontaly */
-    justify-content: center; /* distributes flex items to the center of the main axis (in this case, horizontally) */
-    gap: 2rem; /* adds gap between .card-deck children */ 
-    padding-right: 20%; /* adding padding to the deck to make cards fatter */
-    padding-left: 20%; /* adding padding to the deck to make cards fatter */
-    flex-wrap: wrap; /* wraps .cards on top of each other */
-    margin-bottom: 3rem;
+	display: flex; /* distributes items horizontaly */
+	justify-content: center; /* distributes flex items to the center of the main axis (in this case, horizontally) */
+	gap: 2rem; /* adds gap between .card-deck children */ 
+	padding-right: 20%; /* adding padding to the deck to make cards fatter */
+	padding-left: 20%; /* adding padding to the deck to make cards fatter */
+	flex-wrap: wrap; /* wraps .cards on top of each other */
+	margin-bottom: 3rem;
 }
 
 .card {
-    background-color: var(--bg-color);
-    border: solid var(--bg-color);
-    border-color: var(--font-color);
-    flex: 1; /* grow continar to fill available space from the parent (.card-deck) and distributes children evenly, while allowing shrinking and setting same basis (=width) for all of them */
-    border-radius: 10px; /* makes border a bit rounded */
-    text-align: center;
-    display: flex; 
-    flex-direction: column; /* displays .card direct children as columns */
+	background-color: var(--bg-color);
+	border: solid var(--bg-color);
+	border-color: var(--font-color);
+	flex: 1; /* grow continar to fill available space from the parent (.card-deck) and distributes children evenly, while allowing shrinking and setting same basis (=width) for all of them */
+	border-radius: 10px; /* makes border a bit rounded */
+	text-align: center;
+	display: flex; 
+	flex-direction: column; /* displays .card direct children as columns */
 }
 
 .card:hover {
-    transform: rotate(10deg) scale(1.1);
-    transition: all 0.3s ease 0s;
-    cursor: pointer;
+	transform: rotate(10deg) scale(1.1);
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
 }
 
 .card > .title {
-    font-size: var(--font-size-title);
-    padding: 1rem 1rem;
+	font-size: var(--font-size-title);
+	padding: 1rem 1rem;
 }
 
 .card > .body {
-    font-size: var(--font-size-body);
-    padding: 1rem 0.5rem 1rem 0.5rem;    
+	font-size: var(--font-size-body);
+	padding: 1rem 0.5rem 1rem 0.5rem;    
 }
 
 .mid-section { 
-    display: grid; /* applies the grid layout to .mid-section */
-    grid-template-columns: repeat(5, 1fr); /* sets the grid with 5 columns, with each element spanning to the column whole width */
-    border: solid;
+	display: grid; /* applies the grid layout to .mid-section */
+	grid-template-columns: repeat(5, 1fr); /* sets the grid with 5 columns, with each element spanning to the column whole width */
+	border: solid;
 }
 
 .mid-section > .text {
-    grid-column-start: 1; /* sets the beginning of the .text <div> at the first column */
-    grid-column-end: span 3; /* sets the end of the .text <div> to the 3rd column */
+	grid-column-start: 1; /* sets the beginning of the .text <div> at the first column */
+	grid-column-end: span 3; /* sets the end of the .text <div> to the 3rd column */
 }
 
 .mid-section > .text > .title {
-    /* font-size: var(--font-size-title); */
-    font-weight: 600;
-    padding: 1rem;
+	/* font-size: var(--font-size-title); */
+	font-weight: 600;
+	padding: 1rem;
 }
 
 .mid-section > .text > .body {
-    font-weight: 400;
-    padding: 0 1rem 1rem 1rem;
+	font-weight: 400;
+	padding: 0 1rem 1rem 1rem;
 }
 
 .mid-section > .image {
-    grid-column-end: span 2;
-    text-align: center;
+	grid-column-end: span 2;
+	text-align: center;
 }
 
 .comments-timeline-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-    gap: 2rem;
-    padding: 3rem 10rem;
-    justify-items: center; /* Centers items in their grid cells */
+  display: grid;
+  grid-template-columns: auto repeat(15, 1fr); /* Define 15 week columns */
+  grid-template-rows: auto auto; /* Two rows: one for items, one for dates */
+  margin: 2rem 10rem;
+  overflow-x: auto;
+  row-gap: 1rem; /* Adjust vertical spacing between rows */
 }
-  
-.comments-timeline-entry {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    width: 100%; /* Takes full width of grid cell */
-}
-  
+
 .comments-timeline-item {
-    position: relative;
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    background-color: #e7eaed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background-color: #e7eaed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto; /* Center the items horizontally */
 }
 
 .comments-timeline-item::after {
-    content: '';
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 4rem;
-    border-left: 1px dashed #ccc;
-    background-color: #dad9d9;
-}
-
-.comments-timeline-date {
-    font-size: 0.9em;
-    color: gray;
-    margin-top: 5rem;
+	content: '';
+	position: absolute;
+	top: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 4rem;
+	border-left: 1px dashed #ccc;
+	background-color: #dad9d9;
 }
 
 .projects-timeline-container {
-  display: grid;
-  grid-template-columns: auto repeat(15, 1fr); /* 15 week columns */
-  margin: 2rem 0;
-  overflow-x: auto;
-  row-gap: 1rem; /* Adjust this value to increase or decrease vertical spacing */
+	display: grid;
+	grid-template-columns: auto repeat(15, 1fr); /* 15 week columns */
+	margin: 2rem 0;
+	overflow-x: auto;
+	row-gap: 1rem; /* Adjust this value to increase or decrease vertical spacing */
 }
 
 .projects-timeline-item {
-    margin-left: 3rem;
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 50%;
-    background-color: #e7eaed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+	margin-left: 3rem;
+	width: 2rem;
+	height: 2rem;
+	border: 1px solid #ddd;
+	border-radius: 50%;
+	background-color: #e7eaed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .timeline-header-cell {
@@ -519,25 +504,16 @@ body {
 
 .entity-name,
 .timeline-entry {
-    margin: 0.5rem;
+	margin: 0.5rem;
 }
 
 .entity-name {
-  font-weight: bold;
-  text-align: left;
-}
-
-.timeline-header-cell {
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+font-weight: bold;
+text-align: left;
 }
 
 .end-date-filter,
 .department-filter {
-    margin-top: 0.5rem;
-    font: inherit;
+	margin-top: 0.5rem;
+	font: inherit;
 }
