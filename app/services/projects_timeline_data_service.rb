@@ -8,11 +8,13 @@ class ProjectsTimelineDataService
 
   def call #Public method to execute the service's main functionality
     
-    @projects = if department_present?
-      Project.by_department(@department).by_date_range(@start_date, @end_date) #Retrieves projects filtered by department and date range if there is a department selected
-    else
-      Project.by_date_range(@start_date, @end_date) #Retrieves all projects if no department selected
-    end
+    @projects = Project.all
+
+    # Apply department filtering unless "All" is selected
+    @projects = @projects.where(department: @department) if department_present?
+  
+    # Apply date range filtering
+    @projects = @projects.by_date_range(@start_date, @end_date)
     
     total_weeks = ((@end_date - @start_date).to_i / 7).ceil #Calculates the total number of weeks between start_date and end_date
     @week_starts = (0..total_weeks).map { |i| @start_date + i.weeks } #Generates an array of week start dates based on the total number of weeks
