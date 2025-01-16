@@ -29,8 +29,8 @@
             <% if project %>
               <%= link_to entity[:name], project_path(project) %> <%# If project is not nil, it generates the link using project_path(project) %>
             <% else %>
-          <span><%= entity[:name] %></span> <%# If project is nil, it displays the name as plain text (<span>), avoiding the error, which prevents Rails from attempting to generate an invalid URL with a missing id %>
-        <% end %>
+              <span><%= entity[:name] %></span> <%# If project is nil, it displays the name as plain text (<span>), avoiding the error, which prevents Rails from attempting to generate an invalid URL with a missing id %>
+            <% end %>
           <div class="project-timeline-dates">
             <%= entity[:start_date].strftime("%m/%d/%Y") %> - <%= entity[:end_date].strftime("%m/%d/%Y") %>
           </div>

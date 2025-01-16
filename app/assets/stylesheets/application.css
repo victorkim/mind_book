@@ -151,6 +151,7 @@ a {
 }
 
 .project-timeline-dates,
+.comments-timeline-weekly-description,
 .start-date-filter-detail,
 .department-filter-detail {
 	font-size: 0.8rem;
@@ -440,11 +441,11 @@ body {
 	text-align: center;
 }
 
+.projects-timeline-container,
 .comments-timeline-container {
   display: grid;
   grid-template-columns: auto repeat(15, 1fr); /* Define 15 week columns */
-  grid-template-rows: auto auto; /* Two rows: one for items, one for dates */
-  margin: 2rem 10rem;
+  margin: 2rem 0;
   overflow-x: auto;
   row-gap: 1rem; /* Adjust vertical spacing between rows */
 }
@@ -459,26 +460,6 @@ body {
   justify-content: center;
   align-items: center;
   margin: auto; /* Center the items horizontally */
-}
-
-.comments-timeline-item::after {
-	content: '';
-	position: absolute;
-	top: calc(100% + 10px);
-	left: 50%;
-	transform: translateX(-50%);
-	width: 0;
-	height: 4rem;
-	border-left: 1px dashed #ccc;
-	background-color: #dad9d9;
-}
-
-.projects-timeline-container {
-	display: grid;
-	grid-template-columns: auto repeat(15, 1fr); /* 15 week columns */
-	margin: 2rem 0;
-	overflow-x: auto;
-	row-gap: 1rem; /* Adjust this value to increase or decrease vertical spacing */
 }
 
 .projects-timeline-item {
