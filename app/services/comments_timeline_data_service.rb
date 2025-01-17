@@ -2,8 +2,8 @@ class CommentsTimelineDataService
 
 	def initialize(project) #Using the project object as parameter for which the comment timeline is being generated. This service is tightly coupled to a specific project. It needs access to the start_date of the project and its associated comments to generate a timeline.
 		@project = project #Assigns @project to an instance variable for use in other methods. The @project instance variable provides direct access to the project's attributes
-    @starting_date = project.start_date.beginning_of_week #Calculate starting date here
-    @ending_date = Date.today.end_of_week #Calculate ending date here
+		@starting_date = project.start_date.beginning_of_week(:sunday) #Calculate starting date here (weeks starting on a sunday)
+		@ending_date = Date.today.end_of_week(:saturday) #Calculate ending date here (weeks ending on a saturday)
 	end
 
 	def call
