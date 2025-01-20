@@ -441,60 +441,45 @@ body {
 	text-align: center;
 }
 
-.projects-timeline-container,
-.comments-timeline-container {
-  display: grid;
-  grid-template-columns: auto repeat(15, 1fr); /* Define 15 week columns */
-  margin: 2rem 2rem;
-  overflow-x: auto;
-  row-gap: 1rem; /* Adjust vertical spacing between rows */
-}
-
-.comments-timeline-item {
-  width: 2rem;
-  height: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 50%;
-  background-color: #e7eaed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto; /* Center the items horizontally */
-}
-
-.projects-timeline-item {
-	margin-left: 3rem;
-	width: 2rem;
-	height: 2rem;
-	border: 1px solid #ddd;
-	border-radius: 50%;
-	background-color: #e7eaed;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
 .timeline-header-cell {
-	transform: rotate(-15deg);
-	margin-left: 2rem;
-	padding: 12px;
-	border: none;
-	text-align: center;
-	margin-top: 2rem;
+	transform: rotate(-15deg);	
 }
 
-.entity-name,
+td.timeline-entry {
+	min-width: 100px;
+	white-space: nowrap;
+}
+
+.projects-timeline-table {
+	margin-top: 5rem;
+	border-collapse: separate; /* switch to separate borders */
+  border-spacing: 0 0;       /* row col spacing (vertical, horizontal) */
+  border-spacing: 1rem 0;    /* for example, 1rem horizontal, 0 vertical */
+	width: auto;               /* let the table size itself based on content */
+  overflow-x: auto;          /* if you wrap the table in a container, you can scroll horizontally as needed */
+}
+
+.projects-timeline-table td:not(:first-child),
+.projects-timeline-table th:not(:first-child) {
+  padding-left: 3rem; /* extra space on the left side of columns #2..N */
+}
+
+.department-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.separator {
+  border: none; 
+  border-top: 1px solid #ccc;
+  margin: 1rem 0;
+}
+
+.project-timeline-dates {
+  color: #666;
+  font-style: italic;
+}
+
 .timeline-entry {
-	margin: 0.5rem;
-}
-
-.entity-name {
-font-weight: bold;
-text-align: left;
-}
-
-.end-date-filter,
-.department-filter {
-	margin-top: 0.5rem;
-	font: inherit;
+  text-align: center;
 }

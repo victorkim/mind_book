@@ -18,39 +18,6 @@
 	<% end %>
 </div>
 
-<% if @projects.empty? %>
-  
-<% else %>
-
-  <!-- Filter Form -->
-  <%= form_with url: projects_path, method: :get, local: true do %>
-    <div class="projects-filters">
-      <!-- Date Range Filter -->
-      <div class="start-date-filter">
-        <label for="start_date">Date Range:</label>
-        <%= date_field_tag :start_date, params[:start_date], placeholder: "From" %> - <%= date_field_tag :end_date, params[:end_date], placeholder: "To" %>
-      </div>
-
-      <div class="start-date-filter-detail">
-        <i>Select a date range to see every project in progress within those dates </i>
-      </div>
-
-      <div class="department-filter">
-        <label for="departments">Project Categories:</label>
-        <%= select_tag :department, options_for_select(['All', 'Marketing <> Sales Handover', 'Sales <> Customer Success Handover'], params[:category]), prompt: "Select Project Category" %>
-      </div>
-
-      <div class="department-filter-detail">
-        <i>Select the Project Category to see every project related to it</i>
-      </div>
-
-      <div class="button">
-        <%= submit_tag "Filter", name: nil %>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-
 <hr class="separator">
 
 <div id="projects_timeline">
