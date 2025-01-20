@@ -6,28 +6,55 @@
   <i>Shows the number of comments on each week since the Project's start date</i>
 </div>
 
-<div class="comments-timeline-container">
+<%# app/views/projects/_comments_timeline.html.erb %>
 
-  <div class="entity-name" style="grid-row: 1 / span 2; grid-column: 1;">
-    <strong><%= @project.name %></strong>
-    <div class="comments-timeline-weekly-description">
-      Showing weekly comments from <br> <%= @project.name %> Project
-    </div>
-  </div>
+<table class="comments-timeline-table">
+  <!-- 
+      <colgroup> for 1 auto-sized column (col1),
+      plus all your weekly columns sharing one definition:
+  -->
+  <colgroup>
+    <col />
+    <col span="<%= @weeks_data.size %>" />
+  </colgroup>
 
-  <% @weeks_data.each_with_index do |week, index| %>
-      <div class="comments-timeline-item" style="grid-row: 1; grid-column: <%= index + 2 %>;">
-        <%= link_to weekly_project_comments_path(@project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
-          <% if week[:count] != 0 %>
-            <strong><%= week[:count] %></strong>
-          <% else %>
-            -
+  <thead>
+    <tr>
+      <!-- First cell is empty: column #1 for project info -->
+      <th></th>
+      <!-- One header cell per week -->
+      <% @weeks_data.each do |week| %>
+        <th class="timeline-header-cell">
+          <%= week[:week_start].strftime("%m/%d/%y") %>
+        </th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <!-- Row #2: Actual project info + weekly comment counts -->
+    <tr>
+      <!-- Column #1: project info -->
+      <td class="entity-info">
+        <strong><%= @project.name %></strong>
+        <div class="project-timeline-dates">
+          <%= @project.start_date.strftime("%m/%d/%Y") %> -
+          <%= @project.end_date.strftime("%m/%d/%Y") %>
+        </div>
+      </td>
+
+      <!-- Columns #2..N: links to that week's comments -->
+      <% @weeks_data.each do |week| %>
+        <td class="timeline-entry">
+          <%= link_to weekly_project_comments_path(@project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
+            <% if week[:count].positive? %>
+              <strong><%= week[:count] %></strong>
+            <% else %>
+              -
+            <% end %>
           <% end %>
-        <% end %>
-      </div>
-
-      <div class="timeline-header-cell" style="grid-row: 2; grid-column: <%= index + 2 %>;">
-        <%= week[:week_start].strftime("%d/%m/%y") %>
-      </div>
-  <% end %>
-</div>
+        </td>
+      <% end %>
+    </tr>
+  </tbody>
+</table>

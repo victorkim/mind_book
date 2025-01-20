@@ -457,6 +457,7 @@ td.timeline-entry {
   border-spacing: 1rem 0;    /* for example, 1rem horizontal, 0 vertical */
 	width: auto;               /* let the table size itself based on content */
   overflow-x: auto;          /* if you wrap the table in a container, you can scroll horizontally as needed */
+	
 }
 
 .projects-timeline-table td:not(:first-child),
@@ -464,8 +465,19 @@ td.timeline-entry {
   padding-left: 3rem; /* extra space on the left side of columns #2..N */
 }
 
+/* Only add left padding to the second column in the table body */
+.projects-timeline-table tbody td:nth-child(2),
+.projects-timeline-table thead th:nth-child(2) {
+	padding-left: 5rem;
+}
+
+.projects-timeline-table thead th {
+  padding-bottom: 2rem; /* or however much space you want */
+}
+
 .department-name {
-  font-size: 1.2em;
+  padding-bottom: 1.5rem;
+	font-size: 1.2em;
   font-weight: bold;
 }
 
