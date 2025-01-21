@@ -16,6 +16,11 @@
 	
 	<%= form.rich_text_area :body, rows: 3 %>
 
+  <div class="form-field">
+		<%= form.label :date, "Comment Date" %>
+		<%= form.date_field :date %>
+  </div>
+
 	<div class="button">
 		<strong><%= form.submit "Submit" %></strong>
 	</div>
