@@ -11,7 +11,7 @@ class CommentsTimelineDataService
 		weeks.map do |week_start|
 			{
 				week_start: week_start,
-				count: @project.comments.where(created_at: week_start...week_start + 1.week).count
+				count: @project.comments.where(date: week_start...week_start + 1.week).count
 			}
 		end
 	end

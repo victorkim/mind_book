@@ -3,4 +3,5 @@ class Comment < ApplicationRecord
   belongs_to :project, optional: false #project must exist (check project model "has_many :comments, dependent: :destroy")
 
   validates :body, presence: true
+  validates :date, presence: true
 end

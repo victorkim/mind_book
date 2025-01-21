@@ -67,6 +67,6 @@ class ProjectsTimelineDataService
 
   def count_comments(comments_scope, week_start)
     week_end = week_start + 1.week
-    comments_scope.where(created_at: week_start...week_end).count
+    comments_scope.where(date: week_start...week_end).count
   end
 end

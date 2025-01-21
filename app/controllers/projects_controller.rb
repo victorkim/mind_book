@@ -14,7 +14,7 @@ class ProjectsController < ApplicationController
   def show
     @comment = @project.comments.build #Initialize (=prepare) a new comment for the comment form in the view, which allows users to add a new comment directly from the project show page.
     @comments = @project.comments.order(created_at: :desc) #Retrieve all comments for the project, ordered by creation date descending
-    @comments_by_date = @comments.group_by { |comment| comment.created_at.to_date } #Group comments by their creation date
+    @comments_by_date = @project.comments.group_by { |c| c.date || Date.today } #Group comments by their date
 
     @weeks_data = CommentsTimelineDataService.new(@project).call #Initialize the comments timeline data service and retrieve timeline data
   end
