@@ -8,6 +8,7 @@ class CommentsController < ApplicationController
   end
       
   def create # POST request that creates a new comment and associate it with a project and user
+    @project = Project.find(params[:project_id])  # This line is needed if using nested routes
     @comment = @project.comments.build(comment_params) #Ensure the association between comment and project
     @comment.date ||= Date.today
     @comment.user = current_user #It sets the user of the comment to the current_user
@@ -78,7 +79,7 @@ class CommentsController < ApplicationController
     end
       
     def comment_params #Strong parameters: permit only the necessary attributes to prevent mass assignment vulnerabilities
-      params.require(:comment).permit(:body, :date) #params.require(:comment) ensures that the request contains a :comment key. For example, if you're submitting a form to create or update a comment, Rails expects the form data to be nested under the :comment key. While the .permit(:body) defines which attributes of the comment are allowed to be submitted. In this case, only the body field of the comment is allowed.
+      params.require(:comment).permit(:body, :date, :project_id, :channel_id) #params.require(:comment) ensures that the request contains a :comment key. For example, if you're submitting a form to create or update a comment, Rails expects the form data to be nested under the :comment key. While the .permit(:body) defines which attributes of the comment are allowed to be submitted. In this case, only the body field of the comment is allowed.
     end
 end
   

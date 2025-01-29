@@ -9,6 +9,6 @@ class Project < ApplicationRecord
 	has_rich_text :description
 
 	scope :by_department, ->(department) { where(department: department) if department.present? }
-  scope :by_date_range, ->(start_date, end_date) { where(start_date: start_date..end_date) }
+  	scope :by_date_range, ->(start_date, end_date) { where(start_date: start_date..end_date) }
 
 end
