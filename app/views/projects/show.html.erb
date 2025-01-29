@@ -10,7 +10,7 @@
 
 <div>
   <% if user_signed_in? %>
-    <%= render 'comments/comments_new_form', project: @project, comment: @comment %>
+    <%= render 'comments/comments_new_form', parent: @project, comment: Comment.new %>
   <% else %>
     <%= link_to "Login to add, edit or delete a comment", new_user_session_path, class: "btn btn-primary" %>
   <% end %>

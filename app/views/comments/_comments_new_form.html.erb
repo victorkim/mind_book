@@ -1,27 +1,39 @@
-<%= form_with(model: [project, comment], local: true) do |form| %>
-	<% if comment.errors.any? %>
-  	<div style="color: red">
-    	<h2><%= pluralize(comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
-    	<ul>
-    		<% comment.errors.full_messages.each do |message| %>
-        	<li><%= message %></li>
-        <% end %>
-      </ul>
+<% if local_assigns[:parent].is_a?(Project) %>
+  <!-- We are rendering from a Project’s page -->
+  <%= form_with(model: [parent, comment], local: true) do |f| %>
+    <% if comment.errors.any? %>
+      <!-- error display -->
+    <% end %>
+
+    <!-- Body/Date fields, same as you have now -->
+    <%= f.rich_text_area :body, rows: 3 %>
+    <%= f.date_field :date %>
+
+    <!-- Channel dropdown (optional) -->
+    <div>
+      <%= f.label :channel_id, 'Channel (optional)' %>
+      <%= f.collection_select :channel_id, Channel.all, :id, :name, include_blank: true %>
     </div>
+
+    <%= f.submit "Submit" %>
   <% end %>
+<% elsif local_assigns[:parent].is_a?(Channel) %>
+  <!-- We are rendering from a Channel’s page -->
+  <%= form_with(model: [parent, comment], local: true) do |f| %>
+    <% if comment.errors.any? %>
+      <!-- error display -->
+    <% end %>
 
-	<div class="project-show-comments">
-		<h2><%= form.label :body, "Comments for #{@project.name}", style: "display: block" %></h2>
-	</div>
-	
-	<%= form.rich_text_area :body, rows: 3 %>
+    <!-- Body/Date fields -->
+    <%= f.rich_text_area :body, rows: 3 %>
+    <%= f.date_field :date %>
 
-  <div class="form-field">
-		<%= form.label :date, "Comment Date" %>
-		<%= form.date_field :date %>
-  </div>
+    <!-- Project dropdown (REQUIRED, no blank) -->
+    <div>
+      <%= f.label :project_id, 'Select a Project' %>
+      <%= f.collection_select :project_id, Project.all, :id, :name, include_blank: false %>
+    </div>
 
-	<div class="button">
-		<strong><%= form.submit "Submit" %></strong>
-	</div>
+    <%= f.submit "Submit" %>
+  <% end %>
 <% end %>

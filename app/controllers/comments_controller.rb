@@ -7,17 +7,54 @@ class CommentsController < ApplicationController
       @comments = @project.comments #GET request that displays all comments for a specific project (which is specified using set_project)
   end
       
-  def create # POST request that creates a new comment and associate it with a project and user
-    @project = Project.find(params[:project_id])  # This line is needed if using nested routes
-    @comment = @project.comments.build(comment_params) #Ensure the association between comment and project
+  def create
+    # 1) Check which nested route is being used
+    if params[:project_id]
+      @project = Project.find(params[:project_id])
+      @comment = @project.comments.build(comment_params)
+    elsif params[:channel_id]
+      @channel = Channel.find(params[:channel_id])
+      @comment = @channel.comments.build(comment_params)
+    else
+      # If there's no nested route, you could handle an error or just build a comment from comment_params
+      @comment = Comment.new(comment_params)
+    end
+  
+    # 2) Fill in additional fields (e.g. user, date).
+    @comment.user = current_user
     @comment.date ||= Date.today
-    @comment.user = current_user #It sets the user of the comment to the current_user
-      if @comment.save #It tries to save the comment. If successful, it redirects to the project page; if not, it re-renders the project page with validation errors.
+  
+    # If user is creating from a Channel page, we also need a Project to be selected from the form:
+    if @channel && comment_params[:project_id].present?
+      @comment.project = Project.find(comment_params[:project_id])
+    end
+  
+    # If user is creating from a Project page, channel_id might also be assigned in the form
+    if @project && comment_params[:channel_id].present?
+      @comment.channel = Channel.find(comment_params[:channel_id])
+    end
+  
+    # 3) Save and redirect
+    if @comment.save
+      if @project
         redirect_to @project, notice: 'Comment was successfully added.'
+      elsif @channel
+        redirect_to @channel, notice: 'Comment was successfully added.'
       else
-        redirect_to @project, alert: 'Failed to add comment.'
+        redirect_to root_path, notice: 'Comment was successfully added.'
       end
+    else
+      # Handle failure
+      if @project
+        redirect_to @project, alert: 'Failed to add comment.'
+      elsif @channel
+        redirect_to @channel, alert: 'Failed to add comment.'
+      else
+        redirect_to root_path, alert: 'Failed to add comment.'
+      end
+    end
   end
+  
 
   def edit
     @project = Project.find(params[:project_id])
