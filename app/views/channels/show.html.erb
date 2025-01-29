@@ -3,6 +3,14 @@
 <%= render @channel %>
 
 <div>
+  <% if user_signed_in? %>
+    <%= render 'comments/comments_new_form', parent: @channel, comment: Comment.new %>
+  <% else %>
+    <%= link_to "Login to add, edit or delete a comment", new_user_session_path, class: "btn btn-primary" %>
+  <% end %>
+</div>
+
+<div>
   <%= link_to "Edit this channel", edit_channel_path(@channel) %> |
   <%= link_to "Back to channels", channels_path %>
 
