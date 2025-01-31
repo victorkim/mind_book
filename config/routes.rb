@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'pricing', to: 'pages#pricing'
   
   resources :channels do
-    resources :comments, only: [:create]
+    resources :comments, only: [:create, :edit, :update, :destroy]
   end
   
   resources :projects do #RESTful routes for the Project model. Generates standard routes for all CRUD actions (resources helper is a shorthand for defining all the standard RESTful routes Rails expects)

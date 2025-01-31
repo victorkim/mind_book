@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :weekly] #checks if user is authenticated whenever they try to run any operation besides index
-  before_action :set_project #This method is called before each action. It finds the project that the comment belongs to, using the project_id from the URL.
+  before_action :set_project, only: [:create] #This method is called before each action. It finds the project that the comment belongs to, using the project_id from the URL.
   before_action :set_comment, only: [:edit, :update, :destroy] #This method is called before the edit, update, and destroy actions. It finds the specific comment within the project by its id.
   
   def index
@@ -107,8 +107,10 @@ class CommentsController < ApplicationController
   private #This section defines helper methods that are used internally within the controller. These methods aren't accessible from outside the controller (that's why they're marked as private), but they are crucial for managing the flow of data. The set_projects and set_comment methods used before actions (lines 2 and 3) are defined below
   
     #none of the @project syntax above the private line would make sense or mean anything if it wasn't for this line below
-    def set_project #Find the project based on the project_id from the URL
-      @project = Project.find(params[:project_id]) #This method retrieves the project from the database using Project.find and assigns it to the @project instance variable. The @project variable is then accessible in the controller actions that require it (like creating or listing comments for that project).
+    def set_project
+      if params[:project_id].present?
+        @project = Project.find(params[:project_id])
+      end
     end
 
     def set_comment #This method finds a specific comment within the context of the current project.
