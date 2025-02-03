@@ -30,13 +30,12 @@ class CommentsController < ApplicationController
   end    
   
   def edit
-    @project = Project.find(params[:project_id])
-    @comment = @project.comments.find(params[:id])
+    @comment = @parent.comments.find(params[:id])
     respond_to do |format|
       format.turbo_stream { render "edit" }
-      format.html # This will render the full page if accessed normally
+      format.html
     end
-  end
+  end  
     
   def update #PATCH/PUT action to update an existing comment with new information. The comment is retrieved using the set_comment method
     if @comment.update(comment_params) #The comment is updated with the parameters submitted by the user (comment_params)
@@ -85,6 +84,9 @@ class CommentsController < ApplicationController
         @parent = Project.find(params[:project_id])
       elsif params[:channel_id].present?
         @parent = Channel.find(params[:channel_id])
+      else
+        # Optional: handle the case when neither is present
+        @parent = nil
       end
     end
 

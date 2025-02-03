@@ -8,6 +8,11 @@ class ChannelsController < ApplicationController
 
   # GET /channels/1 or /channels/1.json
   def show
+    @channel = Channel.find(params[:id])
+    @comment = @channel.comments.build
+    @comments = @channel.comments.order(created_at: :desc)
+    @comments_by_date = @channel.comments.group_by { |c| c.date || Date.today }
+    @weeks_data = CommentsTimelineDataService.new(@channel).call
   end
 
   # GET /channels/new
