@@ -1,14 +1,15 @@
-<% @comments_by_date.sort.reverse.each do |date, comments| %>
-  <%# Date separator #%>
+<%# Assume the partial receives either a local "project" or "channel" (or even better, "parent") and "comments" %>
+<% parent = local_assigns[:parent] || (@project || @channel) %>
+<%# If you also have grouped data in @comments_by_date, you can use that here or group locally %>
+<% @comments_by_date.sort.reverse.each do |date, comments_for_date| %>
   <div class="comments-separator">
     <span><strong><%= date.strftime("%m/%d/%Y") %></strong></span>
   </div>
 
-  <%# Iterate over comments for the current date #%>
-  <% comments.each do |comment| %> <%# iterating over this comments variable (which is equal to @project.comments in this case). That's why the loop in your partial is using comments.each: %>
+  <% comments_for_date.each do |comment| %>
     <% if comment.persisted? %>
-      <div id="comment_<%= comment.id %>_list" class="project-comment"> <%# Unique ID for each comment %>
-        <% if comment.user %> <%# codition in case the user of the comment is nil (if it was deleted) %>
+      <div id="comment_<%= comment.id %>_list" class="project-comment">
+        <% if comment.user %>
           <strong><%= comment.user.name %>:</strong>
           <div class="comment-body">
             <%= raw comment.body.to_s %>
@@ -24,11 +25,16 @@
       <!-- Comment actions -->
       <div class="comment-actions">
         <% if user_signed_in? %>
-          <%= link_to 'Edit', edit_project_comment_path(@project, comment), data: { turbo_frame: "edit_comment_modal" } %> |
-          <%= button_to 'Delete', [@project, comment], method: :delete, form_class: "inline-form", class: "button-link", data: { confirm: 'Are you sure?' } %>
+          <% if parent.is_a?(Project) %>
+            <%= link_to 'Edit', edit_project_comment_path(parent, comment), data: { turbo_frame: "edit_comment_modal" } %> |
+            <%= button_to 'Delete', [parent, comment], method: :delete, form_class: "inline-form", class: "button-link", data: { confirm: 'Are you sure?' } %>
+          <% elsif parent.is_a?(Channel) %>
+            <%= link_to 'Edit', edit_channel_comment_path(parent, comment), data: { turbo_frame: "edit_comment_modal" } %> |
+            <%= button_to 'Delete', [parent, comment], method: :delete, form_class: "inline-form", class: "button-link", data: { confirm: 'Are you sure?' } %>
+          <% end %>
         <% else %>
-          <%= link_to 'Edit', new_user_session_path, class: 'btn btn-primary' %> | <%# redirects user to login page %>
-          <%= button_to 'Delete', new_user_session_path, form_class: 'inline-form', class: 'button-link' %> <%# redirects user to login page %>
+          <%= link_to 'Edit', new_user_session_path, class: 'btn btn-primary' %> |
+          <%= button_to 'Delete', new_user_session_path, form_class: 'inline-form', class: 'button-link' %>
         <% end %>
       </div>
     <% end %>

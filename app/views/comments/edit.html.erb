@@ -3,7 +3,7 @@
     <h1 class="comment-modal-title">
       Edit this comment
     </h1> 
-    <%= form_with(model: [@project, @comment], local: true) do |form| %>
+    <%= form_with(model: [@parent, @comment], local: true) do |form| %>
       <% if @comment.errors.any? %>
         <div style="color: red">
           <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
@@ -20,6 +20,20 @@
         <%= form.label :date, "Comment Date" %>
         <%= form.date_field :date %>
       </div>  
+
+      <% if @parent.is_a?(Project) %>
+        <!-- In the Project context, let the user optionally select a Channel -->
+        <div>
+          <%= form.label :channel_id, "Channel (optional)" %>
+          <%= form.collection_select :channel_id, Channel.all, :id, :name, include_blank: true %>
+        </div>
+      <% elsif @parent.is_a?(Channel) %>
+        <!-- In the Channel context, force selection of a Project -->
+        <div>
+          <%= form.label :project_id, "Select a Project" %>
+          <%= form.collection_select :project_id, Project.all, :id, :name, include_blank: false %>
+        </div>
+      <% end %>
 
       <div class="edit-comment-actions">
         <div class="button">
