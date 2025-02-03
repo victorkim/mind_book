@@ -1,4 +1,5 @@
 class ChannelsController < ApplicationController
+  before_action :authenticate_user!, except: [:index, :show] #checks if user is authenticated whenever they try to run any operation besides index and show
   before_action :set_channel, only: %i[ show edit update destroy ]
 
   # GET /channels or /channels.json
@@ -70,6 +71,6 @@ class ChannelsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def channel_params
-      params.fetch(:channel, {})
+      params.require(:channel).permit(:name)
     end
 end

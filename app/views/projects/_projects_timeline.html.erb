@@ -9,26 +9,23 @@
     <i>Showing all projects and their weekly updates</i>
   </div>
 
+  <%# Group timeline data by department %>
   <% department_groups = @timeline_data.group_by { |pt| pt[:department] } %>
 
   <!-- TABLE version -->
   <table class="projects-timeline-table">
-    <!-- 
-      Optional: A <colgroup> can unify columns #2..N so they share the same sizing rules, 
-      and keep column #1 separate:
-    -->
     <colgroup>
-      <!-- First col: auto-size on its own -->
+      <!-- First column auto-sizes -->
       <col />
-      <!-- The rest of the columns share one <col> definition with span=@week_starts.size -->
+      <!-- The rest of the columns share one definition -->
       <col span="<%= @week_starts.size %>" />
     </colgroup>
 
     <thead>
       <tr>
-        <!-- Empty header for column #1 (project info) -->
+        <!-- Empty header for project info column -->
         <th></th>
-        <!-- One header cell per week -->
+        <!-- One header per week -->
         <% @week_starts.each do |ws| %>
           <th class="timeline-header-cell">
             <%= ws.strftime("%m/%d/%y") %>
@@ -39,7 +36,7 @@
 
     <tbody>
       <% department_groups.each_with_index do |(department, projects_in_dept), dept_index| %>
-        <!-- Separator row (if you want a horizontal rule before each department except the first) -->
+        <%# Add a separator row for departments after the first one %>
         <% if dept_index > 0 %>
           <tr>
             <td colspan="<%= @week_starts.size + 1 %>">
@@ -48,7 +45,7 @@
           </tr>
         <% end %>
 
-        <!-- Department row (name spans all columns) -->
+        <!-- Department row -->
         <tr class="department-row">
           <td class="department-name">
             <%= department %>
@@ -73,13 +70,18 @@
               </div>
             </td>
 
-            <!-- Columns #2..N: weekly data -->
+            <!-- Columns #2..N: Weekly data -->
             <% project_timeline[:weeks].each do |week_data| %>
               <td class="timeline-entry">
-                <% if week_data[:count].positive? %>
-                  <strong><%= week_data[:count] %></strong>
+                <%# Check if the week is outside the project's active date range %>
+                <% if week_data[:week_start] < project_timeline[:start_date] || week_data[:week_start] > project_timeline[:end_date] %>
+                  <!-- Outside active range: leave cell blank -->
                 <% else %>
-                  -
+                  <% if week_data[:count].positive? %>
+                    <strong><%= week_data[:count] %></strong>
+                  <% else %>
+                    -
+                  <% end %>
                 <% end %>
               </td>
             <% end %>
