@@ -12,82 +12,134 @@
   <%# Group timeline data by department %>
   <% department_groups = @timeline_data.group_by { |pt| pt[:department] } %>
 
-  <!-- TABLE version -->
-  <table class="projects-timeline-table">
-    <colgroup>
-      <!-- First column auto-sizes -->
-      <col />
-      <!-- The rest of the columns share one definition -->
-      <col span="<%= @week_starts.size %>" />
-    </colgroup>
-
-    <thead>
-      <tr>
-        <!-- Empty header for project info column -->
-        <th></th>
-        <!-- One header per week -->
-        <% @week_starts.each do |ws| %>
-          <th class="timeline-header-cell">
+  <div class="gantt-timeline-container" data-controller="timeline">
+    <!-- Timeline header with dates -->
+    <div class="gantt-timeline-header">
+      <div class="gantt-info-column"></div>
+      <div class="gantt-chart-area">
+        <% @week_starts.each_with_index do |ws, index| %>
+          <div class="gantt-date-header <%= 'last-date' if index == @week_starts.size - 1 %>">
             <%= ws.strftime("%m/%d/%y") %>
-          </th>
-        <% end %>
-      </tr>
-    </thead>
-
-    <tbody>
-      <% department_groups.each_with_index do |(department, projects_in_dept), dept_index| %>
-        <%# Add a separator row for departments after the first one %>
-        <% if dept_index > 0 %>
-          <tr>
-            <td colspan="<%= @week_starts.size + 1 %>">
-              <hr class="separator" />
-            </td>
-          </tr>
-        <% end %>
-
-        <!-- Department row -->
-        <tr class="department-row">
-          <td class="department-name">
-            <%= department %>
-          </td>
-        </tr>
-
-        <!-- One row per project in this department -->
-        <% projects_in_dept.each do |project_timeline| %>
-          <tr>
-            <!-- Column #1: Project info -->
-            <td class="entity-info">
-              <% project = Project.find_by(name: project_timeline[:name]) %>
-              <% if project %>
-                <%= link_to project_timeline[:name], project_path(project) %>
-              <% else %>
-                <span><%= project_timeline[:name] %></span>
-              <% end %>
-
-              <div class="project-timeline-dates">
-                <%= project_timeline[:start_date].strftime("%m/%d/%Y") %> -
-                <%= project_timeline[:end_date].strftime("%m/%d/%Y") %>
-              </div>
-            </td>
-
-            <!-- Columns #2..N: Weekly data -->
-            <% project_timeline[:weeks].each do |week_data| %>
-              <td class="timeline-entry">
-                <%# Check if the week is outside the project's active date range %>
-                <% if week_data[:week_start] < project_timeline[:start_date] || week_data[:week_start] > project_timeline[:end_date] %>
-                  <!-- Outside active range: leave cell blank -->
-                <% else %>
-                  <% if week_data[:count].positive? %>
-                    <strong><%= week_data[:count] %></strong>
-                  <% else %>
-                    -
-                  <% end %>
-                <% end %>
-              </td>
+            <% if index < @week_starts.size - 1 %>
+              <div class="vertical-line"></div>
             <% end %>
-          </tr>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    
+
+    <!-- Timeline content with departments and projects -->
+    <div class="gantt-timeline-content">
+      <% department_groups.each_with_index do |(department, projects_in_dept), dept_index| %>
+        <% if dept_index > 0 %>
+          <div class="gantt-separator"></div>
+        <% end %>
+
+        <!-- Department header -->
+        <div class="gantt-department-header">
+          <div class="department-name"><%= department %></div>
+        </div>
+
+        <!-- Handle duplicate projects by combining them -->
+        <% 
+          # Group projects by name to combine duplicates
+          projects_by_name = {}
+          
+          projects_in_dept.each do |project_timeline|
+            project_name = project_timeline[:name]
+            
+            if projects_by_name[project_name].nil?
+              projects_by_name[project_name] = project_timeline.dup
+              projects_by_name[project_name][:weeks] = project_timeline[:weeks].map(&:dup)
+            else
+              # Combine weeks data by adding counts
+              project_timeline[:weeks].each_with_index do |week_data, idx|
+                projects_by_name[project_name][:weeks][idx][:count] += week_data[:count]
+              end
+              
+              # Expand date range if needed
+              if project_timeline[:start_date] < projects_by_name[project_name][:start_date]
+                projects_by_name[project_name][:start_date] = project_timeline[:start_date]
+              end
+              
+              if project_timeline[:end_date] > projects_by_name[project_name][:end_date]
+                projects_by_name[project_name][:end_date] = project_timeline[:end_date]
+              end
+            end
+          end
+          
+          # Is this the last department with the last project?
+          is_last_department = dept_index == department_groups.size - 1
+        %>
+        
+        <!-- Projects in department - use the deduplicated list -->
+        <% projects_by_name.values.each_with_index do |project_timeline, project_index| %>
+          <% 
+            is_last_project = is_last_department && project_index == projects_by_name.values.size - 1
+            project = Project.find_by(name: project_timeline[:name])
+            
+            # Improved calculation of which weeks the project spans
+            start_week_index = nil
+            end_week_index = nil
+            
+            # Find the week that contains the project's start date
+            @week_starts.each_with_index do |week_start, idx|
+              week_end = week_start + 6.days
+              if week_start <= project_timeline[:start_date] && project_timeline[:start_date] <= week_end
+                start_week_index = idx
+                break
+              end
+            end
+            
+            # Find the week that contains the project's end date
+            @week_starts.each_with_index do |week_start, idx|
+              week_end = week_start + 6.days
+              if week_start <= project_timeline[:end_date] && project_timeline[:end_date] <= week_end
+                end_week_index = idx
+                break
+              end
+            end
+            
+            # Handle edge cases
+            start_week_index ||= 0
+            end_week_index ||= @week_starts.size - 1
+          %>
+          
+          <div class="gantt-project-row <%= 'last-project' if is_last_project %>">
+            <!-- Project info (left side) -->
+            <div class="gantt-info-column">
+              <% if project %>
+                <div class="project-name"><%= link_to project_timeline[:name], project_path(project) %></div>
+              <% else %>
+                <div class="project-name"><%= project_timeline[:name] %></div>
+              <% end %>
+              <div class="project-timeline-dates">
+                <%= project_timeline[:start_date].strftime("%m/%d/%Y") %> - <%= project_timeline[:end_date].strftime("%m/%d/%Y") %>
+              </div>
+            </div>
+            
+            <!-- Chart area with project bar and week cells -->
+            <div class="gantt-chart-area">
+              <!-- Project bar container -->
+              <div class="project-bar-container" style="left: <%= start_week_index * 80 %>px; width: <%= (end_week_index - start_week_index + 1) * 80 %>px;">
+                <div class="gantt-project-bar"></div>
+              </div>
+              
+              <!-- Week cells with numbers -->
+              <% project_timeline[:weeks].each_with_index do |week_data, week_index| %>
+                <% if week_index >= start_week_index && week_index <= end_week_index %>
+                  <% count = week_data[:count] %>
+                  <div class="week-cell" data-count="<%= count %>" style="left: <%= week_index * 80 %>px;">
+                    <%= count %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
         <% end %>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 <% end %>

@@ -6,15 +6,16 @@ class ProjectsTimelineDataService
   end
 
   def call
-    # 1) Decide our overall start_date
-    @start_date = calculate_start_date
-    @end_date   = Date.today.end_of_week(:saturday)
+    # 1) Always start from the beginning of the year
+    current_year = Date.today.year
+    @start_date = Date.new(current_year, 1, 1).beginning_of_week(:sunday)
+    @end_date = Date.new(current_year, 12, 31).end_of_week(:saturday)
 
     # 2) Basic validation
     raise 'Invalid date range' if @start_date.nil? || @start_date > @end_date
 
-    # 3) Load all projects in the date range
-    @projects = Project.by_date_range(@start_date, @end_date)
+    # 3) Load all projects
+    @projects = Project.all
 
     # 4) Build an array of weeks from @start_date to @end_date
     total_weeks = ((@end_date - @start_date).to_i / 7).ceil
@@ -32,17 +33,6 @@ class ProjectsTimelineDataService
   end
 
   private
-
-  def calculate_start_date
-    # 1) If a param was given, parse it.
-    return parse_date(@start_date_param).beginning_of_week(:sunday) if @start_date_param.present?
-
-    # 2) Otherwise, find the earliest start_date across all projects in the DB.
-    earliest = Project.minimum(:start_date)
-
-    # 3) Use earliest if present, otherwise fallback to 8 weeks ago.
-    (earliest || 8.weeks.ago).beginning_of_week(:sunday)
-  end
 
   def parse_date(date_str)
     Date.parse(date_str)

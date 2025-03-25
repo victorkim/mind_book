@@ -24,6 +24,9 @@
 	--font-size-body: 1.1rem;
 	--font-size-detail: 0.9rem;
 	--input-field-bg-color: #f0f0f0;
+	--info-column-width: 250px;
+	--week-width: 80px;
+	--total-timeline-width: 2000px; /* Default, will be set by JS */
 }
 
 /* app/assets/stylesheets/application.css */
@@ -495,3 +498,157 @@ td.timeline-entry {
 .timeline-entry {
   text-align: center;
 }
+
+/* Gantt Timeline Container */
+.gantt-timeline-container {
+	width: 100%;
+	margin-top: 2rem;
+	overflow: auto; /* Enable both horizontal and vertical scrolling */
+	position: relative;
+	height: 80vh; /* Set a fixed height to enable vertical scrolling */
+	max-height: 800px; /* Maximum height */
+  }
+  
+  /* Timeline Header */
+  .gantt-timeline-header {
+	display: flex;
+	position: sticky;
+	top: 0;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	z-index: 10;
+	padding-bottom: 15px;
+	
+  }
+  
+  .gantt-date-header {
+	min-width: var(--week-width);
+	width: var(--week-width);
+	flex: 0 0 var(--week-width);
+	text-align: center;
+	padding: 0.5rem 0;
+	font-size: 0.9rem;
+	white-space: nowrap;
+	position: relative;
+  }
+  
+  /* Vertical lines between dates */
+  .vertical-line {
+	position: absolute;
+	top: 30px;
+	right: 0;
+	width: 1px;
+	background-color: #ddd;
+	z-index: 1;
+	pointer-events: none;
+	/* Height will be set dynamically by JavaScript */
+  }
+  
+  /* Timeline Content */
+  .gantt-timeline-content {
+	position: relative;
+	padding-bottom: 0;
+  }
+  
+  /* Department Header */
+  .gantt-department-header {
+	display: flex;
+	padding: 1rem 0 0.5rem 0;
+	align-items: center;
+	position: relative;
+  }
+  
+  .department-name {
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-bottom: 0.5rem;
+	position: sticky;
+	left: 0;
+	z-index: 5;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	width: var(--info-column-width);
+  }
+  
+  /* Project Row */
+  .gantt-project-row {
+	display: flex;
+	position: relative;
+	height: 50px;
+	margin-bottom: 1.5rem;
+	overflow: visible;
+  }
+  
+  /* Last project row - reduce margin at bottom */
+  .gantt-project-row.last-project {
+	margin-bottom: 0;
+  }
+  
+  /* Info Column (left side) */
+  .gantt-info-column {
+	width: var(--info-column-width);
+	min-width: var(--info-column-width);
+	padding-right: 2rem;
+	position: sticky;
+	left: 0;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	z-index: 5;
+	position: sticky;
+	left: 0;
+	z-index: 5;
+  }
+  
+  /* Chart Area (right side) */
+  .gantt-chart-area {
+	position: relative;
+	flex: 1;
+	display: flex;
+	min-height: 50px;
+	overflow: visible;
+  }
+  
+  /* Project Bar Container */
+  .project-bar-container {
+	position: absolute;
+	height: 30px;
+	top: 0;
+	z-index: 1;
+  }
+  
+  /* Project Bar - fixed to show again */
+  .gantt-project-bar {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	background-color: #e5ebee !important;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Week cells with numbers */
+  .week-cell {
+	position: absolute;
+	height: 30px;
+	width: var(--week-width);
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+	font-weight: bold;
+	font-size: 0.9rem;
+	z-index: 2;
+	background-color: transparent;
+  }
+  
+  /* Zero count styling - slightly fainter */
+  .week-cell[data-count="0"] {
+	color: #777;
+  }
+  
+  /* Separator between departments - extend full width */
+  .gantt-separator {
+	height: 1px;
+	background-color: #ccc;
+	margin: 1.5rem 0;
+	position: relative;
+	z-index: 2;
+	/* Width will be set dynamically by JavaScript */
+  }
