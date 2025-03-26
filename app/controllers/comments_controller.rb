@@ -8,26 +8,33 @@ class CommentsController < ApplicationController
   end
       
   def create
-    # Build the comment off the parent (either Project or Channel)
-    @comment = @parent.comments.build(comment_params)
+    @comment = Comment.new(comment_params)
     @comment.user = current_user
     @comment.date ||= Date.today
-    # If creating from a Channel, make sure the comment gets associated with a Project as well
-    if @parent.is_a?(Channel) && comment_params[:project_id].present?
-      @comment.project = Project.find(comment_params[:project_id])
-    end
-
-    # If creating from a Project, optionally set the channel if provided
-    if @parent.is_a?(Project) && comment_params[:channel_id].present?
-      @comment.channel = Channel.find(comment_params[:channel_id])
+    
+    # Set the appropriate associations based on the parent
+    if @parent.is_a?(Channel)
+      @comment.channel = @parent
+      # Ensure a project is selected when creating from a channel
+      if comment_params[:project_id].present?
+        @comment.project_id = comment_params[:project_id]
+      else
+        redirect_to @parent, alert: 'Please select a project for this comment.' and return
+      end
+    elsif @parent.is_a?(Project)
+      @comment.project = @parent
+      # Optional channel association when creating from a project
+      if comment_params[:channel_id].present?
+        @comment.channel_id = comment_params[:channel_id]
+      end
     end
   
     if @comment.save
       redirect_to @parent, notice: 'Comment was successfully added.'
     else
-      redirect_to @parent, alert: 'Failed to add comment.'
+      redirect_to @parent, alert: "Failed to add comment: #{@comment.errors.full_messages.join(', ')}"
     end
-  end    
+  end   
   
   def edit
     @comment = @parent.comments.find(params[:id])
