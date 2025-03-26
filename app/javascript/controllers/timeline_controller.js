@@ -3,90 +3,138 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    // Initialize timeline dimensions and settings
-    this.initializeTimeline();
+    // Initial setup
+    this.isCommentsTimeline = this.element.classList.contains('comments-timeline');
+    this.isProjectsTimeline = this.element.classList.contains('projects-timeline') || !this.isCommentsTimeline;
     
-    // Add scroll event listener for horizontal scrolling
-    this.addScrollListeners();
+    // References to important elements
+    this.contentElement = this.element.querySelector('.gantt-timeline-content');
+    this.verticalLines = this.element.querySelectorAll('.vertical-line');
     
-    // Ensure this runs after the DOM is fully loaded
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => this.refreshLayout());
+    // Initial calculation
+    this.adjustTimeline();
+    
+    // Set up event handlers with proper binding
+    this.resizeHandler = this.handleResize.bind(this);
+    this.scrollHandler = this.handleScroll.bind(this);
+    
+    // Add event listeners
+    window.addEventListener('resize', this.resizeHandler);
+    
+    // For projects timeline with scrolling content
+    if (this.isProjectsTimeline) {
+      this.element.addEventListener('scroll', this.scrollHandler);
+      
+      // Also adjust separator widths for projects timeline
+      this.adjustSeparatorWidths();
+      
+      // Run again after content is fully loaded
+      setTimeout(() => {
+        this.adjustTimeline();
+        this.adjustSeparatorWidths();
+      }, 200);
+    }
+  }
+  
+  disconnect() {
+    // Clean up event listeners on disconnect
+    window.removeEventListener('resize', this.resizeHandler);
+    this.element.removeEventListener('scroll', this.scrollHandler);
+  }
+  
+  handleResize() {
+    this.adjustTimeline();
+    if (this.isProjectsTimeline) {
+      this.adjustSeparatorWidths();
+    }
+  }
+  
+  handleScroll() {
+    // Only needed for projects timeline
+    if (this.isProjectsTimeline) {
+      this.adjustTimeline();
+    }
+  }
+  
+  adjustSeparatorWidths() {
+    if (!this.isProjectsTimeline) return;
+    
+    // Calculate total width of all date headers
+    const dateHeaders = this.element.querySelectorAll('.gantt-date-header');
+    if (dateHeaders.length === 0) return;
+    
+    // Each header is var(--week-width) wide (80px by default)
+    const totalWidth = dateHeaders.length * 80;
+    
+    // Add the info column width
+    const infoColumn = this.element.querySelector('.gantt-info-column');
+    const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
+    
+    // Set width for all separators
+    const separators = this.element.querySelectorAll('.gantt-separator');
+    separators.forEach(separator => {
+      separator.style.width = `${totalWidth + infoColumnWidth}px`;
+      separator.style.minWidth = `${totalWidth + infoColumnWidth}px`;
+    });
+  }
+  
+  adjustTimeline() {
+    // Get precise measurements of content
+    const content = this.contentElement;
+    
+    if (this.isCommentsTimeline) {
+      // Simpler calculation for comments timeline
+      const height = content.offsetHeight + 20;
+      this.setVerticalLinesHeight(height);
     } else {
-      this.refreshLayout();
+      // For projects timeline, calculate precisely based on content
+      this.adjustProjectsTimeline();
     }
   }
   
-  initializeTimeline() {
-    // Get all week headers and calculate total width
-    const dateHeaders = document.querySelectorAll('.gantt-date-header');
-    const weekWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--week-width') || '80');
-    const infoColumnWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--info-column-width') || '250');
+  adjustProjectsTimeline() {
+    // Find all the elements we need to measure
+    const departments = this.element.querySelectorAll('.gantt-department-header');
+    const projectRows = this.element.querySelectorAll('.gantt-project-row');
+    const separators = this.element.querySelectorAll('.gantt-separator');
     
-    if (dateHeaders.length > 0) {
-      // Calculate total width needed for the timeline
-      const totalWeekWidth = dateHeaders.length * weekWidth;
-      const totalWidth = totalWeekWidth + infoColumnWidth;
+    // Find the last project row to calculate the exact bottom position
+    if (projectRows.length > 0) {
+      const lastProjectRow = projectRows[projectRows.length - 1];
       
-      // Set CSS variable for total width - critical for fixed positioning
-      document.documentElement.style.setProperty('--total-timeline-width', totalWeekWidth + 'px');
+      // Calculate the position of the bottom of the last project row
+      const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+      const lastProjectBottom = lastProjectRow.offsetTop + lastProjectRow.offsetHeight;
       
-      // Set fixed width for chart areas
-      const chartAreas = document.querySelectorAll('.gantt-chart-area');
-      chartAreas.forEach(area => {
-        area.style.width = totalWeekWidth + 'px';
-      });
+      // Set lines to reach just beyond the last project row
+      this.setVerticalLinesHeight(lastProjectBottom + 10);
       
-      // Ensure top separator spans the entire width
-      const topSeparator = document.querySelector('.timeline-top-separator');
-      if (topSeparator) {
-        topSeparator.style.width = totalWeekWidth + 'px';
+      // Also adjust container height to match content exactly
+      if (this.isProjectsTimeline) {
+        // Let container size to content with a small buffer
+        const containerHeight = lastProjectBottom + 30;
+        this.contentElement.style.minHeight = `${containerHeight}px`;
+        this.contentElement.style.maxHeight = `${containerHeight}px`;
       }
-      
-      // Ensure all department separators span the entire width
-      const separators = document.querySelectorAll('.gantt-separator');
-      separators.forEach(separator => {
-        separator.style.width = totalWidth + 'px';
-      });
-      
-      // Fix the heights of the vertical lines to match content height
-      const contentHeight = document.querySelector('.gantt-timeline-content').offsetHeight;
-      const verticalLines = document.querySelectorAll('.vertical-line');
-      verticalLines.forEach(line => {
-        line.style.height = contentHeight + 'px';
-      });
+    } else {
+      // Fallback if no projects found
+      this.setVerticalLinesHeight(200);
     }
   }
   
-  addScrollListeners() {
-    const container = document.querySelector('.gantt-timeline-container');
-    const infoColumnWidth = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--info-column-width') || '250');
-    
-    if (container) {
-      container.addEventListener('scroll', () => {
-        const scrollLeft = container.scrollLeft;
-        
-        // Handle vertical lines visibility
-        const verticalLines = document.querySelectorAll('.vertical-line');
-        verticalLines.forEach(line => {
-          const headerRect = line.parentElement.getBoundingClientRect();
-          const containerRect = container.getBoundingClientRect();
-          
-          // Hide vertical lines that are scrolled off to the left
-          if (headerRect.right <= containerRect.left + infoColumnWidth) {
-            line.style.visibility = 'hidden';
-          } else {
-            line.style.visibility = 'visible';
-          }
-        });
-      });
-    }
-  }
-  
-  refreshLayout() {
-    // Force recalculation of dimensions after DOM is fully loaded
-    setTimeout(() => {
-      this.initializeTimeline();
-    }, 100);
+  setVerticalLinesHeight(height) {
+    this.verticalLines.forEach(line => {
+      // Set the calculated height
+      line.style.height = `${height}px`;
+      
+      // Ensure other critical styles
+      line.style.position = 'absolute';
+      line.style.width = '1px';
+      line.style.backgroundColor = '#ddd';
+      line.style.zIndex = '1';
+      line.style.top = '30px';
+      line.style.right = '0';
+      line.style.pointerEvents = 'none';
+    });
   }
 }

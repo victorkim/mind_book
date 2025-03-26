@@ -7,7 +7,13 @@ class CommentsTimelineDataService
     else
       @starting_date = @parent.created_at.to_date.beginning_of_week(:sunday)
     end
-    @ending_date = Date.today.end_of_week(:saturday)
+    
+    # Use the project's end_date instead of today's date if available
+    if @parent.respond_to?(:end_date) && @parent.end_date.present?
+      @ending_date = @parent.end_date.to_date.end_of_week(:saturday)
+    else
+      @ending_date = Date.today.end_of_week(:saturday)
+    end
   end
 
   def call

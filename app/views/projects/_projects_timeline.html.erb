@@ -12,7 +12,7 @@
 <%# Group timeline data by department %>
 <% department_groups = @timeline_data.group_by { |pt| pt[:department] } %>
 
-<div class="gantt-timeline-container" data-controller="timeline">
+<div class="gantt-timeline-container projects-timeline" data-controller="timeline">
   <!-- Timeline header with dates -->
   <div class="gantt-timeline-header">
     <div class="gantt-info-column"></div>
@@ -27,8 +27,6 @@
       <% end %>
     </div>
   </div>
-
-    
 
 <!-- Timeline content with departments and projects -->
 <div class="gantt-timeline-content">

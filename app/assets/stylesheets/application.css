@@ -529,12 +529,13 @@ td.timeline-entry {
 	font-size: 0.9rem;
 	white-space: nowrap;
 	position: relative;
+	overflow: visible;
   }
   
   /* Vertical lines between dates */
   .vertical-line {
-	position: absolute;
-	top: 30px;
+	position: absolute !important;
+	top: 30px !important;
 	right: 0;
 	width: 1px;
 	background-color: #ddd;
@@ -588,21 +589,18 @@ td.timeline-entry {
 	min-width: var(--info-column-width);
 	padding-right: 2rem;
 	position: sticky;
-	left: 0;
+	left: 0 !important;
 	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	z-index: 5;
-	position: sticky;
-	left: 0;
-	z-index: 5;
+	z-index: 10 !important;
   }
   
   /* Chart Area (right side) */
   .gantt-chart-area {
 	position: relative;
+	overflow: visible;
 	flex: 1;
 	display: flex;
 	min-height: 50px;
-	overflow: visible;
   }
   
   /* Project Bar Container */
@@ -652,3 +650,63 @@ td.timeline-entry {
 	z-index: 2;
 	/* Width will be set dynamically by JavaScript */
   }
+
+  /* Base styles for vertical lines in both timelines */
+.vertical-line {
+	position: absolute !important;
+	width: 1px !important;
+	background-color: #ddd !important;
+	z-index: 1 !important;
+	top: 30px !important;
+	right: 0 !important;
+	pointer-events: none !important;
+  }
+  
+  /* Ensure the comments timeline container has sufficient height */
+  .gantt-timeline-container.comments-timeline {
+	min-height: 150px;
+	overflow-x: auto !important;
+	overflow-y: hidden !important;
+  }
+  
+  
+  /* Make sure the timeline container has proper overflow handling */
+  .gantt-timeline-container.projects-timeline {
+	overflow-x: auto !important;
+	overflow-y: auto !important; /* Changed back to auto to allow vertical scrolling */
+	height: 80vh !important; /* Maintain height for scrolling */
+	max-height: 800px !important; /* Keep maximum height */
+  }
+  
+  /* Timeline content container adjustments */
+  .gantt-timeline-content {
+	position: relative !important;
+	/* Remove any bottom padding/margin that might be causing extra space */
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
+  }
+  
+  /* Last project row should not have bottom margin */
+  .gantt-project-row.last-project {
+	margin-bottom: 0 !important;
+  }
+  
+  /* Department header margin adjustments */
+  .gantt-department-header {
+	margin-bottom: 1rem !important;
+  }
+  
+  /* Timeline header sticky positioning */
+  .gantt-timeline-header {
+	position: sticky !important;
+	top: 0 !important;
+	z-index: 10 !important;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed !important;
+  }
+
+  /* Ensure vertical lines in comments timeline extend fully */
+.comments-timeline .vertical-line {
+	height: 100px !important; /* Fixed height for comments timeline */
+  }
+  
+  
