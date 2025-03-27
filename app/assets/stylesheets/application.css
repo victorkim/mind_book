@@ -667,6 +667,7 @@ td.timeline-entry {
 	min-height: 150px;
 	overflow-x: auto !important;
 	overflow-y: hidden !important;
+	position: relative;
   }
   
   
@@ -709,4 +710,23 @@ td.timeline-entry {
 	height: 100px !important; /* Fixed height for comments timeline */
   }
   
+  /* Current week highlight */
+  .current-week-column {
+    background-color: rgba(0, 0, 0, 0.05); /* Slightly darker but subtle background */
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: var(--week-width);
+    z-index: 1;
+    pointer-events: none; /* Allow clicks to pass through */
+  }
+
+.comments-timeline .current-week-column {
+	height: 100% !important; /* Force full height */
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	z-index: 0; /* Behind content but in front of background */
+  }
+
   

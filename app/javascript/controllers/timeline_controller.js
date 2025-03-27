@@ -10,6 +10,7 @@ export default class extends Controller {
     // References to important elements
     this.contentElement = this.element.querySelector('.gantt-timeline-content');
     this.verticalLines = this.element.querySelectorAll('.vertical-line');
+    this.currentWeekColumns = this.element.querySelectorAll('.current-week-column');
     
     // Initial calculation
     this.adjustTimeline();
@@ -32,6 +33,12 @@ export default class extends Controller {
       setTimeout(() => {
         this.adjustTimeline();
         this.adjustSeparatorWidths();
+        this.adjustCurrentWeekColumn();
+      }, 200);
+    } else {
+      // For comments timeline
+      setTimeout(() => {
+        this.adjustCurrentWeekColumn();
       }, 200);
     }
   }
@@ -47,12 +54,14 @@ export default class extends Controller {
     if (this.isProjectsTimeline) {
       this.adjustSeparatorWidths();
     }
+    this.adjustCurrentWeekColumn();
   }
   
   handleScroll() {
     // Only needed for projects timeline
     if (this.isProjectsTimeline) {
       this.adjustTimeline();
+      this.adjustCurrentWeekColumn();
     }
   }
   
@@ -135,6 +144,34 @@ export default class extends Controller {
       line.style.top = '30px';
       line.style.right = '0';
       line.style.pointerEvents = 'none';
+    });
+  }
+  
+  adjustCurrentWeekColumn() {
+    // Adjust the height of the current week column to match the full timeline height
+    if (this.currentWeekColumns.length === 0) return;
+    
+    let height;
+    
+    if (this.isCommentsTimeline) {
+      // For comments timeline (simpler, just needs to cover the single row)
+      height = this.contentElement.offsetHeight + 50; // Add some padding
+    } else {
+      // For projects timeline, calculate the full height including all departments and projects
+      const lastProjectRow = this.element.querySelector('.gantt-project-row.last-project');
+      if (lastProjectRow) {
+        const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+        const lastProjectBottom = lastProjectRow.offsetTop + lastProjectRow.offsetHeight;
+        height = lastProjectBottom + 30; // Add some padding
+      } else {
+        // Fallback if no projects
+        height = 200;
+      }
+    }
+    
+    // Apply the calculated height to all current week columns
+    this.currentWeekColumns.forEach(column => {
+      column.style.height = `${height}px`;
     });
   }
 }

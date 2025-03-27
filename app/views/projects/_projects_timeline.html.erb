@@ -17,11 +17,21 @@
   <div class="gantt-timeline-header">
     <div class="gantt-info-column"></div>
     <div class="gantt-chart-area">
+      <% 
+        # Find the current week
+        today = Date.today
+        current_week_index = @week_starts.index { |ws| ws <= today && today < ws + 7.days }
+      %>
+      
       <% @week_starts.each_with_index do |ws, index| %>
         <div class="gantt-date-header <%= 'last-date' if index == @week_starts.size - 1 %>">
           <%= ws.strftime("%m/%d/%y") %>
           <% if index < @week_starts.size - 1 %>
             <div class="vertical-line"></div>
+          <% end %>
+          
+          <% if index == current_week_index %>
+            <div class="current-week-column" style="height: 4000px;"></div>
           <% end %>
         </div>
       <% end %>
