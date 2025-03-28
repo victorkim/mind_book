@@ -1,6 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
+<div>
+  <h1 class="page-title"><%= @channel.name %></h1>
+</div>
 
+<hr class="separator">
+
+<%= render partial: 'shared/timeline', locals: { timeline_type: @timeline_type, week_starts: @weeks_data.map { |week| week[:week_start] }, timeline_data: @weeks_data } %>
+
+<hr class="separator">
 
 <div>
   <% if user_signed_in? %>

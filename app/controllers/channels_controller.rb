@@ -13,7 +13,18 @@ class ChannelsController < ApplicationController
     @comment = @channel.comments.build
     @comments = @channel.comments.order(created_at: :desc)
     @comments_by_date = @channel.comments.group_by { |c| c.date || Date.today }
-    @weeks_data = CommentsTimelineDataService.new(@channel).call
+    
+    # Initialize the unified TimelineDataService with the current channel
+    service = TimelineDataService.new(
+      type: :comments,
+      items: @channel
+    )
+    
+    # Call the service to get comments timeline data
+    @weeks_data = service.call
+    
+    # Set the timeline_type for the shared partial
+    @timeline_type = :comments
   end
 
   # GET /channels/new

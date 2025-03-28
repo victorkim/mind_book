@@ -163,15 +163,28 @@
         <% end %>
 
       <% else %>
-        <!-- Comments Timeline Content - Single Project -->
+        <!-- Comments Timeline Content - Single Item (Project or Channel) -->
         <div class="gantt-project-row last-project">
-          <!-- Project info (left side) -->
+          <!-- Parent info (left side) -->
           <div class="gantt-info-column">
-            <div class="project-name"><strong><%= @project.name %></strong></div>
-            <div class="project-timeline-dates">
-              <%= @project.start_date.strftime("%m/%d/%Y") %> -
-              <%= @project.end_date.strftime("%m/%d/%Y") %>
-            </div>
+            <% if defined?(@project) && @project %>
+              <!-- We're on a project page -->
+              <div class="project-name"><strong><%= @project.name %></strong></div>
+              <div class="project-timeline-dates">
+                <%= @project.start_date.strftime("%m/%d/%Y") %> -
+                <%= @project.end_date.strftime("%m/%d/%Y") %>
+              </div>
+            <% elsif defined?(@channel) && @channel %>
+              <!-- We're on a channel page -->
+              <div class="project-name"><strong><%= @channel.name %></strong></div>
+              <div class="project-timeline-dates">
+                <% if @channel.created_at %>
+                  <%= @channel.created_at.strftime("%m/%d/%Y") %> - Present
+                <% else %>
+                  No date information
+                <% end %>
+              </div>
+            <% end %>
           </div>
           
           <!-- Chart area with week cells -->
@@ -184,7 +197,15 @@
             <!-- Week cells with numbers -->
             <% timeline_data.each_with_index do |week, week_index| %>
               <div class="week-cell" data-count="<%= week[:count] %>" style="left: <%= week_index * 80 %>px;">
-                <%= link_to weekly_project_comments_path(@project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
+                <% if defined?(@project) && @project %>
+                  <%= link_to weekly_project_comments_path(@project, week_start: week[:week_start]), data: { turbo_frame: "weekly_comments_modal" } do %>
+                    <% if week[:count].positive? %>
+                      <strong><%= week[:count] %></strong>
+                    <% else %>
+                      0
+                    <% end %>
+                  <% end %>
+                <% else %>
                   <% if week[:count].positive? %>
                     <strong><%= week[:count] %></strong>
                   <% else %>

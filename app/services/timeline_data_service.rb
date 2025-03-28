@@ -33,14 +33,24 @@ class TimelineDataService
         # For comments timeline - use parent's dates
         parent = @items
         
+        # Check if parent exists
+        if parent.nil?
+          @start_date = Date.today.beginning_of_year.beginning_of_week(:sunday)
+          @end_date = Date.today.end_of_week(:saturday)
+          return
+        end
+        
         # If the parent has a start_date, use it. Otherwise, use created_at.
         if parent.respond_to?(:start_date) && parent.start_date.present?
           @start_date = parent.start_date.to_date.beginning_of_week(:sunday)
-        else
+        elsif parent.respond_to?(:created_at) && parent.created_at.present?
           @start_date = parent.created_at.to_date.beginning_of_week(:sunday)
+        else
+          # Fallback to beginning of current year
+          @start_date = Date.today.beginning_of_year.beginning_of_week(:sunday)
         end
         
-        # Use the project's end_date instead of today's date if available
+        # Use the parent's end_date if available
         if parent.respond_to?(:end_date) && parent.end_date.present?
           @end_date = parent.end_date.to_date.end_of_week(:saturday)
         else
