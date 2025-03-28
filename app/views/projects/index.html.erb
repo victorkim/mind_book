@@ -21,7 +21,7 @@
 <hr class="separator">
 
 <div id="projects_timeline">
-  <%= render 'projects_timeline' %>
+  <%= render partial: 'shared/timeline', locals: { timeline_type: @timeline_type, week_starts: @week_starts, timeline_data: @timeline_data } %>
 </div>
     
 <hr class="separator">
@@ -31,5 +31,3 @@
     <%= render 'project_card', project: project%>
   <% end %>
 </div>
-
-  

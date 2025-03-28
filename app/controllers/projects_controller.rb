@@ -3,12 +3,23 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ] #instantiates the project based on the ID from parameters for actions that need it (for show, edit, update and destroy without repeating code)
 
   def index
-    service = ProjectsTimelineDataService.new(params) #Initialize the ProjectsTimelineDataService with request parameters
-    timeline_result = service.call #Execute the service and store the returned hash in timeline_result
+    # Initialize the unified TimelineDataService with projects and parameters
+    service = TimelineDataService.new(
+      type: :projects,
+      items: Project.all,
+      params: params
+    )
     
-    @projects = timeline_result[:projects] #Assign the filtered projects from the service result to @projects for use in the view
-    @week_starts = timeline_result[:week_starts] #Assign the array of week start dates from the service result to @week_starts for use in the view
-    @timeline_data = timeline_result[:timeline_data] #Assign the generated timeline data from the service result to @timeline_data for use in the view
+    # Execute the service and store the returned hash
+    timeline_result = service.call
+    
+    # Assign the results to instance variables for use in the view
+    @projects = timeline_result[:projects]
+    @week_starts = timeline_result[:week_starts]
+    @timeline_data = timeline_result[:timeline_data]
+    
+    # Set the timeline_type for the shared partial
+    @timeline_type = :projects
   end
   
   def show
@@ -16,7 +27,17 @@ class ProjectsController < ApplicationController
     @comments = @project.comments.order(created_at: :desc) #Retrieve all comments for the project, ordered by creation date descending
     @comments_by_date = @project.comments.group_by { |c| c.date || Date.today } #Group comments by their date
 
-    @weeks_data = CommentsTimelineDataService.new(@project).call #Initialize the comments timeline data service and retrieve timeline data
+    # Initialize the unified TimelineDataService with the current project
+    service = TimelineDataService.new(
+      type: :comments,
+      items: @project
+    )
+    
+    # Call the service to get comments timeline data
+    @weeks_data = service.call
+    
+    # Set the timeline_type for the shared partial
+    @timeline_type = :comments
   end
 
   def new
