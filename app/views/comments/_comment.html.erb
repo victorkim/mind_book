@@ -1,0 +1,49 @@
+<%# app/views/comments/_comment.html.erb %>
+<% 
+  # This unified partial can replace _comments_list_edited.html.erb and _comments_timeline_edited.html.erb
+  # Parameter options:
+  # - comment: The comment to display
+  # - context: :list or :timeline to indicate where this comment is displayed
+  context ||= :list 
+  dom_id = "comment_#{comment.id}_#{context}"
+%>
+
+<div id="<%= dom_id %>" class="project-comment">
+  <% if comment.user %>
+    <strong>
+      <%= comment.user.name %>
+      <% if defined?(parent) && parent.is_a?(Project) && comment.channel.present? %>
+        @ <%= comment.channel.name %>
+      <% elsif defined?(parent) && parent.is_a?(Channel) && comment.project.present? %>
+        @ <%= comment.project.name %> Project
+      <% end %>:
+    </strong>
+    <div class="comment-body">
+      <%= raw comment.body.to_s %>
+    </div>
+  <% else %>
+    <strong>Anonymous:</strong>
+    <div class="comment-body">
+      <%= raw comment.body.to_s %>
+    </div>
+  <% end %>
+  
+  <% if context == :list && comment.persisted? %>
+    <!-- Comment actions (edit/delete links) -->
+    <div class="comment-actions">
+      <% if user_signed_in? %>
+        <% parent = defined?(parent) ? parent : (comment.project || comment.channel) %>
+        <% if parent.is_a?(Project) %>
+          <%= link_to 'Edit', edit_project_comment_path(parent, comment), data: { turbo_frame: "edit_comment_modal" } %> |
+          <%= button_to 'Delete', [parent, comment], method: :delete, form_class: "inline-form", class: "button-link", data: { confirm: 'Are you sure?' } %>
+        <% elsif parent.is_a?(Channel) %>
+          <%= link_to 'Edit', edit_channel_comment_path(parent, comment), data: { turbo_frame: "edit_comment_modal" } %> |
+          <%= button_to 'Delete', [parent, comment], method: :delete, form_class: "inline-form", class: "button-link", data: { confirm: 'Are you sure?' } %>
+        <% end %>
+      <% else %>
+        <%= link_to 'Edit', new_user_session_path, class: 'btn btn-primary' %> |
+        <%= button_to 'Delete', new_user_session_path, form_class: 'inline-form', class: 'button-link' %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

@@ -1,3 +1,4 @@
+<%# app/views/comments/_comments_weekly.html.erb %>
 <%= turbo_frame_tag "weekly_comments_modal" do %>
   <div class="modal" data-controller="modal" data-modal-target="modal">
 
@@ -5,29 +6,17 @@
       <h2>Comments for <%= project.name %></h2>
     </div>
 
-    <% comments_by_date = comments.group_by { |comment| comment.created_at.to_date } %> <%# Group comments by creation date %>
+    <% comments_by_date = comments.group_by { |comment| comment.created_at.to_date } %>
 	
     <% comments_by_date.sort.reverse.each do |date, comments_on_date| %>
-			<div class="comments-separator">
-				<span><strong><%= date.strftime("%m/%d/%Y") %></strong></span>
-			</div>
+      <div class="comments-separator">
+        <span><strong><%= date.strftime("%m/%d/%Y") %></strong></span>
+      </div>
 
-			<% comments_on_date.each do |comment| %>
-				<div id="comment_<%= comment.id %>_list" class="project-comment">
-					<% if comment.user %>
-						<strong><%= comment.user.name %></strong>:
-						<div class="comment-body">
-							<%= raw comment.body.to_s %>
-						</div>
-					<% else %>
-						<strong>Anonymous</strong>:
-						<div class="comment-body">
-							<%= raw comment.body.to_s %>
-						</div>
-					<% end %>
-				</div>
-			<% end %>
-  	<% end %>
+      <% comments_on_date.each do |comment| %>
+        <%= render partial: 'comments/comment', locals: { comment: comment, parent: project, context: :weekly } %>
+      <% end %>
+    <% end %>
 
     <div>
       <%= link_to "Close", "#", data: { action: "modal#close" }, class: "close-modal-button" %>

@@ -44,20 +44,25 @@ class CommentsController < ApplicationController
     end
   end  
     
-  def update #PATCH/PUT action to update an existing comment with new information. The comment is retrieved using the set_comment method
-    if @comment.update(comment_params) #The comment is updated with the parameters submitted by the user (comment_params)
-      respond_to do |format| #ensures that your controller can respond to different formats (in this case, HTML and Turbo Stream). Without this, the format.turbo_stream call would raise an error.
+  def update
+    if @comment.update(comment_params)
+      respond_to do |format| 
         format.turbo_stream do 
           render turbo_stream: [
-                turbo_stream.replace("comment_#{@comment.id}_timeline", partial: "comments/comments_timeline_edited", locals: { comment: @comment }), #Update only the specific comment in _comments_timeline
-                turbo_stream.replace("comment_#{@comment.id}_list", partial: "comments/comments_list_edited", locals: { comment: @comment }), #Update only the specific comment in _comments_list
-                turbo_stream.replace("edit_comment_modal", partial: "comments/empty_modal") #Replace with an empty modal frame after update
+            turbo_stream.replace("comment_#{@comment.id}_timeline", 
+                                partial: "comments/comment", 
+                                locals: { comment: @comment, context: :timeline, parent: @parent }),
+            turbo_stream.replace("comment_#{@comment.id}_list", 
+                                partial: "comments/comment", 
+                                locals: { comment: @comment, context: :list, parent: @parent }),
+            turbo_stream.replace("edit_comment_modal", 
+                                partial: "comments/empty_modal")
           ] 
         end      
-        format.html { redirect_to @project, notice: 'Comment was successfully updated.' }
+        format.html { redirect_to @parent, notice: 'Comment was successfully updated.' }
       end
     else
-        render :edit #If the update fails (e.g., validation errors), it re-renders the edit form with error messages.
+      render :edit
     end
   end
 
