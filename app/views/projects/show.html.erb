@@ -4,7 +4,7 @@
 
 <hr class="separator">
 
-<%= render 'comments/comments_timeline', project: @project %>
+<%= render partial: 'shared/timeline', locals: { timeline_type: @timeline_type, week_starts: @weeks_data.map { |week| week[:week_start] }, timeline_data: @weeks_data } %>
 
 <hr class="separator">
 
