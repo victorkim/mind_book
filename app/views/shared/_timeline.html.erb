@@ -18,6 +18,16 @@
   else
     description = "Shows the number of comments on each week since the Project's start date"
   end
+  
+  # Determine which week is the current week
+  current_week_index = nil
+  week_starts.each_with_index do |week_start, idx|
+    week_end = week_start + 6.days
+    if Date.today >= week_start && Date.today <= week_end
+      current_week_index = idx
+      break
+    end
+  end
 %>
 
 <h3 class="page-title"><%= title %></h3>
@@ -37,6 +47,9 @@
         <% week_starts.each_with_index do |ws, index| %>
           <div class="gantt-date-header <%= 'last-date' if index == week_starts.size - 1 %>">
             <%= ws.strftime("%m/%d/%y") %>
+            <% if index == current_week_index %>
+              <div class="current-week-column"></div>
+            <% end %>
             <% if index < week_starts.size - 1 %>
               <div class="vertical-line"></div>
             <% end %>

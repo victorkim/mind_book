@@ -674,7 +674,7 @@ td.timeline-entry {
 	pointer-events: none;
 	border-left: 1px dashed rgba(0, 0, 0, 0.2);
 	border-right: 1px dashed rgba(0, 0, 0, 0.2);
-}
+  }
 
 .comments-timeline .current-week-column {
 	height: 100%;
