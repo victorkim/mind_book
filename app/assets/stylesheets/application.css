@@ -14,667 +14,672 @@
  *= require_self
  */
 
- @import "./actiontext.css";
+@import "./actiontext.css";
 
- /* ---------- Root Variables ---------- */
- :root {   
-	 --bg-color: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	 --font-color: #574e47;
-	 --font-family: "Inter", sans-serif;
-	 --font-size-title: 1.2rem;
-	 --font-size-body: 1.1rem;
-	 --font-size-detail: 0.9rem;
-	 --input-field-bg-color: #f0f0f0;
-	 --info-column-width: 250px;
-	 --week-width: 80px;
-	 --total-timeline-width: 2000px; /* Default, will be set by JS */
- }
- 
- /* ---------- Global Reset ---------- */
- * {
-	 box-sizing: border-box;
-	 margin: 0; 
-	 padding: 0;
-	 text-decoration: none;
- }
- 
- body {
-	 background: var(--bg-color);
-	 color: var(--font-color);
-	 font-family: var(--font-family);
-	 margin: 2rem;
- }
- 
- a {
-	 color: var(--font-color);
- }
- 
- /* ---------- Trix Editor Styles ---------- */
- trix-editor {
-	 background-color: #e7eaed;
-	 border: solid #e2dede;
-	 border-radius: 5px;
-	 box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
-	 padding: 1rem 0.5rem;
-	 margin: 0.5rem 0;
- }
- 
- trix-toolbar .trix-button-group button { 
-	 background-color: #e5ebee;
-	 border: none;
- }
- 
- /* ---------- Typography ---------- */
- .page-title {
-	 text-align: center;
-	 margin: 2rem 2rem 0.5rem 2rem;
- }
- 
- .comments-modal-title {
-	 text-align: center;
-	 margin: 1rem 2rem 2rem 2rem;
- }
- 
- .comment-modal-title {
-	 text-align: center;
-	 margin: 0rem 2rem 2rem 2rem;
- }
- 
- .project-show-dates,
- .project-department,
- .comments-timeline-description,
- .projects-timeline-description {
-	 text-align: center;
-	 padding: 0 1rem 0.5em 1rem; 
-	 font-size: 0.9rem;
- }
- 
- .project-timeline-dates,
- .comments-timeline-weekly-description,
- .start-date-filter-detail,
- .department-filter-detail {
-	 font-size: 0.8rem;
-	 margin: 0.3rem 0 1rem 0;
-	 font-weight: normal;
- }
- 
- /* ---------- Buttons and Form Elements ---------- */
- .inline-form {
-	 display: inline;
-	 margin: 0;
-	 padding: 0;
- }
- 
- .button-link {
-	 display: inline-block;
-	 background: none;
-	 border: none;
-	 padding: 0;
-	 font: inherit;
-	 color: inherit;
- }
- 
- .button-link:hover {
-	 text-decoration: underline;
-	 cursor: pointer;
- }
- 
- .button input[type="submit"],
- .close-button,
- .close-modal-button,
- .cancel-button {
-	 background-color: #c7ccce;
-	 border-radius: 10%;
-	 border: none;
-	 padding: 0.5rem;
-	 margin: 0.5rem 0.5rem 0.5rem 0;    
-	 font-size: inherit;
-	 color: var(--font-color);
- }
- 
- .close-modal-button {
-	 margin-top: 2rem !important;
- }
- 
- .button input[type="submit"]:hover {
-	 cursor: pointer;
- }
- 
- /* ---------- Separators ---------- */
- .separator {
-	 border: none;
-	 border-top: 1px solid #ccc;
-	 width: 100%;
-	 margin: 1rem 0;
- }
- 
- .comments-separator {
-	 display: flex;
-	 align-items: center;
-	 width: 100%;
-	 margin: 1rem 0;
- }
- 
- .comments-separator::before,
- .comments-separator::after {
-	 content: '';
-	 flex: 1;
-	 border-bottom: 2px solid #ccc;
- }
- 
- .comments-separator::before {
-	 margin-right: 1rem;
- }
- 
- .comments-separator::after {
-	 margin-left: 1rem;
- }
- 
- .comments-separator span {
-	 white-space: nowrap;
-	 color: #666;
- }
- 
- /* ---------- Projects and Comments ---------- */
- .project-description {
-	 list-style: none;
-	 text-align: center;
-	 margin: 1.5rem auto;
-	 font-size: 0.9rem;
-	 width: 60%; 
- }
- 
- .project-actions {
-	 text-align: center;
-	 padding: 0 1rem 1.5rem 1rem;
-	 font-size: 1rem;
- }
- 
- .project-actions a:hover {
-	 text-decoration: underline;
- }
- 
- .project-show-comments {
-	 padding: 2rem 0;
- }
- 
- .projects-filters {
-	 margin-top: 2rem;
- }
- 
- .new-project-prompt {
-	 list-style: none;
-	 text-align: center;
-	 margin: 1rem 2rem 2rem 2rem;
- }
- 
- .new-project-prompt a:hover {
-	 text-align: center;
-	 background-color: #e5ebee;
-	 border-radius: 50px;
-	 border: none;
-	 cursor: pointer;
-	 transition: all 0.3s ease 0s;
-	 padding: 1rem;
- }
- 
- .project-comment {
-	 margin: 1rem 0 0;
- }
- 
- /* ---------- Comment Styles ---------- */
- .comment-actions {
-	 font-size: smaller;
- }
- 
- .comment-body {
-	 background-color: #e7eaed;
-	 border: solid #e2dede;
-	 border-radius: 5px;
-	 box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05);
-	 padding: 1rem 0.5rem;
-	 margin: 0.5rem 0;
- }
- 
- .comment-body ul,
- .comment-body ol {
-	 margin-left: 0.5rem;
- }
- 
- .comment-body li {
-	 list-style-position: inside;
- }
- 
- .edit-comment-actions {
-	 display: flex;
-	 align-items: center;
-	 margin-top: 0.5rem;
- }
- 
- /* ---------- Modal Styles ---------- */
- .modal {
-	 position: fixed;
-	 z-index: 1;
-	 padding: 2em;
-	 background: var(--bg-color);
-	 left: 50%;
-	 top: 50%;
-	 transform: translate(-50%, -50%);
-	 overflow: auto;
-	 border-radius: 5px;
-	 box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
- }
- 
- /* ---------- Project Card Grid Layouts ---------- */
- .highlighted-projects-grid,
- .projects-grid {
-	 display: grid;
-	 grid-template-columns: repeat(5, 1fr);
-	 gap: 1.5rem;
-	 margin: 1.5rem;
- }
- 
- .recent-projects-grid,
- .due-soon-projects-grid,
- .past-due-projects-grid {
-	 display: grid;
-	 grid-template-columns: 1fr;
-	 grid-template-rows: 1fr;
-	 gap: 1.5rem;
-	 margin: 1.5rem;
- }
- 
- .highlighted-projects-grid .project-card {
-	 display: grid;
-	 grid-area: 1 / 1;
-	 gap: 1.5rem;
-	 margin: 1.5rem;
- }
- 
- .highlighted-projects-grid .project-card:nth-child(1) {
-	 transform: rotate(-2deg);
- }
- 
- .highlighted-projects-grid .project-card:nth-child(2) {
-	 transform: rotate(2deg);
- }
- 
- .highlighted-projects-grid .project-card:nth-child(3) {
-	 transform: rotate(-4deg);
- }
- 
- .highlighted-projects-grid .project-card:hover {
-	 transform: scale(1.05);
- }
- 
- .project-card {
-	 background-color: #e5ebee;
-	 border: solid #e2dede;
-	 height: 200px;
-	 border-radius: 5%;
-	 padding: 1em;
-	 box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
- }
- 
- .project-card-name {
-	 text-align: center;
-	 padding: 1rem 1rem 0.5rem 1rem;
- }
- 
- .project-card-dates {
-	 text-align: center;
-	 padding: 0 1rem 2rem 1rem;
-	 font-size: 0.8rem;
- }
- 
- /* ---------- Navigation ---------- */
- .navbar ul {
-	 display: flex;
-	 flex-wrap: wrap;
-	 justify-content: center;
-	 align-items: center;
- }
- 
- @media all and (max-width: 480px) { 
-	 .navbar ul {
-		 margin-top: 1rem;
-	 }
- }
- 
- .navbar li {
-	 padding: 10px;
-	 list-style: none;
-	 font-size: var(--font-size-title);
- }
- 
- .navbar li:hover {
-	 background-color: #e5ebee;
-	 border-radius: 50px;
-	 border: none;
-	 cursor: pointer;
-	 transition: all 0.3s ease 0s;
-	 padding: 1rem;
- }
- 
- .navbar {
-	 display: flex;
-	 text-align: center;
-	 flex-wrap: wrap;
-	 justify-content: space-between;
- }
- 
- @media all and (max-width: 480px) { 
-	 .navbar {
-		 justify-content: center;
-	 }
- }
- 
- /* ---------- Page Sections ---------- */
- .top-section {
-	 display: flex;
-	 flex-direction: column;
-	 align-items: center;
-	 text-align: center;
-	 padding: 4rem 1rem;
- }
- 
- .top-section > .title {
-	 margin: 2rem 0;
-	 font-size: 3rem;
- }
- 
- .top-section > .sub-title {
-	 margin: 1rem 0 0.5rem 0;
-	 font-size: 1.5rem;
- }
- 
- .card-deck {
-	 display: flex;
-	 justify-content: center;
-	 gap: 2rem;
-	 padding-right: 20%;
-	 padding-left: 20%;
-	 flex-wrap: wrap;
-	 margin-bottom: 3rem;
- }
- 
- .card {
-	 background-color: var(--bg-color);
-	 border: solid var(--bg-color);
-	 border-color: var(--font-color);
-	 flex: 1;
-	 border-radius: 10px;
-	 text-align: center;
-	 display: flex; 
-	 flex-direction: column;
- }
- 
- .card:hover {
-	 transform: rotate(10deg) scale(1.1);
-	 transition: all 0.3s ease 0s;
-	 cursor: pointer;
- }
- 
- .card > .title {
-	 font-size: var(--font-size-title);
-	 padding: 1rem 1rem;
- }
- 
- .card > .body {
-	 font-size: var(--font-size-body);
-	 padding: 1rem 0.5rem 1rem 0.5rem;    
- }
- 
- .mid-section { 
-	 display: grid;
-	 grid-template-columns: repeat(5, 1fr);
-	 border: solid;
- }
- 
- .mid-section > .text {
-	 grid-column-start: 1;
-	 grid-column-end: span 3;
- }
- 
- .mid-section > .text > .title {
-	 font-weight: 600;
-	 padding: 1rem;
- }
- 
- .mid-section > .text > .body {
-	 font-weight: 400;
-	 padding: 0 1rem 1rem 1rem;
- }
- 
- .mid-section > .image {
-	 grid-column-end: span 2;
-	 text-align: center;
- }
- 
- /* ---------- Timeline Styles ---------- */
- /* Base timeline table styles */
- .timeline-header-cell {
-	 transform: rotate(-15deg);	
- }
- 
- td.timeline-entry {
-	 min-width: 100px;
-	 white-space: nowrap;
- }
- 
- .projects-timeline-table {
-	 margin-top: 5rem;
-	 border-collapse: separate;
-	 border-spacing: 0 0;
-	 border-spacing: 1rem 0;
-	 width: auto;
-	 overflow-x: auto;
- }
- 
- .projects-timeline-table td:not(:first-child),
- .projects-timeline-table th:not(:first-child) {
-	 padding-left: 3rem;
- }
- 
- .projects-timeline-table tbody td:nth-child(2),
- .projects-timeline-table thead th:nth-child(2) {
-	 padding-left: 5rem;
- }
- 
- .projects-timeline-table thead th {
-	 padding-bottom: 2rem;
- }
- 
- .department-name {
-	 padding-bottom: 1.5rem;
-	 font-size: 1.2em;
-	 font-weight: bold;
- }
- 
- .project-timeline-dates {
-	 color: #666;
-	 font-style: italic;
- }
- 
- .timeline-entry {
-	 text-align: center;
- }
- 
- /* ---------- Gantt Timeline Styles ---------- */
- .gantt-timeline-container {
-	 width: 100%;
-	 margin-top: 2rem;
-	 overflow: auto;
-	 position: relative;
-	 height: 80vh;
-	 max-height: 800px;
- }
- 
- .gantt-timeline-header {
-	 display: flex;
-	 position: sticky;
-	 top: 0;
-	 background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	 z-index: 10;
-	 padding-bottom: 15px;
- }
- 
- .gantt-date-header {
-	 min-width: var(--week-width);
-	 width: var(--week-width);
-	 flex: 0 0 var(--week-width);
-	 text-align: center;
-	 padding: 0.5rem 0;
-	 font-size: 0.9rem;
-	 white-space: nowrap;
-	 position: relative;
-	 overflow: visible;
- }
- 
- /* Vertical lines between dates */
- .vertical-line {
-	 position: absolute;
-	 top: 30px;
-	 right: 0;
-	 width: 1px;
-	 background-color: #ddd;
-	 z-index: 1;
-	 pointer-events: none;
- }
- 
- .gantt-timeline-content {
-	 position: relative;
-	 padding-bottom: 0;
-	 margin-bottom: 0;
- }
- 
- .gantt-department-header {
-	 display: flex;
-	 padding: 1rem 0 0.5rem 0;
-	 align-items: center;
-	 position: relative;
-	 margin-bottom: 1rem;
- }
- 
- .department-name {
-	 font-size: 1.2em;
-	 font-weight: bold;
-	 padding-bottom: 0.5rem;
-	 position: sticky;
-	 left: 0;
-	 z-index: 5;
-	 background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	 width: var(--info-column-width);
- }
- 
- .gantt-project-row {
-	 display: flex;
-	 position: relative;
-	 height: 50px;
-	 margin-bottom: 1.5rem;
-	 overflow: visible;
- }
- 
- .gantt-project-row.last-project {
-	 margin-bottom: 0;
- }
- 
- .gantt-info-column {
-	 width: var(--info-column-width);
-	 min-width: var(--info-column-width);
-	 padding-right: 2rem;
-	 position: sticky;
-	 left: 0;
-	 background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	 z-index: 10;
- }
- 
- .gantt-chart-area {
-	 position: relative;
-	 overflow: visible;
-	 flex: 1;
-	 display: flex;
-	 min-height: 50px;
- }
- 
- .project-bar-container {
-	 position: absolute;
-	 height: 30px;
-	 top: 0;
-	 z-index: 1;
- }
- 
- .gantt-project-bar {
-	 width: 100%;
-	 height: 100%;
-	 border-radius: 4px;
-	 background-color: #e5ebee !important;
-	 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
- }
- 
- .week-cell {
-	 position: absolute;
-	 height: 30px;
-	 width: var(--week-width);
-	 top: 0;
-	 display: flex;
-	 align-items: center;
-	 justify-content: center;
-	 color: #333;
-	 font-weight: bold;
-	 font-size: 0.9rem;
-	 z-index: 2;
-	 background-color: transparent;
- }
- 
- .week-cell[data-count="0"] {
-	 color: #777;
- }
- 
- .gantt-separator {
-	 height: 1px;
-	 background-color: #ccc;
-	 margin: 1.5rem 0;
-	 position: relative;
-	 z-index: 2;
- }
- 
- /* ---------- Timeline Specific Variations ---------- */
- /* Comments timeline specific styles */
- .gantt-timeline-container.comments-timeline {
-	 min-height: 150px;
-	 overflow-x: auto;
-	 overflow-y: hidden;
-	 position: relative;
- }
- 
- /* Projects timeline specific styles */
- .gantt-timeline-container.projects-timeline {
-	 overflow-x: auto;
-	 overflow-y: auto;
-	 height: 80vh;
-	 max-height: 800px;
- }
- 
- .comments-timeline .vertical-line {
-	 height: 100px;
- }
- 
- /* Current week highlight */
- .current-week-column {
-	 background-color: rgba(0, 0, 0, 0.05);
-	 position: absolute;
-	 top: 0;
-	 bottom: 0;
-	 width: var(--week-width);
-	 z-index: 1;
-	 pointer-events: none;
- }
- 
- .comments-timeline .current-week-column {
-	 height: 100%;
-	 top: 0;
-	 bottom: 0;
-	 position: absolute;
-	 z-index: 0;
- }
+/* ---------- Root Variables ---------- */
+:root {   
+	--bg-color: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	--font-color: #574e47;
+	--font-family: "Inter", sans-serif;
+	--font-size-title: 1.2rem;
+	--font-size-body: 1.1rem;
+	--font-size-detail: 0.9rem;
+	--input-field-bg-color: #f0f0f0;
+	--info-column-width: 250px;
+	--week-width: 80px;
+	--total-timeline-width: 2000px; /* Default, will be set by JS */
+}
+
+/* ---------- Global Reset ---------- */
+* {
+	box-sizing: border-box;
+	margin: 0; 
+	padding: 0;
+	text-decoration: none;
+}
+
+body {
+	background: var(--bg-color);
+	color: var(--font-color);
+	font-family: var(--font-family);
+	margin: 2rem;
+}
+
+a {
+	color: var(--font-color);
+}
+
+/* ---------- Trix Editor Styles ---------- */
+trix-editor {
+	background-color: #e7eaed;
+	border: solid #e2dede;
+	border-radius: 5px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+	padding: 1rem 0.5rem;
+	margin: 0.5rem 0;
+}
+
+trix-toolbar .trix-button-group button { 
+	background-color: #e5ebee;
+	border: none;
+}
+
+/* ---------- Typography ---------- */
+.page-title {
+	text-align: center;
+	margin: 2rem 2rem 0.5rem 2rem;
+}
+
+.comments-modal-title {
+	text-align: center;
+	margin: 1rem 2rem 2rem 2rem;
+}
+
+.comment-modal-title {
+	text-align: center;
+	margin: 0rem 2rem 2rem 2rem;
+}
+
+.project-show-dates,
+.project-department,
+.comments-timeline-description,
+.projects-timeline-description {
+	text-align: center;
+	padding: 0 1rem 0.5em 1rem; 
+	font-size: 0.9rem;
+}
+
+.project-timeline-dates,
+.comments-timeline-weekly-description,
+.start-date-filter-detail,
+.department-filter-detail {
+	font-size: 0.8rem;
+	margin: 0.3rem 0 1rem 0;
+	font-weight: normal;
+}
+
+/* ---------- Buttons and Form Elements ---------- */
+.inline-form {
+	display: inline;
+	margin: 0;
+	padding: 0;
+}
+
+.button-link {
+	display: inline-block;
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+}
+
+.button-link:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.button input[type="submit"],
+.close-button,
+.close-modal-button,
+.cancel-button {
+	background-color: #c7ccce;
+	border-radius: 10%;
+	border: none;
+	padding: 0.5rem;
+	margin: 0.5rem 0.5rem 0.5rem 0;    
+	font-size: inherit;
+	color: var(--font-color);
+}
+
+.close-modal-button {
+	margin-top: 2rem !important;
+}
+
+.button input[type="submit"]:hover {
+	cursor: pointer;
+}
+
+/* ---------- Separators ---------- */
+.separator {
+	border: none;
+	border-top: 1px solid #ccc;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+.comments-separator {
+	display: flex;
+	align-items: center;
+	width: 100%;
+	margin: 1rem 0;
+}
+
+.comments-separator::before,
+.comments-separator::after {
+	content: '';
+	flex: 1;
+	border-bottom: 2px solid #ccc;
+}
+
+.comments-separator::before {
+	margin-right: 1rem;
+}
+
+.comments-separator::after {
+	margin-left: 1rem;
+}
+
+.comments-separator span {
+	white-space: nowrap;
+	color: #666;
+}
+
+/* ---------- Projects and Comments ---------- */
+.project-description {
+	list-style: none;
+	text-align: center;
+	margin: 1.5rem auto;
+	font-size: 0.9rem;
+	width: 60%; 
+}
+
+.project-actions {
+	text-align: center;
+	padding: 0 1rem 1.5rem 1rem;
+	font-size: 1rem;
+}
+
+.project-actions a:hover {
+	text-decoration: underline;
+}
+
+.project-show-comments {
+	padding: 2rem 0;
+}
+
+.projects-filters {
+	margin-top: 2rem;
+}
+
+.new-project-prompt {
+	list-style: none;
+	text-align: center;
+	margin: 1rem 2rem 2rem 2rem;
+}
+
+.new-project-prompt a:hover {
+	text-align: center;
+	background-color: #e5ebee;
+	border-radius: 50px;
+	border: none;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	padding: 1rem;
+}
+
+.project-comment {
+	margin: 1rem 0 0;
+}
+
+/* ---------- Comment Styles ---------- */
+.comment-actions {
+	font-size: smaller;
+}
+
+.comment-body {
+	background-color: #e7eaed;
+	border: solid #e2dede;
+	border-radius: 5px;
+	box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.05);
+	padding: 1rem 0.5rem;
+	margin: 0.5rem 0;
+}
+
+.comment-body ul,
+.comment-body ol {
+	margin-left: 0.5rem;
+}
+
+.comment-body li {
+	list-style-position: inside;
+}
+
+.edit-comment-actions {
+	display: flex;
+	align-items: center;
+	margin-top: 0.5rem;
+}
+
+/* ---------- Modal Styles ---------- */
+.modal {
+	position: fixed;
+	z-index: 1;
+	padding: 2em;
+	background: var(--bg-color);
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	overflow: auto;
+	border-radius: 5px;
+	box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
+}
+
+/* ---------- Project Card Grid Layouts ---------- */
+.highlighted-projects-grid,
+.projects-grid {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 1.5rem;
+	margin: 1.5rem;
+}
+
+.recent-projects-grid,
+.due-soon-projects-grid,
+.past-due-projects-grid {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	gap: 1.5rem;
+	margin: 1.5rem;
+}
+
+.highlighted-projects-grid .project-card {
+	display: grid;
+	grid-area: 1 / 1;
+	gap: 1.5rem;
+	margin: 1.5rem;
+}
+
+.highlighted-projects-grid .project-card:nth-child(1) {
+	transform: rotate(-2deg);
+}
+
+.highlighted-projects-grid .project-card:nth-child(2) {
+	transform: rotate(2deg);
+}
+
+.highlighted-projects-grid .project-card:nth-child(3) {
+	transform: rotate(-4deg);
+}
+
+.highlighted-projects-grid .project-card:hover {
+	transform: scale(1.05);
+}
+
+.project-card {
+	background-color: #e5ebee;
+	border: solid #e2dede;
+	height: 200px;
+	border-radius: 5%;
+	padding: 1em;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.05);
+}
+
+.project-card-name {
+	text-align: center;
+	padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.project-card-dates {
+	text-align: center;
+	padding: 0 1rem 2rem 1rem;
+	font-size: 0.8rem;
+}
+
+/* ---------- Navigation ---------- */
+.navbar ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+@media all and (max-width: 480px) { 
+	.navbar ul {
+		margin-top: 1rem;
+	}
+}
+
+.navbar li {
+	padding: 10px;
+	list-style: none;
+	font-size: var(--font-size-title);
+}
+
+.navbar li:hover {
+	background-color: #e5ebee;
+	border-radius: 50px;
+	border: none;
+	cursor: pointer;
+	transition: all 0.3s ease 0s;
+	padding: 1rem;
+}
+
+.navbar {
+	display: flex;
+	text-align: center;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+@media all and (max-width: 480px) { 
+	.navbar {
+		justify-content: center;
+	}
+}
+
+/* ---------- Page Sections ---------- */
+.top-section {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 4rem 1rem;
+}
+
+.top-section > .title {
+	margin: 2rem 0;
+	font-size: 3rem;
+}
+
+.top-section > .sub-title {
+	margin: 1rem 0 0.5rem 0;
+	font-size: 1.5rem;
+}
+
+.card-deck {
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+	padding-right: 20%;
+	padding-left: 20%;
+	flex-wrap: wrap;
+	margin-bottom: 3rem;
+}
+
+.card {
+	background-color: var(--bg-color);
+	border: solid var(--bg-color);
+	border-color: var(--font-color);
+	flex: 1;
+	border-radius: 10px;
+	text-align: center;
+	display: flex; 
+	flex-direction: column;
+}
+
+.card:hover {
+	transform: rotate(10deg) scale(1.1);
+	transition: all 0.3s ease 0s;
+	cursor: pointer;
+}
+
+.card > .title {
+	font-size: var(--font-size-title);
+	padding: 1rem 1rem;
+}
+
+.card > .body {
+	font-size: var(--font-size-body);
+	padding: 1rem 0.5rem 1rem 0.5rem;    
+}
+
+.mid-section { 
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	border: solid;
+}
+
+.mid-section > .text {
+	grid-column-start: 1;
+	grid-column-end: span 3;
+}
+
+.mid-section > .text > .title {
+	font-weight: 600;
+	padding: 1rem;
+}
+
+.mid-section > .text > .body {
+	font-weight: 400;
+	padding: 0 1rem 1rem 1rem;
+}
+
+.mid-section > .image {
+	grid-column-end: span 2;
+	text-align: center;
+}
+
+/* ---------- Timeline Styles ---------- */
+/* Base timeline table styles */
+.timeline-header-cell {
+	transform: rotate(-15deg);	
+}
+
+td.timeline-entry {
+	min-width: 100px;
+	white-space: nowrap;
+}
+
+.projects-timeline-table {
+	margin-top: 5rem;
+	border-collapse: separate;
+	border-spacing: 0 0;
+	border-spacing: 1rem 0;
+	width: auto;
+	overflow-x: auto;
+}
+
+.projects-timeline-table td:not(:first-child),
+.projects-timeline-table th:not(:first-child) {
+	padding-left: 3rem;
+}
+
+.projects-timeline-table tbody td:nth-child(2),
+.projects-timeline-table thead th:nth-child(2) {
+	padding-left: 5rem;
+}
+
+.projects-timeline-table thead th {
+	padding-bottom: 2rem;
+}
+
+.department-name {
+	padding-bottom: 1.5rem;
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.project-timeline-dates {
+	color: #666;
+	font-style: italic;
+}
+
+.timeline-entry {
+	text-align: center;
+}
+
+/* ---------- Gantt Timeline Styles ---------- */
+.gantt-timeline-container {
+	width: 100%;
+	margin-top: 2rem;
+	overflow: auto;
+	position: relative;
+	height: 80vh;
+	max-height: 800px;
+}
+
+.gantt-timeline-header {
+	display: flex;
+	position: sticky;
+	top: 0;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	z-index: 10;
+	padding-bottom: 15px;
+}
+
+.gantt-date-header {
+	min-width: var(--week-width);
+	width: var(--week-width);
+	flex: 0 0 var(--week-width);
+	text-align: center;
+	padding: 0.5rem 0;
+	font-size: 0.9rem;
+	white-space: nowrap;
+	position: relative;
+	overflow: visible;
+}
+
+/* Vertical lines between dates */
+.vertical-line {
+	position: absolute;
+	top: 30px;
+	right: 0;
+	width: 1px;
+	background-color: #ddd;
+	z-index: 1;
+	pointer-events: none;
+}
+
+.gantt-timeline-content {
+	position: relative;
+	padding-bottom: 0;
+	margin-bottom: 0;
+}
+
+.gantt-department-header {
+	display: flex;
+	padding: 1rem 0 0.5rem 0;
+	align-items: center;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+.department-name {
+	font-size: 1.2em;
+	font-weight: bold;
+	padding-bottom: 0.5rem;
+	position: sticky;
+	left: 0;
+	z-index: 5;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	width: var(--info-column-width);
+}
+
+.gantt-project-row {
+	display: flex;
+	position: relative;
+	height: 50px;
+	margin-bottom: 1.5rem;
+	overflow: visible;
+}
+
+.gantt-project-row.last-project {
+	margin-bottom: 0;
+}
+
+.gantt-info-column {
+	width: var(--info-column-width);
+	min-width: var(--info-column-width);
+	padding-right: 2rem;
+	position: sticky;
+	left: 0;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	z-index: 10;
+}
+
+.gantt-chart-area {
+	position: relative;
+	overflow: visible;
+	flex: 1;
+	display: flex;
+	min-height: 50px;
+}
+
+.project-bar-container {
+	position: absolute;
+	height: 30px;
+	top: 0;
+	z-index: 1;
+}
+
+.gantt-project-bar {
+	width: 100%;
+	height: 100%;
+	border-radius: 4px;
+	background-color: #e5ebee !important;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.week-cell {
+	position: absolute;
+	height: 30px;
+	width: var(--week-width);
+	top: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #333;
+	font-weight: bold;
+	font-size: 0.9rem;
+	z-index: 2;
+	background-color: transparent;
+}
+
+.week-cell[data-count="0"] {
+	color: #777;
+}
+
+.gantt-separator {
+	height: 1px;
+	background-color: #ccc;
+	margin: 1.5rem 0;
+	position: relative;
+	z-index: 2;
+}
+
+/* ---------- Timeline Specific Variations ---------- */
+/* Comments timeline specific styles */
+.gantt-timeline-container.comments-timeline {
+	min-height: 150px;
+	max-height: 150px; /* Fixed height for comments timeline */
+	overflow-x: auto;
+	overflow-y: hidden;
+	position: relative;
+	margin-bottom: 1rem;
+}
+
+/* Projects timeline specific styles */
+.gantt-timeline-container.projects-timeline {
+	overflow-x: auto;
+	overflow-y: auto;
+	height: auto; /* Changed from 80vh to auto to reduce excessive space */
+	min-height: 200px;
+	max-height: 800px;
+}
+
+.comments-timeline .vertical-line {
+	height: 100px;
+}
+
+/* Current week highlight */
+.current-week-column {
+	background-color: rgba(0, 0, 0, 0.1); /* Darkened for better visibility */
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: var(--week-width);
+	z-index: 1;
+	pointer-events: none;
+	border-left: 1px dashed rgba(0, 0, 0, 0.2);
+	border-right: 1px dashed rgba(0, 0, 0, 0.2);
+}
+
+.comments-timeline .current-week-column {
+	height: 100%;
+	top: 0;
+	bottom: 0;
+	position: absolute;
+	z-index: 0;
+}

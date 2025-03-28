@@ -22,25 +22,22 @@ export default class extends Controller {
     // Add event listeners
     window.addEventListener('resize', this.resizeHandler);
     
-    // For projects timeline with scrolling content
+    // Add scroll event listener for both timelines
+    this.element.addEventListener('scroll', this.scrollHandler);
+    
+    // Also adjust separator widths for projects timeline
     if (this.isProjectsTimeline) {
-      this.element.addEventListener('scroll', this.scrollHandler);
-      
-      // Also adjust separator widths for projects timeline
       this.adjustSeparatorWidths();
-      
-      // Run again after content is fully loaded
-      setTimeout(() => {
-        this.adjustTimeline();
-        this.adjustSeparatorWidths();
-        this.adjustCurrentWeekColumn();
-      }, 200);
-    } else {
-      // For comments timeline
-      setTimeout(() => {
-        this.adjustCurrentWeekColumn();
-      }, 200);
     }
+    
+    // Run again after content is fully loaded for both timeline types
+    setTimeout(() => {
+      this.adjustTimeline();
+      if (this.isProjectsTimeline) {
+        this.adjustSeparatorWidths();
+      }
+      this.adjustCurrentWeekColumn();
+    }, 200);
   }
   
   disconnect() {
@@ -58,11 +55,9 @@ export default class extends Controller {
   }
   
   handleScroll() {
-    // Only needed for projects timeline
-    if (this.isProjectsTimeline) {
-      this.adjustTimeline();
-      this.adjustCurrentWeekColumn();
-    }
+    // For both timeline types
+    this.adjustTimeline();
+    this.adjustCurrentWeekColumn();
   }
   
   adjustSeparatorWidths() {
@@ -92,9 +87,14 @@ export default class extends Controller {
     const content = this.contentElement;
     
     if (this.isCommentsTimeline) {
-      // Simpler calculation for comments timeline
-      const height = content.offsetHeight + 20;
-      this.setVerticalLinesHeight(height);
+      // For comments timeline, make lines extend to full container height
+      const container = this.element;
+      const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+      const containerHeight = container.clientHeight;
+      
+      // Calculate the height for vertical lines (subtract header height for proper positioning)
+      const verticalLineHeight = containerHeight - headerHeight + 20; // Add padding
+      this.setVerticalLinesHeight(verticalLineHeight);
     } else {
       // For projects timeline, calculate precisely based on content
       this.adjustProjectsTimeline();
@@ -154,8 +154,10 @@ export default class extends Controller {
     let height;
     
     if (this.isCommentsTimeline) {
-      // For comments timeline (simpler, just needs to cover the single row)
-      height = this.contentElement.offsetHeight + 50; // Add some padding
+      // For comments timeline - match the height of vertical lines
+      const container = this.element;
+      const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+      height = container.clientHeight - headerHeight + 20; // Add padding
     } else {
       // For projects timeline, calculate the full height including all departments and projects
       const lastProjectRow = this.element.querySelector('.gantt-project-row.last-project');
