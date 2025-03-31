@@ -12,12 +12,14 @@
 
   <body>
     <%= render partial: "shared/navbar" %>
+
+    <div id="modal-container"></div>  <!-- New container at root level -->
+    <p class="notice"><%= notice %></p>
+    <p class="alert"><%= alert %></p>
+    <%= yield %>
     <%= turbo_frame_tag "new_project_modal" %>
     <%= turbo_frame_tag "edit_comment_modal" %>
     <%= turbo_frame_tag "weekly_comments_modal" %>
     <%= turbo_frame_tag "weekly_summary_modal" %>
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
-    <%= yield %>
   </body>
 </html>

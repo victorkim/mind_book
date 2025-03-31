@@ -1,49 +1,52 @@
 <%# app/views/comments/edit.html.erb - No changes needed to this file, but keep for reference %>
 <%= turbo_frame_tag "edit_comment_modal" do %>
-  <div class="modal" data-controller="modal" data-modal-target="modal">
-    <h1 class="comment-modal-title">
-      Edit this comment
-    </h1> 
-    <%= form_with(model: [@parent, @comment], local: true) do |form| %>
-      <% if @comment.errors.any? %>
-        <div style="color: red">
-          <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
-          <ul>
-            <% @comment.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-      <%= form.rich_text_area :body, rows: 3 %>
+  <div data-controller="modal" data-action="turbo:before-render@document->modal#hideBeforeRender" data-modal-target="container" class="modal-container">
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <h1 class="comment-modal-title">
+        Edit this comment
+      </h1> 
+      <%= form_with(model: [@parent, @comment], local: true) do |form| %>
+        <% if @comment.errors.any? %>
+          <div style="color: red">
+            <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+            <ul>
+              <% @comment.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <%= form.rich_text_area :body, rows: 3 %>
 
-      <div class="form-field">
-        <%= form.label :date, "Comment Date" %>
-        <%= form.date_field :date %>
-      </div>  
+        <div class="form-field">
+          <%= form.label :date, "Comment Date" %>
+          <%= form.date_field :date %>
+        </div>  
 
-      <% if @parent.is_a?(Project) %>
-        <!-- In the Project context, let the user optionally select a Channel -->
-        <div>
-          <%= form.label :channel_id, "Channel (optional)" %>
-          <%= form.collection_select :channel_id, Channel.all, :id, :name, include_blank: true %>
-        </div>
-      <% elsif @parent.is_a?(Channel) %>
-        <!-- In the Channel context, force selection of a Project -->
-        <div>
-          <%= form.label :project_id, "Select a Project" %>
-          <%= form.collection_select :project_id, Project.all, :id, :name, include_blank: false %>
-        </div>
-      <% end %>
+        <% if @parent.is_a?(Project) %>
+          <!-- In the Project context, let the user optionally select a Channel -->
+          <div>
+            <%= form.label :channel_id, "Channel (optional)" %>
+            <%= form.collection_select :channel_id, Channel.all, :id, :name, include_blank: true %>
+          </div>
+        <% elsif @parent.is_a?(Channel) %>
+          <!-- In the Channel context, force selection of a Project -->
+          <div>
+            <%= form.label :project_id, "Select a Project" %>
+            <%= form.collection_select :project_id, Project.all, :id, :name, include_blank: false %>
+          </div>
+        <% end %>
 
-      <div class="edit-comment-actions">
-        <div class="button">
-          <%= form.submit "Submit" %>
+        <div class="edit-comment-actions">
+          <div class="button">
+            <%= form.submit "Submit" %>
+          </div>
+          <div class="cancel-button">
+            <%= link_to "Cancel", "#", data: { action: "modal#close" } %>      
+          </div>
         </div>
-        <div class="cancel-button">
-          <%= link_to "Cancel", "#", data: { action: "modal#close" } %>      
-        </div>
-      </div>
     <% end %>
+    </div>
   </div>
 <% end %>

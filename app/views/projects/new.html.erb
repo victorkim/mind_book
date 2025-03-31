@@ -1,16 +1,19 @@
 <%= turbo_frame_tag "new_project_modal" do %>
-  <div class="modal" data-controller="modal" data-modal-target="modal">
-    <h1>New project</h1>
+  <div data-controller="modal" data-action="turbo:before-render@document->modal#hideBeforeRender" data-modal-target="container" class="modal-container">
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <h1>New project</h1>
 
-    <%= form_with(model: @project) do |form| %>
-      <%= render "form", project: @project %>
-    <% end %>
+      <%= form_with(model: @project) do |form| %>
+        <%= render "form", project: @project %>
+      <% end %>
 
-    <br>
+      <br>
 
-    <div>
-      <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
-    </div>
+      <div>
+        <%= link_to "Cancel", "#", data: { action: "modal#close" }, class: "cancel-button" %>
+      </div>
+      </div>
     </div>
   </div>
 <% end %>

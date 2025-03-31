@@ -252,17 +252,80 @@ trix-toolbar .trix-button-group button {
 }
 
 /* ---------- Modal Styles ---------- */
-.modal {
+/* Update these CSS rules in your application.css */
+
+/* Modal container - this creates a semi-transparent overlay */
+[data-controller="modal"] {
 	position: fixed;
-	z-index: 1;
-	padding: 2em;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000; /* High z-index to appear above everything */
+  }
+
+.modal-container {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+z-index: 1000;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.modal-backdrop {
+position: absolute;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+}
+
+/* Updated Modal Styles */
+.modal {
+	position: relative;
 	background: var(--bg-color);
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	overflow: auto;
+	padding: 2em;
 	border-radius: 5px;
-	box-shadow: 0 0 10px 0 rgba(0,0,0,0.2), 0 5px 10px 0 rgba(0,0,0,0.19);
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+	max-width: 800px;
+	min-width: 500px;
+	max-height: 80vh;
+	overflow: auto;
+  }
+
+/* Overlay that covers the entire screen */
+.modal::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+/* Ensure the modal content is above the overlay */
+.modal > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Make sure all timeline elements stay below modals */
+.gantt-timeline-container,
+.gantt-timeline-header,
+.gantt-info-column,
+.gantt-chart-area,
+.department-name {
+  z-index: 10 !important; /* Lower than modal */
 }
 
 /* ---------- Project Card Grid Layouts ---------- */
@@ -682,4 +745,78 @@ td.timeline-entry {
 	bottom: 0;
 	position: absolute;
 	z-index: 0;
-}
+}/* Weekly Summaries Styles */
+.gantt-date-header a {
+	display: block;
+	padding: 0.5rem 0;
+	color: var(--font-color);
+	text-decoration: none;
+  }
+  
+  .gantt-date-header a:hover {
+	text-decoration: underline;
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 4px;
+  }
+  
+  .form-section {
+	margin-bottom: 1.5rem;
+  }
+  
+  .form-section h3 {
+	margin-bottom: 0.5rem;
+	font-size: 1.1rem;
+	font-weight: bold;
+  }
+  
+  .project-summary-form {
+	margin-bottom: 1rem;
+	border: 1px solid #e2dede;
+	border-radius: 5px;
+	overflow: hidden;
+  }
+  
+  .project-summary-header {
+	background-color: #e5ebee;
+	padding: 0.5rem;
+	border-bottom: 1px solid #e2dede;
+  }
+  
+  .project-summary-content {
+	min-height: 100px;
+	width: 100%;
+  }
+  
+  .weekly-summary-content {
+	min-height: 150px;
+	width: 100%;
+  }
+  
+  .read-only-content {
+	background-color: #f5f5f5;
+	border: 1px solid #e2dede;
+	border-radius: 5px;
+	padding: 0.75rem;
+	margin-bottom: 1.5rem;
+  }
+  
+  .no-content {
+	color: #999;
+	font-style: italic;
+  }
+  
+  .summary-section {
+	margin-bottom: 1.5rem;
+  }
+  
+  .summary-section h3 {
+	margin-bottom: 0.5rem;
+	font-size: 1.1rem;
+	font-weight: bold;
+  }
+  
+  .modal-actions {
+	margin-top: 1rem;
+	text-align: right;
+  }
+  
