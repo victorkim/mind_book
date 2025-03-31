@@ -6,7 +6,7 @@
         <h2>Weekly Update - <%= week_start.strftime("%B %d, %Y") %></h2>
       </div>
 
-      <%= form_with(url: batch_update_weekly_summaries_path(week_start: week_start), method: :post, local: true) do |form| %>
+      <%= form_with(url: "/weekly_summaries/batch_update/#{week_start}", method: :post, local: true) do |form| %>
         <!-- Global Summary -->
         <div class="form-section">
           <h3>Overall Summary</h3>

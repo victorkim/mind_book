@@ -1,24 +1,27 @@
 <%= turbo_frame_tag "weekly_summary_modal" do %>
-  <div class="modal" data-controller="modal" data-modal-target="modal">
-    <div class="comments-modal-title">
-      <h2><%= project.name %> - <%= week_start.strftime("%B %d, %Y") %></h2>
-    </div>
-    
-    <!-- Global Summary (read-only) -->
-    <div class="summary-section">
-      <h3>Weekly Overview</h3>
-      <div class="read-only-content">
-        <% if global_summary.content.present? %>
-          <%= global_summary.content %>
-        <% else %>
-          <p class="no-content">No weekly summary available for this week.</p>
-        <% end %>
+  <div data-controller="modal" data-action="turbo:before-render@document->modal#hideBeforeRender" data-modal-target="container" class="modal-container">
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <div class="comments-modal-title">
+        <h2><%= project.name %> - <%= week_start.strftime("%B %d, %Y") %></h2>
       </div>
-    </div>
-    
-    <div class="modal-actions">
-      <div class="cancel-button">
-        <%= link_to "Close", "#", data: { action: "modal#close" }, class: "close-modal-button" %>
+      
+      <!-- Global Summary (read-only) -->
+      <div class="summary-section">
+        <h3>Weekly Overview</h3>
+        <div class="read-only-content">
+          <% if global_summary.content.present? %>
+            <%= global_summary.content %>
+          <% else %>
+            <p class="no-content">No weekly summary available for this week.</p>
+          <% end %>
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <div class="cancel-button">
+          <%= link_to "Close", "#", data: { action: "modal#close" }, class: "close-modal-button" %>
+        </div>
       </div>
     </div>
   </div>

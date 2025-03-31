@@ -1,0 +1,34 @@
+<%= turbo_frame_tag "weekly_summary_modal" do %>
+  <div data-controller="modal" data-action="turbo:before-render@document->modal#hideBeforeRender" data-modal-target="container" class="modal-container">
+    <div class="modal-backdrop"></div>
+    <div class="modal">
+      <div class="comments-modal-title">
+        <h2><%= project.name %> - <%= week_start.strftime("%B %d, %Y") %></h2>
+      </div>
+
+      <!-- Using direct URL path instead of named route helper -->
+      <%= form_with(url: "/weekly_summaries/project_update/#{project.id}/#{week_start}", method: :post, local: true) do |form| %>
+        <!-- Project-specific summary -->
+        <div class="form-section">
+          <h3>Weekly Update for <%= project.name %></h3>
+          <%= fields_for :project_summary, project_summary do |ps_form| %>
+            <div class="form-field">
+              <%= ps_form.hidden_field :project_id, value: project.id %>
+              <%= ps_form.hidden_field :week_start, value: week_start %>
+              <%= ps_form.rich_text_area :content, rows: 4, class: "weekly-summary-content" %>
+            </div>
+          <% end %>
+        </div>
+        
+        <div class="edit-comment-actions">
+          <div class="button">
+            <%= form.submit "Save" %>
+          </div>
+          <div class="cancel-button">
+            <%= link_to "Cancel", "#", data: { action: "modal#close" } %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

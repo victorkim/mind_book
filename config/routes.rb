@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users
   
-  devise_for :users #Generates sign up, login, profile editing links in one single command with devise gem
-  
-  root 'pages#home' #Defining landing page of the website
+  root 'pages#home'
   get 'about', to: 'pages#about'
   get 'blog', to: 'pages#blog'
   get 'features', to: 'pages#features'
@@ -12,23 +11,19 @@ Rails.application.routes.draw do
     resources :comments, only: [:create, :edit, :update, :destroy]
   end
   
-  resources :projects do #RESTful routes for the Project model. Generates standard routes for all CRUD actions (resources helper is a shorthand for defining all the standard RESTful routes Rails expects)
-    resources :comments, only: [:index, :create, :edit, :update, :destroy] do #Nesting comments under projects indicates that comments belong to a specific project (example route: projects/project_id/comments). Generates routes for comments that are associated with a project, but limits them to specific actions using only (new and show actions are excluded)
-      collection do #Adds a custom route on the collection of comments, not tied to a specific comment ID. Usually used when you want to perform an action on a group of resources or fetch data for the entire collection
-        get 'weekly', to: 'comments#weekly', as: 'weekly' #Defines a route to access weekly comments for a specific project mapped to the Weekly Actions in the Comments Controller
+  resources :projects do
+    resources :comments, only: [:index, :create, :edit, :update, :destroy] do
+      collection do
+        get 'weekly', to: 'comments#weekly', as: 'weekly'
       end
     end
   end
 
-  get 'projects/weekly_comments_overview', to: 'projects#weekly_comments', as: 'weekly_comments_overview' #Defines a standalone route outside of the nested resource and maps the URL /projects/weekly_comments_overview to the weekly_comments action in the ProjectsController.
+  get 'projects/weekly_comments_overview', to: 'projects#weekly_comments', as: 'weekly_comments_overview'
 
-  resources :weekly_summaries, only: [] do
-    collection do
-      post 'batch_update/:week_start', to: 'weekly_summaries#batch_update', as: 'batch_update'
-    end
-  end
-
+  # Weekly Summaries Routes - UPDATED
   get 'weekly_summaries/:week_start', to: 'weekly_summaries#show', as: 'weekly_summary'
   get 'projects/:project_id/weekly_summaries/:week_start', to: 'weekly_summaries#show', as: 'project_weekly_summary'
-
+  post 'weekly_summaries/batch_update/:week_start', to: 'weekly_summaries#batch_update', as: 'batch_update_weekly_summaries'
+  post 'weekly_summaries/project_update/:project_id/:week_start', to: 'weekly_summaries#update_project_summary', as: 'update_project_weekly_summary'
 end
