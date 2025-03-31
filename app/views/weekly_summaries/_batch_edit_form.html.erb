@@ -1,0 +1,49 @@
+<!-- in app/views/weekly_summaries/_batch_edit_form.html.erb -->
+<%= turbo_frame_tag "weekly_summary_modal" do %>
+  <div class="modal" data-controller="modal" data-modal-target="modal">
+    <div class="comments-modal-title">
+      <h2>Weekly Update - <%= week_start.strftime("%B %d, %Y") %></h2>
+    </div>
+
+    <%= form_with(url: batch_update_weekly_summaries_path(week_start: week_start), method: :post, local: true) do |form| %>
+      <!-- Global Summary -->
+      <div class="form-section">
+        <h3>Overall Summary</h3>
+        <%= fields_for :global_summary, global_summary do |gs_form| %>
+          <div class="form-field">
+            <%= gs_form.rich_text_area :content, rows: 4, class: "weekly-summary-content" %>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Project Summaries -->
+      <div class="form-section">
+        <h3>Project Updates</h3>
+        
+        <% project_summaries.each do |project_id, summary| %>
+          <% project = Project.find(project_id) %>
+          <div class="project-summary-form">
+            <div class="project-summary-header">
+              <strong><%= project.name %></strong>
+            </div>
+            
+            <%= fields_for "project_summaries[#{project_id}]", summary do |ps_form| %>
+              <div class="form-field">
+                <%= ps_form.rich_text_area :content, rows: 3, class: "project-summary-content" %>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      
+      <div class="edit-comment-actions">
+        <div class="button">
+          <%= form.submit "Save All" %>
+        </div>
+        <div class="cancel-button">
+          <%= link_to "Cancel", "#", data: { action: "modal#close" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
