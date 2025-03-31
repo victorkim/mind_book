@@ -46,7 +46,19 @@
       <div class="gantt-chart-area">
         <% week_starts.each_with_index do |ws, index| %>
           <div class="gantt-date-header <%= 'last-date' if index == week_starts.size - 1 %>">
-            <%= ws.strftime("%m/%d/%y") %>
+            <% if timeline_type == :projects %>
+              <!-- When on the projects index page, link to global weekly summary -->
+              <%= link_to weekly_summary_path(week_start: ws), data: { turbo_frame: "weekly_summary_modal" } do %>
+                <%= ws.strftime("%m/%d/%y") %>
+              <% end %>
+            <% elsif timeline_type == :comments && defined?(@project) && @project %>
+              <!-- When on a project show page, link to project-specific weekly summary -->
+              <%= link_to project_weekly_summary_path(@project, week_start: ws), data: { turbo_frame: "weekly_summary_modal" } do %>
+                <%= ws.strftime("%m/%d/%y") %>
+              <% end %>
+            <% else %>
+              <%= ws.strftime("%m/%d/%y") %>
+            <% end %>
             <% if index == current_week_index %>
               <div class="current-week-column"></div>
             <% end %>
