@@ -22,4 +22,13 @@ Rails.application.routes.draw do
 
   get 'projects/weekly_comments_overview', to: 'projects#weekly_comments', as: 'weekly_comments_overview' #Defines a standalone route outside of the nested resource and maps the URL /projects/weekly_comments_overview to the weekly_comments action in the ProjectsController.
 
+  resources :weekly_summaries, only: [] do
+    collection do
+      post 'batch_update/:week_start', to: 'weekly_summaries#batch_update', as: 'batch_update'
+    end
+  end
+
+  get 'weekly_summaries/:week_start', to: 'weekly_summaries#show', as: 'weekly_summary'
+  get 'projects/:project_id/weekly_summaries/:week_start', to: 'weekly_summaries#show', as: 'project_weekly_summary'
+
 end
