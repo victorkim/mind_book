@@ -27,6 +27,11 @@ export default class extends Controller {
     setTimeout(() => {
       this.adjustTimeline();
       this.adjustCurrentWeekColumn();
+      
+      // Set initial scroll position for projects timeline
+      if (this.isProjectsTimeline && this.element.closest('#projects_timeline')) {
+        this.scrollToRelevantWeek();
+      }
     }, 200);
   }
   
@@ -134,5 +139,40 @@ export default class extends Controller {
         element.style.pointerEvents = 'none';
       }
     });
+  }
+  
+  // New method to scroll to 8 weeks before current week
+  scrollToRelevantWeek() {
+    // Find the current week column
+    const currentWeekColumn = this.element.querySelector('.current-week-column');
+    if (!currentWeekColumn) return;
+    
+    // Find the parent date header
+    const currentDateHeader = currentWeekColumn.closest('.gantt-date-header');
+    if (!currentDateHeader) return;
+    
+    // Get all date headers to determine the index
+    const allDateHeaders = Array.from(this.element.querySelectorAll('.gantt-date-header'));
+    const currentIndex = allDateHeaders.indexOf(currentDateHeader);
+    
+    if (currentIndex === -1) return;
+    
+    // Calculate the target index (8 weeks before current)
+    const targetIndex = Math.max(0, currentIndex - 8);
+    
+    // Get the target element to scroll to
+    const targetElement = allDateHeaders[targetIndex];
+    if (!targetElement) return;
+    
+    // Calculate the scroll position
+    // We need to account for the info column width
+    const infoColumn = this.element.querySelector('.gantt-info-column');
+    const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
+    
+    // Each week is 80px wide (from CSS var(--week-width))
+    const scrollLeft = targetIndex * 80;
+    
+    // Scroll to the position
+    this.element.scrollLeft = Math.max(0, scrollLeft);
   }
 }
