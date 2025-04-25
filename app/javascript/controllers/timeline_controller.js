@@ -7,14 +7,14 @@ export default class extends Controller {
     this.isCommentsTimeline = this.element.classList.contains('comments-timeline');
     this.isProjectsTimeline = !this.isCommentsTimeline;
     
-    // References to important elements
+    // References to important elements with new structure
     this.contentElement = this.element.querySelector('.gantt-timeline-content');
     this.verticalLines = this.element.querySelectorAll('.vertical-line');
     this.currentWeekColumns = this.element.querySelectorAll('.current-week-column');
     this.projectBars = this.element.querySelectorAll('.project-bar-container');
     this.header = this.element.querySelector('.gantt-timeline-header');
-    this.chartAreas = this.element.querySelectorAll('.gantt-chart-area');
-    this.projectRows = this.element.querySelectorAll('.gantt-project-row');
+    this.chartAreas = this.element.querySelectorAll('.gantt-chart-content, .gantt-chart-area');
+    this.projectRows = this.element.querySelectorAll('.gantt-project-chart, .gantt-project-row');
     
     // Set up event handlers with proper binding
     this.resizeHandler = this.handleResize.bind(this);
@@ -30,8 +30,9 @@ export default class extends Controller {
     // Run again after content is fully loaded
     setTimeout(() => {
       this.adjustTimeline();
-      this.adjustWidths(); // New method to set proper widths
+      this.adjustWidths(); // Set proper widths
       this.adjustCurrentWeekColumn();
+      this.ensureElementsVisible(); // Make sure elements are visible
       
       // Set initial scroll position for projects timeline
       if (this.isProjectsTimeline && this.element.closest('#projects_timeline')) {
@@ -48,29 +49,43 @@ export default class extends Controller {
   
   handleResize() {
     this.adjustTimeline();
-    this.adjustWidths(); // Add width adjustment on resize
+    this.adjustWidths();
     this.adjustCurrentWeekColumn();
+    this.ensureElementsVisible();
   }
   
   handleScroll() {
-    // We don't need to do anything special on scroll now
-    // The CSS will handle hiding overflowing content
+    // No need for complex logic during scroll
   }
   
-  // New method to set widths properly based on number of date headers
+  // New method to ensure elements are visible
+  ensureElementsVisible() {
+    // Make sure project bars are visible
+    this.projectBars.forEach(bar => {
+      bar.style.display = 'block';
+      bar.querySelector('.gantt-project-bar').style.visibility = 'visible';
+    });
+    
+    // Make sure current week column is visible
+    this.currentWeekColumns.forEach(column => {
+      column.style.display = 'block';
+      column.style.visibility = 'visible';
+    });
+  }
+  
+  // Modified to work with new structure
   adjustWidths() {
     const dateHeaders = this.element.querySelectorAll('.gantt-date-header');
     if (dateHeaders.length === 0) return;
     
     // Calculate the total width based on number of week columns
-    // Each column has a width of var(--week-width) which is 80px by default
     const totalWeekWidth = dateHeaders.length * 80;
     
     // Get the info column width
     const infoColumn = this.element.querySelector('.gantt-info-column');
     const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
     
-    // Set width on chart areas (apply to all of them)
+    // Set width on chart areas
     this.chartAreas.forEach(chartArea => {
       chartArea.style.width = `${totalWeekWidth}px`;
       chartArea.style.minWidth = `${totalWeekWidth}px`;
@@ -78,7 +93,6 @@ export default class extends Controller {
     
     // Set width on the timeline header
     if (this.header) {
-      // The header already includes the info column, so set the width to total
       const totalWidth = totalWeekWidth + infoColumnWidth;
       this.header.style.width = `${totalWidth}px`;
       this.header.style.minWidth = `${totalWidth}px`;
@@ -105,7 +119,8 @@ export default class extends Controller {
       // For projects timeline, calculate based on content
       this.adjustSeparatorWidths();
       
-      const lastProjectRow = this.element.querySelector('.gantt-project-row.last-project');
+      // Find the last project row with either class
+      const lastProjectRow = this.element.querySelector('.gantt-project-chart.last-project, .gantt-project-row.last-project');
       if (lastProjectRow) {
         const lastProjectBottom = lastProjectRow.offsetTop + lastProjectRow.offsetHeight;
         height = lastProjectBottom + 30; // Add padding
@@ -138,9 +153,9 @@ export default class extends Controller {
     const infoColumn = this.element.querySelector('.gantt-info-column');
     const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
     
-    // Apply width to separators
+    // Apply width to all separators
     const fullWidth = `${totalWidth + infoColumnWidth}px`;
-    const separators = this.element.querySelectorAll('.gantt-separator');
+    const separators = this.element.querySelectorAll('.gantt-separator, .gantt-chart-separator, .gantt-info-separator');
     separators.forEach(separator => {
       separator.style.width = fullWidth;
       separator.style.minWidth = fullWidth;
@@ -157,7 +172,8 @@ export default class extends Controller {
     if (this.isCommentsTimeline) {
       height = this.element.clientHeight - headerHeight + 20;
     } else {
-      const lastProjectRow = this.element.querySelector('.gantt-project-row.last-project');
+      // Look for last project row with either old or new class
+      const lastProjectRow = this.element.querySelector('.gantt-project-chart.last-project, .gantt-project-row.last-project');
       height = lastProjectRow ? 
         lastProjectRow.offsetTop + lastProjectRow.offsetHeight + 30 : 
         200;
@@ -173,6 +189,7 @@ export default class extends Controller {
     elements.forEach(element => {
       if (!element) return;
       element.style.height = `${height}px`;
+      element.style.visibility = 'visible'; // Ensure visibility
     });
   }
   
