@@ -11,6 +11,10 @@ export default class extends Controller {
     this.contentElement = this.element.querySelector('.gantt-timeline-content');
     this.verticalLines = this.element.querySelectorAll('.vertical-line');
     this.currentWeekColumns = this.element.querySelectorAll('.current-week-column');
+    this.projectBars = this.element.querySelectorAll('.project-bar-container');
+    this.header = this.element.querySelector('.gantt-timeline-header');
+    this.chartAreas = this.element.querySelectorAll('.gantt-chart-area');
+    this.projectRows = this.element.querySelectorAll('.gantt-project-row');
     
     // Set up event handlers with proper binding
     this.resizeHandler = this.handleResize.bind(this);
@@ -26,6 +30,7 @@ export default class extends Controller {
     // Run again after content is fully loaded
     setTimeout(() => {
       this.adjustTimeline();
+      this.adjustWidths(); // New method to set proper widths
       this.adjustCurrentWeekColumn();
       
       // Set initial scroll position for projects timeline
@@ -43,17 +48,53 @@ export default class extends Controller {
   
   handleResize() {
     this.adjustTimeline();
+    this.adjustWidths(); // Add width adjustment on resize
     this.adjustCurrentWeekColumn();
   }
   
   handleScroll() {
-    this.adjustTimeline();
-    this.adjustCurrentWeekColumn();
+    // We don't need to do anything special on scroll now
+    // The CSS will handle hiding overflowing content
+  }
+  
+  // New method to set widths properly based on number of date headers
+  adjustWidths() {
+    const dateHeaders = this.element.querySelectorAll('.gantt-date-header');
+    if (dateHeaders.length === 0) return;
+    
+    // Calculate the total width based on number of week columns
+    // Each column has a width of var(--week-width) which is 80px by default
+    const totalWeekWidth = dateHeaders.length * 80;
+    
+    // Get the info column width
+    const infoColumn = this.element.querySelector('.gantt-info-column');
+    const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
+    
+    // Set width on chart areas (apply to all of them)
+    this.chartAreas.forEach(chartArea => {
+      chartArea.style.width = `${totalWeekWidth}px`;
+      chartArea.style.minWidth = `${totalWeekWidth}px`;
+    });
+    
+    // Set width on the timeline header
+    if (this.header) {
+      // The header already includes the info column, so set the width to total
+      const totalWidth = totalWeekWidth + infoColumnWidth;
+      this.header.style.width = `${totalWidth}px`;
+      this.header.style.minWidth = `${totalWidth}px`;
+    }
+    
+    // Set width on the content element
+    if (this.contentElement) {
+      const totalWidth = totalWeekWidth + infoColumnWidth;
+      this.contentElement.style.width = `${totalWidth}px`;
+      this.contentElement.style.minWidth = `${totalWidth}px`;
+    }
   }
   
   adjustTimeline() {
     // Calculate appropriate heights for timeline elements
-    const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+    const headerHeight = this.header ? this.header.offsetHeight : 0;
     let height;
     
     if (this.isCommentsTimeline) {
@@ -70,8 +111,10 @@ export default class extends Controller {
         height = lastProjectBottom + 30; // Add padding
         
         // Adjust content element height for projects timeline
-        this.contentElement.style.minHeight = `${height}px`;
-        this.contentElement.style.maxHeight = `${height}px`;
+        if (this.contentElement) {
+          this.contentElement.style.minHeight = `${height}px`;
+          this.contentElement.style.height = `${height}px`;
+        }
       } else {
         height = 200; // Default fallback height
       }
@@ -105,10 +148,10 @@ export default class extends Controller {
   }
   
   adjustCurrentWeekColumn() {
-    if (this.currentWeekColumns.length === 0) return;
+    if (!this.currentWeekColumns || this.currentWeekColumns.length === 0) return;
     
     // Calculate appropriate height for current week column (same logic as vertical lines)
-    const headerHeight = this.element.querySelector('.gantt-timeline-header').offsetHeight;
+    const headerHeight = this.header ? this.header.offsetHeight : 0;
     let height;
     
     if (this.isCommentsTimeline) {
@@ -125,23 +168,15 @@ export default class extends Controller {
   }
   
   setElementsHeight(elements, height) {
+    if (!elements || elements.length === 0) return;
+    
     elements.forEach(element => {
+      if (!element) return;
       element.style.height = `${height}px`;
-      
-      // For vertical lines, ensure other critical styles
-      if (element.classList.contains('vertical-line')) {
-        element.style.position = 'absolute';
-        element.style.width = '1px';
-        element.style.backgroundColor = '#ddd';
-        element.style.zIndex = '1';
-        element.style.top = '30px';
-        element.style.right = '0';
-        element.style.pointerEvents = 'none';
-      }
     });
   }
   
-  // New method to scroll to 8 weeks before current week
+  // Method to scroll to 8 weeks before current week
   scrollToRelevantWeek() {
     // Find the current week column
     const currentWeekColumn = this.element.querySelector('.current-week-column');
@@ -160,15 +195,7 @@ export default class extends Controller {
     // Calculate the target index (8 weeks before current)
     const targetIndex = Math.max(0, currentIndex - 8);
     
-    // Get the target element to scroll to
-    const targetElement = allDateHeaders[targetIndex];
-    if (!targetElement) return;
-    
     // Calculate the scroll position
-    // We need to account for the info column width
-    const infoColumn = this.element.querySelector('.gantt-info-column');
-    const infoColumnWidth = infoColumn ? infoColumn.offsetWidth : 0;
-    
     // Each week is 80px wide (from CSS var(--week-width))
     const scrollLeft = targetIndex * 80;
     

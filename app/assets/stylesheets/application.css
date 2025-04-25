@@ -549,6 +549,7 @@ td.timeline-entry {
 }
 
 .department-name {
+	
 	padding-bottom: 1.5rem;
 	font-size: 1.2em;
 	font-weight: bold;
@@ -564,23 +565,6 @@ td.timeline-entry {
 }
 
 /* ---------- Gantt Timeline Styles ---------- */
-.gantt-timeline-container {
-	width: 100%;
-	margin-top: 2rem;
-	overflow: auto;
-	position: relative;
-	height: 80vh;
-	max-height: 800px;
-}
-
-.gantt-timeline-header {
-	display: flex;
-	position: sticky;
-	top: 0;
-	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	z-index: 10;
-	padding-bottom: 15px;
-}
 
 .gantt-date-header {
 	min-width: var(--week-width);
@@ -636,6 +620,42 @@ td.timeline-entry {
 	height: 50px;
 	margin-bottom: 1.5rem;
 	overflow: visible;
+	border: solid;
+	border-color: green;
+}
+
+.gantt-chart-area {
+	position: relative;
+	overflow: hidden;
+	flex: 1;
+	display: flex;
+	min-height: 50px;
+	border: solid;
+	border-color: purple;
+}
+
+.gantt-timeline-header {
+	display: flex;
+	position: sticky;
+	top: 0;
+	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
+	z-index: 20;
+	padding-bottom: 15px;
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for visual separation */
+	width: max-content;
+	border: solid;
+	border-color: red;
+}
+
+.gantt-timeline-container {
+	width: 100%;
+	margin-top: 2rem;
+	overflow: auto;
+	position: relative;
+	height: 80vh;
+	max-height: 800px;
+	border: solid;
+	border-color: blue;
 }
 
 .gantt-project-row.last-project {
@@ -649,15 +669,8 @@ td.timeline-entry {
 	position: sticky;
 	left: 0;
 	background: linear-gradient(180deg, #f8f9fb 0%, #e5eaef 80%) fixed;
-	z-index: 10;
-}
-
-.gantt-chart-area {
-	position: relative;
-	overflow: visible;
-	flex: 1;
-	display: flex;
-	min-height: 50px;
+	z-index: 20;
+	box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow for visual separation */
 }
 
 .project-bar-container {
@@ -665,6 +678,7 @@ td.timeline-entry {
 	height: 30px;
 	top: 0;
 	z-index: 1;
+	overflow: hidden;
 }
 
 .gantt-project-bar {
