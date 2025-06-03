@@ -26,4 +26,18 @@ Rails.application.routes.draw do
   get 'projects/:project_id/weekly_summaries/:week_start', to: 'weekly_summaries#show', as: 'project_weekly_summary'
   post 'weekly_summaries/batch_update/:week_start', to: 'weekly_summaries#batch_update', as: 'batch_update_weekly_summaries'
   post 'weekly_summaries/project_update/:project_id/:week_start', to: 'weekly_summaries#update_project_summary', as: 'update_project_weekly_summary'
+
+   # Add these API routes for MCP
+   namespace :api do
+    namespace :v1 do
+      namespace :mcp do
+        resources :channels, only: [:index, :show, :create] do
+          resources :comments, only: [:create]
+        end
+        resources :projects, only: [:index, :show, :create]
+        resources :comments, only: [:index]
+      end
+    end
+  end 
+
 end
