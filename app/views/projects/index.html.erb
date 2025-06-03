@@ -6,6 +6,19 @@
   <h1 class="page-title">All Projects</h1>
 <% end %>
 
+<!-- Add Filter Toggle -->
+<div class="filter-toggle" style="margin: 20px 0; text-align: center;">
+  <%= link_to "All Projects", projects_path, 
+      class: "btn #{params[:filter].nil? ? 'btn-primary' : 'btn-secondary'}", 
+      style: "margin: 0 5px;" %>
+  <%= link_to "Demo Only", projects_path(filter: 'demo'), 
+      class: "btn #{params[:filter] == 'demo' ? 'btn-primary' : 'btn-secondary'}", 
+      style: "margin: 0 5px;" %>
+  <%= link_to "Real Only", projects_path(filter: 'real'), 
+      class: "btn #{params[:filter] == 'real' ? 'btn-primary' : 'btn-secondary'}", 
+      style: "margin: 0 5px;" %>
+</div>
+
 <div class="new-project-prompt">
 	<% if user_signed_in? %>
 		<p>

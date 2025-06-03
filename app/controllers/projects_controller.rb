@@ -3,10 +3,20 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[ show edit update destroy ] #instantiates the project based on the ID from parameters for actions that need it (for show, edit, update and destroy without repeating code)
 
   def index
-    # Initialize the unified TimelineDataService with projects and parameters
+    # Filter projects based on params
+    filtered_projects = case params[:filter]
+    when 'demo'
+      Project.where("name LIKE ?", "DEMO:%")
+    when 'real'
+      Project.where("name NOT LIKE ?", "DEMO:%")
+    else
+      Project.all
+    end
+  
+    # Initialize the unified TimelineDataService with FILTERED projects
     service = TimelineDataService.new(
       type: :projects,
-      items: Project.all,
+      items: filtered_projects,  # Pass filtered projects here
       params: params
     )
     

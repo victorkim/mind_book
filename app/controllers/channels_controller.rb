@@ -4,7 +4,14 @@ class ChannelsController < ApplicationController
 
   # GET /channels or /channels.json
   def index
-    @channels = Channel.all
+    @channels = case params[:filter]
+    when 'demo'
+      Channel.where("name LIKE ?", "DEMO:%")
+    when 'real'
+      Channel.where("name NOT LIKE ?", "DEMO:%")
+    else
+      Channel.all
+    end
   end
 
   # GET /channels/1 or /channels/1.json
