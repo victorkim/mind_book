@@ -15,12 +15,9 @@
       style: "margin: 0 5px;" %>
 </div>
 
-<div id="channels">
+<div id="channels" class="channels-grid">
   <% @channels.each do |channel| %>
     <%= render channel %>
-    <p>
-      <%= link_to "Show this channel", channel %>
-    </p>
   <% end %>
 </div>
 

@@ -330,7 +330,8 @@ bottom: 0;
 
 /* ---------- Project Card Grid Layouts ---------- */
 .highlighted-projects-grid,
-.projects-grid {
+.projects-grid,
+.channels-grid {
 	display: grid;
 	grid-template-columns: repeat(5, 1fr);
 	gap: 1.5rem;
@@ -370,7 +371,8 @@ bottom: 0;
 	transform: scale(1.05);
 }
 
-.project-card {
+.project-card,
+.channel-card {
 	background-color: #e5ebee;
 	border: solid #e2dede;
 	height: 200px;

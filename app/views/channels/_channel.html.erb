@@ -1,5 +1,8 @@
-<div id="<%= dom_id channel %>">
-
-  <strong><%= link_to channel.name, channel_path(channel) %></strong>
-
+<div class="channel-card"> 
+  <div id="<%= dom_id channel %>">
+    <strong><%= link_to channel.name, channel_path(channel) %></strong>
+    <p>
+      <%= link_to "Show this channel", channel %>
+    </p>
+  </div>
 </div>
