@@ -31,11 +31,22 @@ Rails.application.routes.draw do
    namespace :api do
     namespace :v1 do
       namespace :mcp do
-        resources :channels, only: [:index, :show, :create] do
+        resources :channels, only: [:index, :show, :create, :destroy] do
           resources :comments, only: [:create]
+          collection do
+            delete :bulk_delete_demo
+          end
         end
-        resources :projects, only: [:index, :show, :create]
-        resources :comments, only: [:index]
+        resources :projects, only: [:index, :show, :create, :destroy] do
+          collection do
+            delete :bulk_delete_demo
+          end
+        end
+        resources :comments, only: [:index, :destroy] do
+          collection do
+            delete :bulk_delete_demo
+          end
+        end
       end
     end
   end 

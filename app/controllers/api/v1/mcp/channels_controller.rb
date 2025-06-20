@@ -2,7 +2,7 @@ class Api::V1::Mcp::ChannelsController < ApplicationController
 	# Skip CSRF protection for API endpoints
 	skip_before_action :verify_authenticity_token
 	
-	before_action :set_channel, only: [:show]
+	before_action :set_channel, only: [:show, :destroy]
 	
 	# GET /api/v1/mcp/channels
 	def index
@@ -38,6 +38,31 @@ class Api::V1::Mcp::ChannelsController < ApplicationController
         errors: channel.errors.full_messages
       }, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /api/v1/mcp/channels/:id
+  def destroy
+    if @channel.destroy
+      render json: {
+        status: 'success',
+        message: 'Channel deleted successfully'
+      }
+    else
+      render json: {
+        status: 'error',
+        message: 'Failed to delete channel',
+        errors: @channel.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+  
+  # DELETE /api/v1/mcp/channels/bulk_delete_demo
+  def bulk_delete_demo
+    deleted_count = Channel.where("name ILIKE ?", "%demo%").destroy_all.count
+    render json: {
+      status: 'success',
+      message: "Deleted #{deleted_count} demo channels"
+    }
   end
 
 	private

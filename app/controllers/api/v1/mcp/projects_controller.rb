@@ -2,7 +2,7 @@ class Api::V1::Mcp::ProjectsController < ApplicationController
 	# Skip CSRF protection for API endpoints
 	skip_before_action :verify_authenticity_token
 	
-	before_action :set_project, only: [:show]
+	before_action :set_project, only: [:show, :destroy]
 	
 	# GET /api/v1/mcp/projects
 	def index
@@ -38,6 +38,31 @@ class Api::V1::Mcp::ProjectsController < ApplicationController
         errors: project.errors.full_messages
       }, status: :unprocessable_entity
     end
+  end
+
+  # DELETE /api/v1/mcp/projects/:id
+  def destroy
+    if @project.destroy
+      render json: {
+        status: 'success',
+        message: 'Project deleted successfully'
+      }
+    else
+      render json: {
+        status: 'error',
+        message: 'Failed to delete project',
+        errors: @project.errors.full_messages
+      }, status: :unprocessable_entity
+    end
+  end
+  
+  # DELETE /api/v1/mcp/projects/bulk_delete_demo
+  def bulk_delete_demo
+    deleted_count = Project.where("name ILIKE ?", "%demo%").destroy_all.count
+    render json: {
+      status: 'success',
+      message: "Deleted #{deleted_count} demo projects"
+    }
   end
 
 	private
