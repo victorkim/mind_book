@@ -24,16 +24,19 @@
     "Bom Retiro",
     "Experiments"
   ],
-  "processed_date": "2025-07-28T21:02:22.506816",
-  "selected_conversations_count": 8,
+  "processed_date": "2025-07-31T10:25:50.446586",
+  "selected_conversations_count": 11,
   "selected_conversation_ids": [
-    "b1e4c718-a2a6-4a24-8259-e10b6388f613",
-    "2f4d1d04-d52c-4c6b-a667-8f8249d87abe",
-    "36897026-def1-4e86-a7ca-123cf662b23a",
-    "005f7c9c-68c5-4226-83b5-4bed77daceea",
-    "524eb90a-30fc-4054-92b4-76488ad346e3",
-    "7c880d93-2777-4302-9f4c-5de0f3b451da",
-    "7518ebce-c1a0-427e-9fa9-f6f0f025596b",
-    "e8704fc9-6d54-485b-9a33-415045e86768"
+    "f983870b-0305-4726-a4c7-a85cda47a274",
+    "5782e03f-4e51-4713-87d6-7a7d121dd7bc",
+    "bfdc51f1-d8bc-4400-9b41-067971512de6",
+    "8f7ca876-3eac-479b-878f-f1adfe0d5aea",
+    "bff42600-36fb-4687-987d-01fcdf24b4ab",
+    "2ed7d2cc-bea1-4252-a6d8-b66b6f471f8a",
+    "59145f17-6f78-4b9f-abd5-50f0e3bd3039",
+    "a32cab76-4c64-4a15-ace7-d0b0dc177dfc",
+    "b8c0b057-fc92-4dc3-bbf6-a41ac090f8fd",
+    "f9811e74-72e6-47d5-938c-5629d8d76fd2",
+    "3ef0ba25-574c-45ca-9da8-a88d99385e17"
   ]
 }

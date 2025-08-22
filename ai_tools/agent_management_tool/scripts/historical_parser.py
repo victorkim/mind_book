@@ -13,8 +13,8 @@ Input:
     - data/historical_export/projects.json (600KB)
 
 Output:
-    - data/filtered_output/selected_conversations.csv
-    - Complete conversations for specified IDs only
+    - data/filtered_output/conversations_from_YYYY-MM-DD.csv
+    - All conversations from specified date onwards
 """
 
 import json
@@ -33,17 +33,8 @@ class HistoricalParser:
         self.config_dir = self.base_dir / "config"
         self.logs_dir = self.base_dir / "logs"
         
-        # SELECTED CONVERSATION IDs - CHANGE THESE AS NEEDED
-        self.selected_conversation_ids = [
-            "b1e4c718-a2a6-4a24-8259-e10b6388f613",
-            "2f4d1d04-d52c-4c6b-a667-8f8249d87abe",
-            "36897026-def1-4e86-a7ca-123cf662b23a",
-            "005f7c9c-68c5-4226-83b5-4bed77daceea",
-            "524eb90a-30fc-4054-92b4-76488ad346e3",
-            "7c880d93-2777-4302-9f4c-5de0f3b451da",
-            "7518ebce-c1a0-427e-9fa9-f6f0f025596b",
-            "e8704fc9-6d54-485b-9a33-415045e86768"
-        ]
+        # DATE FILTERING - CHANGE THIS DATE AS NEEDED
+        self.start_date = datetime(2025, 7, 29)  # July 22th, 2025
         
         # Ensure directories exist
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -61,7 +52,7 @@ class HistoricalParser:
         self.logger = logging.getLogger(__name__)
     
     def parse_conversations_file(self):
-        """Parse conversations.json and filter by selected IDs"""
+        """Parse conversations.json and filter by date"""
         conversations_file = self.export_dir / "conversations.json"
         
         if not conversations_file.exists():
@@ -73,7 +64,7 @@ class HistoricalParser:
         
         self.logger.info(f"Processing conversations file: {conversations_file}")
         self.logger.info(f"File size: {conversations_file.stat().st_size / (1024*1024):.1f} MB")
-        self.logger.info(f"Looking for {len(self.selected_conversation_ids)} specific conversations")
+        self.logger.info(f"Looking for conversations from {self.start_date.strftime('%Y-%m-%d')} onwards")
         
         try:
             with open(conversations_file, 'rb') as file:
@@ -86,10 +77,20 @@ class HistoricalParser:
                     if total_processed % 100 == 0:  # Progress indicator
                         self.logger.info(f"Processed {total_processed} conversations, found {len(filtered_conversations)} matches...")
                     
-                    # Check if this conversation ID is in our selected list
-                    conv_id = conversation.get('uuid', '')
-                    if conv_id in self.selected_conversation_ids:
-                        self.logger.info(f"Found selected conversation: {conv_id}")
+                    # Extract conversation date
+                    created_at = conversation.get('created_at')
+                    if not created_at:
+                        continue
+                    
+                    try:
+                        conv_date = datetime.fromisoformat(created_at.replace('Z', '+00:00'))
+                        conv_date = conv_date.replace(tzinfo=None)  # Remove timezone for comparison
+                    except:
+                        continue
+                    
+                    # Filter by date
+                    if conv_date >= self.start_date:
+                        self.logger.info(f"Found conversation from {conv_date.strftime('%Y-%m-%d')}: {conversation.get('uuid', 'unknown')}")
                         processed_conv = self.process_single_conversation(conversation)
                         if processed_conv:
                             filtered_conversations.append(processed_conv)
@@ -99,21 +100,12 @@ class HistoricalParser:
             return []
         
         self.logger.info(f"Total conversations processed: {total_processed}")
-        self.logger.info(f"Found {len(filtered_conversations)} selected conversations")
-        
-        # Log which conversations were found vs missing
-        found_ids = [conv['conversation_id'] for conv in filtered_conversations]
-        missing_ids = [conv_id for conv_id in self.selected_conversation_ids if conv_id not in found_ids]
-        
-        if missing_ids:
-            self.logger.warning(f"Could not find {len(missing_ids)} conversations:")
-            for missing_id in missing_ids:
-                self.logger.warning(f"  - {missing_id}")
+        self.logger.info(f"Found {len(filtered_conversations)} conversations from {self.start_date.strftime('%Y-%m-%d')} onwards")
         
         return filtered_conversations
     
     def process_single_conversation(self, conversation):
-        """Extract complete data from a selected conversation - NO TRUNCATION"""
+        """Extract complete data from a conversation - NO TRUNCATION"""
         try:
             # Basic metadata
             conv_id = conversation.get('uuid', 'unknown')
@@ -186,31 +178,67 @@ class HistoricalParser:
             self.logger.warning(f"Error processing conversation {conversation.get('uuid', 'unknown')}: {e}")
             return None
     
-    def save_conversations_csv(self, conversations):
-        """Save selected conversations to CSV"""
+    def create_csv_chunks(self, conversations, max_size_mb=18):
+        """Split conversations into CSV files under size limit"""
         if not conversations:
-            self.logger.warning("No conversations to save")
+            self.logger.warning("No conversations to process")
             return
         
-        # Create output filename
-        filename = f"selected_conversations_{len(conversations)}_items.csv"
-        filepath = self.output_dir / filename
+        # Sort by date
+        conversations.sort(key=lambda x: x['date'])
         
-        # Create DataFrame and save
-        df = pd.DataFrame(conversations)
-        df.to_csv(filepath, index=False)
+        # Group into chunks by date ranges
+        chunks = []
+        current_chunk = []
+        current_size = 0
+        start_date = None
         
-        file_size = filepath.stat().st_size / (1024 * 1024)
-        self.logger.info(f"Created: {filename} ({file_size:.1f} MB, {len(conversations)} conversations)")
+        for conv in conversations:
+            if not start_date:
+                start_date = conv['date']
+            
+            # Estimate size (rough calculation)
+            conv_size = len(str(conv)) / (1024 * 1024)  # Convert to MB
+            
+            if current_size + conv_size > max_size_mb and current_chunk:
+                # Save current chunk
+                end_date = current_chunk[-1]['date']
+                chunks.append({
+                    'data': current_chunk.copy(),
+                    'start_date': start_date,
+                    'end_date': end_date
+                })
+                
+                # Start new chunk
+                current_chunk = [conv]
+                current_size = conv_size
+                start_date = conv['date']
+            else:
+                current_chunk.append(conv)
+                current_size += conv_size
         
-        # Log summary of what was saved
-        total_chars = sum(conv['total_characters'] for conv in conversations)
-        avg_chars = total_chars // len(conversations) if conversations else 0
+        # Add final chunk
+        if current_chunk:
+            end_date = current_chunk[-1]['date']
+            chunks.append({
+                'data': current_chunk,
+                'start_date': start_date,
+                'end_date': end_date
+            })
         
-        self.logger.info(f"Summary:")
-        self.logger.info(f"  - Total characters: {total_chars:,}")
-        self.logger.info(f"  - Average per conversation: {avg_chars:,} characters")
-        self.logger.info(f"  - Date range: {min(conv['date'] for conv in conversations)} to {max(conv['date'] for conv in conversations)}")
+        # Save chunks as CSV files
+        for i, chunk in enumerate(chunks):
+            if len(chunks) == 1:
+                filename = "conversations.csv"
+            else:
+                filename = f"conversations_{chunk['start_date']}_to_{chunk['end_date']}.csv"
+            filepath = self.output_dir / filename
+            
+            df = pd.DataFrame(chunk['data'])
+            df.to_csv(filepath, index=False)
+            
+            file_size = filepath.stat().st_size / (1024 * 1024)
+            self.logger.info(f"Created: {filename} ({file_size:.1f} MB, {len(chunk['data'])} conversations)")
     
     def load_projects_info(self):
         """Load and process projects.json for reference"""
@@ -231,8 +259,8 @@ class HistoricalParser:
                 'total_projects': len(projects_data),
                 'project_names': [p.get('name', 'Unnamed') for p in projects_data],
                 'processed_date': datetime.now().isoformat(),
-                'selected_conversations_count': len(self.selected_conversation_ids),
-                'selected_conversation_ids': self.selected_conversation_ids
+                'date_filter_from': self.start_date.isoformat(),
+                'filtering_mode': 'date_based'
             }
             
             mapping_file = self.config_dir / "project_mapping.json"
@@ -246,28 +274,28 @@ class HistoricalParser:
             return {}
     
     def run(self):
-        """Main execution method - process selected conversations only"""
-        self.logger.info("Starting selected conversation processing...")
-        self.logger.info(f"Target conversations: {len(self.selected_conversation_ids)}")
+        """Main execution method - process conversations from specified date"""
+        self.logger.info("Starting date-based conversation processing...")
+        self.logger.info(f"Target date: {self.start_date.strftime('%Y-%m-%d')} onwards")
         
         # Load projects info
         projects = self.load_projects_info()
         
-        # Parse selected conversations
+        # Parse conversations by date
         conversations = self.parse_conversations_file()
         
         if not conversations:
-            self.logger.error("No selected conversations found to process")
-            self.logger.info("Check that your conversation IDs are correct and exist in the JSON file")
+            self.logger.error("No conversations found from the specified date")
+            self.logger.info(f"Check that you have conversations from {self.start_date.strftime('%Y-%m-%d')} onwards in your JSON file")
             return
         
-        # Save conversations to CSV
-        self.save_conversations_csv(conversations)
+        # Create CSV outputs
+        self.create_csv_chunks(conversations)
         
         # Summary
-        self.logger.info(f"Processing complete!")
-        self.logger.info(f"Found {len(conversations)} out of {len(self.selected_conversation_ids)} requested conversations")
-        self.logger.info("Next step: Upload the CSV file to Claude for analysis and project classification")
+        total_files = len(list(self.output_dir.glob("conversations_*.csv")))
+        self.logger.info(f"Processing complete! Created {total_files} CSV files in {self.output_dir}")
+        self.logger.info("Next step: Upload CSV files to Claude for analysis and project classification")
 
 if __name__ == "__main__":
     parser = HistoricalParser()
